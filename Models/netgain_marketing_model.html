@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netgain &mdash; Multi-Touch Attribution Model &amp; Data Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ng-orange: #F26A2E;
+            --ng-orange-soft: #FFE3D1;
+            --ng-navy: #0F1B2D;
+            --ng-navy-2: #1A2538;
+            --ng-slate: #8A94A8;
+            --ng-ink: #E8ECF3;
+            --ng-line: rgba(255,255,255,0.08);
+            --ng-card: #141E34;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--ng-navy); color: var(--ng-ink); line-height: 1.55; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 36px 40px 80px; }
+
+        /* Top nav */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 44px; padding-bottom: 18px; border-bottom: 1px solid var(--ng-line); }
+        .brand { font-weight: 800; font-size: 18px; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .brand .logo { width: 32px; height: 32px; background: var(--ng-orange); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; }
+        .brand span.sub { font-weight: 400; color: var(--ng-slate); font-size: 14px; margin-left: 4px; }
+        .nav-links { display: flex; gap: 24px; font-size: 13px; }
+        .nav-links a { color: var(--ng-slate); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .nav-links a:hover { color: white; }
+
+        /* Breadcrumb + hero */
+        .breadcrumb { font-size: 12px; color: var(--ng-slate); margin-bottom: 14px; }
+        .breadcrumb a { color: var(--ng-slate); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--ng-orange); }
+
+        .hero { margin-bottom: 44px; padding-bottom: 36px; border-bottom: 1px solid var(--ng-line); display: grid; grid-template-columns: 1.7fr 1fr; gap: 36px; align-items: start; }
+        .hero h1 { font-size: 44px; font-weight: 800; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 16px; color: white; }
+        .hero h1 .hl { color: var(--ng-orange); }
+        .hero p { color: var(--ng-slate); font-size: 16px; max-width: 640px; margin-bottom: 0; }
+        .hero-meta { background: var(--ng-card); border: 1px solid var(--ng-line); border-radius: 14px; padding: 22px 24px; }
+        .hero-meta .stat { padding: 10px 0; border-top: 1px solid var(--ng-line); display: flex; justify-content: space-between; font-size: 13px; }
+        .hero-meta .stat:first-child { border-top: none; padding-top: 0; }
+        .hero-meta .stat .k { color: var(--ng-slate); }
+        .hero-meta .stat .v { color: white; font-weight: 600; }
+        .hero-meta .stat .v em { font-style: normal; color: var(--ng-orange); }
+
+        /* Sections */
+        .section-head { margin: 60px 0 28px; }
+        .section-head .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.2px; color: var(--ng-orange); margin-bottom: 10px; }
+        .section-head h2 { font-size: 30px; font-weight: 800; letter-spacing: -0.6px; color: white; margin-bottom: 8px; }
+        .section-head p { color: var(--ng-slate); font-size: 14px; max-width: 700px; }
+
+        /* Data flow SVG container */
+        .flow-canvas { background: var(--ng-card); border: 1px solid var(--ng-line); border-radius: 18px; padding: 28px 20px; overflow-x: auto; }
+        .flow-canvas svg { display: block; margin: 0 auto; min-width: 1040px; }
+
+        /* Layer deep-dive */
+        .layers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 28px; }
+        .layer { background: var(--ng-card); border: 1px solid var(--ng-line); border-radius: 12px; padding: 20px 18px; position: relative; }
+        .layer .num { width: 28px; height: 28px; background: var(--ng-orange); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; margin-bottom: 12px; }
+        .layer h4 { font-size: 14px; font-weight: 700; color: white; margin-bottom: 6px; }
+        .layer .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--ng-orange); font-weight: 700; margin-bottom: 10px; }
+        .layer ul { list-style: none; }
+        .layer ul li { font-size: 12px; color: var(--ng-slate); padding: 6px 0; border-top: 1px dashed var(--ng-line); line-height: 1.45; }
+        .layer ul li:first-child { border-top: none; padding-top: 0; }
+        .layer ul li strong { color: var(--ng-ink); font-weight: 600; }
+
+        /* Funnel */
+        .funnel-wrap { background: var(--ng-card); border: 1px solid var(--ng-line); border-radius: 18px; padding: 36px 40px; }
+        .funnel-row { display: flex; align-items: stretch; gap: 12px; }
+        .funnel-stage { flex: 1; text-align: center; padding: 22px 14px; border-radius: 10px; position: relative; display: flex; flex-direction: column; justify-content: center; color: white; min-height: 110px; }
+        .funnel-stage::after { content: ""; position: absolute; top: 50%; right: -10px; transform: translateY(-50%); width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 10px solid; z-index: 2; }
+        .funnel-stage:last-child::after { display: none; }
+        .funnel-stage.s1 { background: #233659; } .funnel-stage.s1::after { border-left-color: #233659; }
+        .funnel-stage.s2 { background: #2C4571; } .funnel-stage.s2::after { border-left-color: #2C4571; }
+        .funnel-stage.s3 { background: #375488; } .funnel-stage.s3::after { border-left-color: #375488; }
+        .funnel-stage.s4 { background: var(--ng-orange); } .funnel-stage.s4::after { border-left-color: var(--ng-orange); }
+        .funnel-stage.s5 { background: #E85C24; } .funnel-stage.s5::after { border-left-color: #E85C24; }
+        .funnel-stage.s6 { background: #CC4D1A; }
+        .funnel-stage .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.6px; font-weight: 700; opacity: 0.8; margin-bottom: 4px; }
+        .funnel-stage .metric { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 3px; }
+        .funnel-stage .sub { font-size: 11px; opacity: 0.8; }
+        .nsm-callout { margin-top: 26px; background: rgba(242,106,46,0.12); border: 1px solid rgba(242,106,46,0.4); border-radius: 12px; padding: 20px 24px; display: grid; grid-template-columns: 90px 1fr; gap: 20px; align-items: center; }
+        .nsm-callout .badge { background: var(--ng-orange); color: white; padding: 8px 10px; border-radius: 8px; text-align: center; }
+        .nsm-callout .badge .l { font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; font-weight: 700; opacity: 0.9; }
+        .nsm-callout .badge .v { font-size: 18px; font-weight: 800; }
+        .nsm-callout .body h4 { color: white; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .nsm-callout .body p { color: var(--ng-slate); font-size: 13px; }
+
+        /* Decision loop */
+        .decisions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .decision { background: var(--ng-card); border: 1px solid var(--ng-line); border-left: 3px solid var(--ng-orange); border-radius: 10px; padding: 20px 22px; }
+        .decision h4 { color: white; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+        .decision p { color: var(--ng-slate); font-size: 12.5px; line-height: 1.5; }
+
+        /* Outcome strip */
+        .outcome { margin-top: 40px; background: linear-gradient(135deg, var(--ng-orange) 0%, #E85C24 100%); border-radius: 16px; padding: 32px 36px; display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: center; }
+        .outcome .hero-num { font-size: 72px; font-weight: 800; letter-spacing: -3px; color: white; line-height: 1; }
+        .outcome .hero-num .unit { font-size: 28px; font-weight: 700; }
+        .outcome .hero-label { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.8); font-weight: 700; margin-top: 6px; }
+        .outcome .body h3 { color: white; font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+        .outcome .body p { color: rgba(255,255,255,0.9); font-size: 14px; line-height: 1.55; }
+        .outcome .body p strong { color: white; font-weight: 800; }
+
+        footer.page { margin-top: 70px; padding-top: 22px; border-top: 1px solid var(--ng-line); font-size: 12px; color: var(--ng-slate); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        footer.page a { color: var(--ng-slate); text-decoration: underline; }
+
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 34px; }
+            .layers { grid-template-columns: 1fr 1fr; }
+            .funnel-row { flex-direction: column; gap: 8px; }
+            .funnel-stage::after { display: none; }
+            .decisions { grid-template-columns: 1fr; }
+            .outcome { grid-template-columns: 1fr; }
+            .top-nav { flex-direction: column; gap: 14px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <nav class="top-nav">
+            <a href="../dashboards/index.html" class="brand"><div class="logo">N</div> Netgain Marketing Model <span class="sub">&middot; Steve Hill</span></a>
+            <div class="nav-links">
+                <a href="../dashboards/index.html">Dashboards</a>
+                <a href="../accomplishments.html">Accomplishments</a>
+                <a href="index.html">Models</a>
+                <a href="../plan.html">60/90 Day Plan</a>
+            </div>
+        </nav>
+
+        <div class="breadcrumb"><a href="index.html">Marketing Models</a> &nbsp;/&nbsp; Netgain Solutions</div>
+
+        <section class="hero">
+            <div>
+                <h1>Six products, thirty touchpoints, one North Star. <span class="hl">+250%.</span></h1>
+                <p>Netgain ran a 6-product B2B SaaS portfolio with lead cycles from 1 to 18 months. Marketing couldn't explain which channels actually drove qualified pipeline. The fix wasn't more dashboards &mdash; it was rebuilding the measurement stack so every click, view, form, and event carried a dollar value, then isolating the mid-funnel events that most strongly predicted conversion ("Moments that Matter") and running testing sprints to drive more leads through them.</p>
+            </div>
+            <div class="hero-meta">
+                <div class="stat"><span class="k">Portfolio</span><span class="v">6 products</span></div>
+                <div class="stat"><span class="k">Lead cycle</span><span class="v">1 &ndash; 18 months</span></div>
+                <div class="stat"><span class="k">Avg touchpoints</span><span class="v">30 per closed deal</span></div>
+                <div class="stat"><span class="k">Mid-funnel lift</span><span class="v"><em>+250%</em> SQL &rarr; SAL</span></div>
+                <div class="stat"><span class="k">Pipeline impact</span><span class="v"><em>$4M+</em> in Y2</span></div>
+            </div>
+        </section>
+
+        <div class="section-head">
+            <div class="eyebrow">Data Flow</div>
+            <h2>Sources to decisions &mdash; the full pipeline.</h2>
+            <p>Every layer below was built or rebuilt for this engagement. Raw events on the left, executive decisions on the right.</p>
+        </div>
+
+        <div class="flow-canvas">
+            <svg viewBox="0 0 1080 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Netgain marketing analytics pipeline">
+                <defs>
+                    <marker id="ng-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#F26A2E"/>
+                    </marker>
+                    <linearGradient id="ng-pipe" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#F26A2E" stop-opacity="0.15"/>
+                        <stop offset="100%" stop-color="#F26A2E" stop-opacity="0.7"/>
+                    </linearGradient>
+                </defs>
+
+                <!-- Column headers -->
+                <g font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#F26A2E" text-anchor="middle" letter-spacing="1.5">
+                    <text x="110" y="30">SOURCES</text>
+                    <text x="320" y="30">INGEST</text>
+                    <text x="540" y="30">MODEL</text>
+                    <text x="760" y="30">SURFACE</text>
+                    <text x="970" y="30">DECIDE</text>
+                </g>
+
+                <!-- Connecting pipe (horizontal midline) -->
+                <rect x="100" y="226" width="880" height="8" fill="url(#ng-pipe)" rx="4"/>
+
+                <!-- SOURCES (column 1) -->
+                <g font-family="Inter, sans-serif" font-size="11" fill="#E8ECF3" text-anchor="middle">
+                    <rect x="40" y="55" width="140" height="36" rx="7" fill="#1A2538" stroke="#2C3A55"/><text x="110" y="77">Google Ads / Meta / LinkedIn</text>
+                    <rect x="40" y="100" width="140" height="36" rx="7" fill="#1A2538" stroke="#2C3A55"/><text x="110" y="122">GA4 + Web Tracking</text>
+                    <rect x="40" y="145" width="140" height="36" rx="7" fill="#1A2538" stroke="#2C3A55"/><text x="110" y="167">HubSpot CRM Events</text>
+                    <rect x="40" y="190" width="140" height="36" rx="7" fill="#1A2538" stroke="#2C3A55"/><text x="110" y="212">Salesforce Opp Data</text>
+                    <rect x="40" y="235" width="140" height="36" rx="7" fill="#1A2538" stroke="#2C3A55"/><text x="110" y="257">Offline &mdash; Events / Demos</text>
+                    <rect x="40" y="280" width="140" height="36" rx="7" fill="#1A2538" stroke="#2C3A55"/><text x="110" y="302">Product Usage (6 SKUs)</text>
+                    <rect x="40" y="325" width="140" height="36" rx="7" fill="#1A2538" stroke="#2C3A55"/><text x="110" y="347">Email / Nurture Engagement</text>
+                </g>
+                <!-- Arrows from sources to ingest -->
+                <g stroke="#F26A2E" stroke-width="1.2" fill="none" opacity="0.7" marker-end="url(#ng-arrow)">
+                    <path d="M 180 73 Q 220 73 250 170"/>
+                    <path d="M 180 118 Q 220 118 250 180"/>
+                    <path d="M 180 163 L 250 190"/>
+                    <path d="M 180 208 L 250 210"/>
+                    <path d="M 180 253 L 250 220"/>
+                    <path d="M 180 298 Q 220 298 250 240"/>
+                    <path d="M 180 343 Q 220 343 250 250"/>
+                </g>
+
+                <!-- INGEST (column 2) -->
+                <g font-family="Inter, sans-serif">
+                    <rect x="250" y="140" width="180" height="150" rx="10" fill="#1A2538" stroke="#F26A2E" stroke-width="1.5"/>
+                    <text x="340" y="165" font-size="12" font-weight="700" fill="#F26A2E" text-anchor="middle">PYTHON + SQL PIPELINE</text>
+                    <line x1="270" y1="175" x2="410" y2="175" stroke="#2C3A55"/>
+                    <text x="340" y="195" font-size="11" fill="#E8ECF3" text-anchor="middle">API extract &bull; staging</text>
+                    <text x="340" y="215" font-size="11" fill="#E8ECF3" text-anchor="middle">Event unification</text>
+                    <text x="340" y="235" font-size="11" fill="#E8ECF3" text-anchor="middle">Touchpoint stitching</text>
+                    <text x="340" y="255" font-size="11" fill="#E8ECF3" text-anchor="middle">Identity resolution</text>
+                    <text x="340" y="275" font-size="11" fill="#8A94A8" text-anchor="middle" font-style="italic">(6-product union)</text>
+                </g>
+                <!-- Arrow from Ingest to Model -->
+                <path d="M 430 215 L 470 215" stroke="#F26A2E" stroke-width="2" fill="none" marker-end="url(#ng-arrow)"/>
+
+                <!-- MODEL (column 3) -->
+                <g font-family="Inter, sans-serif">
+                    <rect x="470" y="60" width="180" height="70" rx="8" fill="#1A2538" stroke="#F26A2E"/>
+                    <text x="560" y="82" font-size="11" font-weight="700" fill="#F26A2E" text-anchor="middle">MULTI-TOUCH ATTRIBUTION</text>
+                    <text x="560" y="102" font-size="10.5" fill="#E8ECF3" text-anchor="middle">First / Last / Linear / Position</text>
+                    <text x="560" y="119" font-size="10.5" fill="#8A94A8" text-anchor="middle">Online + offline touchpoints</text>
+
+                    <rect x="470" y="145" width="180" height="70" rx="8" fill="#1A2538" stroke="#F26A2E"/>
+                    <text x="560" y="167" font-size="11" font-weight="700" fill="#F26A2E" text-anchor="middle">LEAD/USER SCORING</text>
+                    <text x="560" y="187" font-size="10.5" fill="#E8ECF3" text-anchor="middle">Dollar value on every event</text>
+                    <text x="560" y="204" font-size="10.5" fill="#8A94A8" text-anchor="middle">Real ROAS / CAC by source</text>
+
+                    <rect x="470" y="230" width="180" height="70" rx="8" fill="#1A2538" stroke="#F26A2E"/>
+                    <text x="560" y="252" font-size="11" font-weight="700" fill="#F26A2E" text-anchor="middle">COHORT ANALYSIS</text>
+                    <text x="560" y="272" font-size="10.5" fill="#E8ECF3" text-anchor="middle">1&ndash;18 month cycles</text>
+                    <text x="560" y="289" font-size="10.5" fill="#8A94A8" text-anchor="middle">Segment by industry / size / product</text>
+
+                    <rect x="470" y="315" width="180" height="70" rx="8" fill="#F26A2E" stroke="#F26A2E"/>
+                    <text x="560" y="337" font-size="11" font-weight="800" fill="white" text-anchor="middle">"MOMENTS THAT MATTER"</text>
+                    <text x="560" y="357" font-size="10.5" fill="white" text-anchor="middle">NSM definition</text>
+                    <text x="560" y="374" font-size="10" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-style="italic">3 events &middot; 14-day window</text>
+                </g>
+                <!-- Arrow from Model to Surface -->
+                <path d="M 650 215 L 690 215" stroke="#F26A2E" stroke-width="2" fill="none" marker-end="url(#ng-arrow)"/>
+
+                <!-- SURFACE (column 4) -->
+                <g font-family="Inter, sans-serif">
+                    <rect x="690" y="80" width="160" height="50" rx="7" fill="#1A2538" stroke="#2C3A55"/>
+                    <text x="770" y="100" font-size="11" font-weight="700" fill="#E8ECF3" text-anchor="middle">Weekly Exec KPI Deck</text>
+                    <text x="770" y="117" font-size="10" fill="#8A94A8" text-anchor="middle">CEO / CFO / VP Sales</text>
+
+                    <rect x="690" y="145" width="160" height="50" rx="7" fill="#1A2538" stroke="#2C3A55"/>
+                    <text x="770" y="165" font-size="11" font-weight="700" fill="#E8ECF3" text-anchor="middle">Channel ROAS Dashboard</text>
+                    <text x="770" y="182" font-size="10" fill="#8A94A8" text-anchor="middle">Dollar-weighted by source</text>
+
+                    <rect x="690" y="210" width="160" height="50" rx="7" fill="#1A2538" stroke="#2C3A55"/>
+                    <text x="770" y="230" font-size="11" font-weight="700" fill="#E8ECF3" text-anchor="middle">NSM Throughput Monitor</text>
+                    <text x="770" y="247" font-size="10" fill="#8A94A8" text-anchor="middle">Leads reaching all 3 events</text>
+
+                    <rect x="690" y="275" width="160" height="50" rx="7" fill="#1A2538" stroke="#2C3A55"/>
+                    <text x="770" y="295" font-size="11" font-weight="700" fill="#E8ECF3" text-anchor="middle">SAL Velocity Tracker</text>
+                    <text x="770" y="312" font-size="10" fill="#8A94A8" text-anchor="middle">Time to qualification</text>
+                </g>
+                <!-- Arrow from Surface to Decide -->
+                <path d="M 850 215 L 890 215" stroke="#F26A2E" stroke-width="2" fill="none" marker-end="url(#ng-arrow)"/>
+
+                <!-- DECIDE (column 5) -->
+                <g font-family="Inter, sans-serif">
+                    <rect x="890" y="105" width="160" height="38" rx="6" fill="#F26A2E"/>
+                    <text x="970" y="128" font-size="11" font-weight="700" fill="white" text-anchor="middle">Reallocate Budget</text>
+
+                    <rect x="890" y="155" width="160" height="38" rx="6" fill="#F26A2E" opacity="0.88"/>
+                    <text x="970" y="178" font-size="11" font-weight="700" fill="white" text-anchor="middle">Tune Nurture Sequences</text>
+
+                    <rect x="890" y="205" width="160" height="38" rx="6" fill="#F26A2E" opacity="0.78"/>
+                    <text x="970" y="228" font-size="11" font-weight="700" fill="white" text-anchor="middle">Re-Sort SQL Routing</text>
+
+                    <rect x="890" y="255" width="160" height="38" rx="6" fill="#F26A2E" opacity="0.68"/>
+                    <text x="970" y="278" font-size="11" font-weight="700" fill="white" text-anchor="middle">Kill Low-Yield Segments</text>
+
+                    <rect x="890" y="305" width="160" height="38" rx="6" fill="#F26A2E" opacity="0.58"/>
+                    <text x="970" y="328" font-size="11" font-weight="700" fill="white" text-anchor="middle">Scale NSM Experiments</text>
+                </g>
+
+                <!-- Feedback loop arrow -->
+                <path d="M 970 345 Q 970 420 540 420 Q 110 420 110 370" stroke="#F26A2E" stroke-width="1.5" stroke-dasharray="6,4" fill="none" opacity="0.6" marker-end="url(#ng-arrow)"/>
+                <text x="540" y="445" font-family="Inter, sans-serif" font-size="10" fill="#8A94A8" text-anchor="middle" font-style="italic">Feedback loop &mdash; decisions re-enter source layer (campaign changes, new events, reallocated spend)</text>
+            </svg>
+        </div>
+
+        <div class="layers">
+            <div class="layer">
+                <div class="num">1</div>
+                <div class="tag">Sources</div>
+                <h4>Everything a buyer touches</h4>
+                <ul>
+                    <li><strong>Paid</strong> &mdash; Google Ads, Meta, LinkedIn</li>
+                    <li><strong>Web</strong> &mdash; GA4, custom event tracking</li>
+                    <li><strong>CRM</strong> &mdash; HubSpot engagement + form fills</li>
+                    <li><strong>Sales</strong> &mdash; Salesforce opp + activity</li>
+                    <li><strong>Offline</strong> &mdash; webinars, demos, trade shows</li>
+                    <li><strong>Product</strong> &mdash; usage across 6 SKUs</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">2</div>
+                <div class="tag">Ingest</div>
+                <h4>Python + SQL pipeline</h4>
+                <ul>
+                    <li>API extract per source, staging tables</li>
+                    <li><strong>Event unification</strong> across platforms</li>
+                    <li>Touchpoint stitching into a single lead timeline</li>
+                    <li><strong>Identity resolution</strong> (cookie &rarr; lead &rarr; account)</li>
+                    <li>Daily refresh with data-quality checks</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">3</div>
+                <div class="tag">Model</div>
+                <h4>Attribution + scoring</h4>
+                <ul>
+                    <li><strong>Multi-touch</strong> &mdash; first, last, linear, position-based</li>
+                    <li>Online + offline tied into single credit model</li>
+                    <li>Lead/user scoring &mdash; <strong>$ value on every event</strong></li>
+                    <li>Cohort analysis by product, industry, size, channel</li>
+                    <li><strong>NSM isolation</strong> &mdash; 3-event 14-day predictive window</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">4</div>
+                <div class="tag">Surface</div>
+                <h4>Dashboards stakeholders live in</h4>
+                <ul>
+                    <li><strong>Weekly KPI deck</strong> &mdash; CEO, CFO, VP Sales</li>
+                    <li>Channel ROAS dashboard (dollar-weighted)</li>
+                    <li><strong>NSM throughput</strong> monitor &mdash; primary KPI</li>
+                    <li>SAL velocity tracker</li>
+                    <li>Cross-product pipeline view</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">5</div>
+                <div class="tag">Decide</div>
+                <h4>Where the data becomes action</h4>
+                <ul>
+                    <li>Reallocate budget toward NSM-driving channels</li>
+                    <li>Tune nurture sequences to reach NSM faster</li>
+                    <li>Re-sort SQL routing by score</li>
+                    <li>Kill low-yield segments, scale winners</li>
+                    <li><strong>Run new tests</strong> to drive more leads through NSM</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-head">
+            <div class="eyebrow">Marketing Funnel</div>
+            <h2>Six stages, one NSM gate in the middle.</h2>
+            <p>Every stage is dollar-attributable. The "Moments that Matter" gate &mdash; the NSM &mdash; is the pivot the entire program was tuned toward.</p>
+        </div>
+
+        <div class="funnel-wrap">
+            <div class="funnel-row">
+                <div class="funnel-stage s1">
+                    <div class="label">Impressions</div>
+                    <div class="metric">4.8M</div>
+                    <div class="sub">paid + organic</div>
+                </div>
+                <div class="funnel-stage s2">
+                    <div class="label">Visits</div>
+                    <div class="metric">186K</div>
+                    <div class="sub">tracked sessions</div>
+                </div>
+                <div class="funnel-stage s3">
+                    <div class="label">MQL</div>
+                    <div class="metric">8,400</div>
+                    <div class="sub">form &amp; content</div>
+                </div>
+                <div class="funnel-stage s4">
+                    <div class="label">SQL</div>
+                    <div class="metric">2,100</div>
+                    <div class="sub">sales-qualified</div>
+                </div>
+                <div class="funnel-stage s5">
+                    <div class="label">SAL</div>
+                    <div class="metric">420</div>
+                    <div class="sub">accepted (+250%)</div>
+                </div>
+                <div class="funnel-stage s6">
+                    <div class="label">Closed Won</div>
+                    <div class="metric">84</div>
+                    <div class="sub">$4M+ in Y2</div>
+                </div>
+            </div>
+            <div class="nsm-callout">
+                <div class="badge">
+                    <div class="l">NSM Gate</div>
+                    <div class="v">3 &times; 14d</div>
+                </div>
+                <div class="body">
+                    <h4>"Moments that Matter" &mdash; where SQL becomes SAL</h4>
+                    <p>Defined as: second product-page revisit + pricing-page touch + sales-collateral download, all within a 14-day window. Cohort analysis showed this sequence is the single strongest predictor of conversion &mdash; isolating it, then running sprints to drive more leads through it, produced the 250% mid-funnel lift.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-head">
+            <div class="eyebrow">Decision Loop</div>
+            <h2>What the dashboard did in week-over-week operations.</h2>
+            <p>The feedback loop is the whole point. These are the three recurring decision cadences the model fed.</p>
+        </div>
+        <div class="decisions">
+            <div class="decision">
+                <h4>Weekly budget reallocation</h4>
+                <p>Channel ROAS review every Monday. Dollar-weighted attribution meant PPC contribution could be trusted &mdash; and low-intent spend could be reallocated to channels driving more NSM events. Net: 18% lift in PPC contribution without new spend.</p>
+            </div>
+            <div class="decision">
+                <h4>High-velocity testing sprint</h4>
+                <p>Bi-weekly sprints explicitly designed to get more leads to NSM faster: tighter keyword targeting, landing-page relevance, NSM-pointing nurture sequences, near-decision retargeting. Winners scaled, losers sunset, cycle repeats.</p>
+            </div>
+            <div class="decision">
+                <h4>Sales routing by score</h4>
+                <p>High-score leads routed to sales within hours instead of days. SAL velocity improved in lockstep with NSM throughput. Sales productivity +15% as low-quality leads dropped by 50% and quality rose.</p>
+            </div>
+        </div>
+
+        <div class="outcome">
+            <div>
+                <div class="hero-num">+250<span class="unit">%</span></div>
+                <div class="hero-label">Mid-Funnel Lift</div>
+            </div>
+            <div class="body">
+                <h3>SQL &rarr; SAL conversion: 8% &rarr; 20% across all channels.</h3>
+                <p>NSM throughput tripled. Dollar-weighted attribution reallocated low-intent spend, <strong>PPC contribution +18%</strong>. Low-quality leads dropped 50%; sales productivity <strong>+15%</strong>. Combined impact directly influenced <strong>$4M+ in pipeline growth in year 2</strong>.</p>
+            </div>
+        </div>
+
+        <footer class="page">
+            <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
+            <div><a href="../dashboards/netgain_b2b_saas_midfunnel.html">&larr; View the Netgain dashboard</a></div>
+        </footer>
+    </div>
+</body>
+</html>

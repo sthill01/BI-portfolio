@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steve Hill &mdash; Career Accomplishments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0F1B2D;
+            --paper: #F6F4EE;
+            --paper-alt: #FBFAF5;
+            --line: #E4E0D7;
+            --muted: #6E788C;
+            --mute-soft: #8A93A6;
+            --netgain: #F26A2E;
+            --foxit: #FF5F00;
+            --uta: #0055A4;
+            --uta-dark: #002A52;
+            --uta-red: #DA291C;
+            --squirrel: #FF6B35;
+            --squirrel-y: #FFC857;
+            --hl: #FFD77A;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.55; }
+
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 40px 80px; }
+
+        /* Top nav */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+        .brand { font-family: 'Source Serif Pro', serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+        .brand span { color: var(--muted); font-weight: 400; }
+        .nav-links { display: flex; gap: 26px; font-size: 14px; }
+        .nav-links a { color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .nav-links a:hover { color: var(--ink); }
+        .nav-links a.active { color: var(--ink); font-weight: 600; }
+
+        /* Hero */
+        .hero { display: grid; grid-template-columns: 1.6fr 1fr; gap: 60px; align-items: start; padding-bottom: 54px; border-bottom: 1px solid var(--line); margin-bottom: 60px; }
+        .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 18px; }
+        .hero h1 { font-family: 'Source Serif Pro', serif; font-size: 54px; line-height: 1.08; letter-spacing: -1.4px; font-weight: 700; margin-bottom: 18px; }
+        .hero h1 .hl { position: relative; white-space: nowrap; }
+        .hero h1 .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 5px; height: 13px; background: var(--hl); z-index: -1; }
+        .hero p.lede { font-size: 17px; color: var(--muted); max-width: 580px; margin-bottom: 32px; }
+        .contact-row { display: flex; gap: 22px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+        .contact-row span strong { color: var(--ink); font-weight: 600; }
+
+        .hero-stats { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
+        .hero-stat .v { font-family: 'Source Serif Pro', serif; font-size: 36px; font-weight: 700; letter-spacing: -1px; color: var(--ink); line-height: 1; margin-bottom: 6px; }
+        .hero-stat .v em { font-style: normal; color: var(--netgain); }
+        .hero-stat .l { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+        .hero-stat .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+        /* Section titles */
+        .section-head { margin-bottom: 28px; }
+        .section-head .eyebrow { margin-bottom: 10px; }
+        .section-head h2 { font-family: 'Source Serif Pro', serif; font-size: 32px; font-weight: 700; letter-spacing: -0.8px; color: var(--ink); margin-bottom: 10px; }
+        .section-head p { color: var(--muted); font-size: 15px; max-width: 680px; }
+        .section-spacer { margin-top: 72px; }
+
+        /* Thematic Pillars */
+        .pillar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .pillar { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; position: relative; }
+        .pillar::before { content: ""; position: absolute; top: 24px; left: 0; width: 4px; height: 30px; border-radius: 0 4px 4px 0; }
+        .pillar.p1::before { background: var(--foxit); }
+        .pillar.p2::before { background: var(--netgain); }
+        .pillar.p3::before { background: var(--uta); }
+        .pillar.p4::before { background: var(--squirrel); }
+        .pillar h3 { font-family: 'Source Serif Pro', serif; font-size: 19px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+        .pillar .pillar-kpi { font-size: 12px; text-transform: uppercase; letter-spacing: 1.4px; font-weight: 600; color: var(--muted); margin-bottom: 14px; }
+        .pillar ul { list-style: none; }
+        .pillar ul li { font-size: 13.5px; color: var(--ink); padding: 7px 0; border-top: 1px dashed var(--line); line-height: 1.5; }
+        .pillar ul li:first-child { border-top: none; }
+        .pillar ul li .bold { font-weight: 700; color: var(--ink); }
+        .pillar.p1 ul li .bold { color: var(--foxit); }
+        .pillar.p2 ul li .bold { color: var(--netgain); }
+        .pillar.p3 ul li .bold { color: var(--uta); }
+        .pillar.p4 ul li .bold { color: var(--squirrel); }
+
+        /* Role timeline */
+        .timeline { display: flex; flex-direction: column; gap: 30px; }
+        .role { border-radius: 18px; overflow: hidden; position: relative; }
+
+        .role-header { padding: 28px 34px 22px; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+        .role-header .ident { display: flex; align-items: center; gap: 16px; }
+        .role-header .tag { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; flex-shrink: 0; }
+        .role-header .co { font-weight: 700; font-size: 19px; letter-spacing: -0.3px; }
+        .role-header .tagline { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+        .role-header .dates { font-family: 'JetBrains Mono', monospace; font-size: 12px; white-space: nowrap; }
+        .role-header .title-row { padding: 0 34px 20px; }
+        .role-header .title-row h3 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.25; }
+
+        .role-body { padding: 0 34px 32px; display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+        .role-body .lede { font-size: 14.5px; line-height: 1.65; margin-bottom: 18px; }
+        .role-body .highlights-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 12px; }
+        .role-body ul.highlights { list-style: none; }
+        .role-body ul.highlights li { padding: 9px 0 9px 18px; position: relative; font-size: 13.5px; line-height: 1.55; border-top: 1px solid; }
+        .role-body ul.highlights li:first-child { border-top: none; }
+        .role-body ul.highlights li::before { content: "▸"; position: absolute; left: 0; top: 9px; font-size: 11px; }
+        .role-body ul.highlights li .num { font-weight: 700; }
+
+        .star-panel { border-radius: 12px; padding: 22px; font-size: 13.5px; line-height: 1.6; }
+        .star-panel .star-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.8px; font-weight: 700; margin-bottom: 6px; }
+        .star-panel .star-headline { font-family: 'Source Serif Pro', serif; font-weight: 700; font-size: 17px; margin-bottom: 14px; line-height: 1.3; }
+        .star-panel p { margin-bottom: 10px; }
+        .star-panel p:last-child { margin-bottom: 0; }
+        .star-panel strong { font-weight: 700; }
+
+        /* Role: Independent Trading Venture (neutral ink) */
+        .role.r-ivt { background: var(--ink); color: #EAEDF3; border: 1px solid #1A2538; }
+        .role.r-ivt .tag { background: #EAEDF3; color: var(--ink); }
+        .role.r-ivt .tagline { color: rgba(234,237,243,0.6); }
+        .role.r-ivt .dates { color: rgba(234,237,243,0.7); }
+        .role.r-ivt .role-header .title-row h3 { color: white; }
+        .role.r-ivt .role-body .highlights-title { color: rgba(234,237,243,0.5); }
+        .role.r-ivt .role-body ul.highlights li { border-color: rgba(234,237,243,0.12); color: rgba(234,237,243,0.88); }
+        .role.r-ivt .role-body ul.highlights li::before { color: rgba(234,237,243,0.5); }
+        .role.r-ivt .role-body ul.highlights li .num { color: #7FD1FF; }
+        .role.r-ivt .star-panel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); }
+        .role.r-ivt .star-panel .star-label { color: rgba(234,237,243,0.5); }
+        .role.r-ivt .star-panel .star-headline { color: white; }
+        .role.r-ivt .star-panel strong { color: #7FD1FF; }
+
+        /* Role: UTA (formal policy) */
+        .role.r-uta { background: white; border: 1px solid var(--line); border-top: 6px solid var(--uta); }
+        .role.r-uta .tag { background: var(--uta); color: white; font-family: 'Source Serif Pro', serif; }
+        .role.r-uta .co { font-family: 'Source Serif Pro', serif; color: var(--uta-dark); }
+        .role.r-uta .tagline { color: var(--muted); }
+        .role.r-uta .dates { color: var(--muted); }
+        .role.r-uta .role-header .title-row h3 { font-family: 'Source Serif Pro', serif; color: var(--uta-dark); }
+        .role.r-uta .role-body .highlights-title { color: var(--uta); }
+        .role.r-uta .role-body ul.highlights li { border-color: var(--line); color: var(--ink); }
+        .role.r-uta .role-body ul.highlights li::before { color: var(--uta); }
+        .role.r-uta .role-body ul.highlights li .num { color: var(--uta); }
+        .role.r-uta .star-panel { background: #F3F0E6; border-left: 4px solid var(--uta-red); }
+        .role.r-uta .star-panel .star-label { color: var(--uta-red); }
+        .role.r-uta .star-panel .star-headline { color: var(--uta-dark); }
+        .role.r-uta .star-panel strong { color: var(--uta-dark); }
+
+        /* Role: Website Squirrel (playful) */
+        .role.r-ws { background: #FFF5EF; border: 2px solid #1A1A1A; box-shadow: 6px 6px 0 #1A1A1A; border-radius: 22px; }
+        .role.r-ws .tag { background: var(--squirrel); color: white; border-radius: 14px; transform: rotate(-5deg); box-shadow: 0 4px 12px rgba(255,107,53,0.3); position: relative; }
+        .role.r-ws .tag::after { content: ""; position: absolute; width: 10px; height: 10px; background: var(--squirrel-y); border-radius: 50%; top: -3px; right: -3px; }
+        .role.r-ws .co { font-weight: 800; }
+        .role.r-ws .tagline { color: var(--muted); font-weight: 600; }
+        .role.r-ws .dates { color: var(--muted); font-weight: 600; }
+        .role.r-ws .role-header .title-row h3 em { font-style: normal; color: var(--squirrel); position: relative; }
+        .role.r-ws .role-header .title-row h3 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 8px; background: var(--squirrel-y); z-index: -1; }
+        .role.r-ws .role-body .highlights-title { color: var(--squirrel); font-weight: 800; }
+        .role.r-ws .role-body ul.highlights li { border-color: #E7DFD4; }
+        .role.r-ws .role-body ul.highlights li::before { color: var(--squirrel); }
+        .role.r-ws .role-body ul.highlights li .num { color: var(--squirrel); font-weight: 800; }
+        .role.r-ws .star-panel { background: white; border: 2px solid #1A1A1A; box-shadow: 3px 3px 0 #1A1A1A; }
+        .role.r-ws .star-panel .star-label { color: var(--squirrel); }
+
+        /* Role: Netgain (SaaS ops, dark w/ orange accent) */
+        .role.r-ng { background: #0F1B2D; color: #E8ECF3; }
+        .role.r-ng .tag { background: var(--netgain); color: white; }
+        .role.r-ng .tagline { color: rgba(232,236,243,0.55); }
+        .role.r-ng .dates { color: rgba(232,236,243,0.55); font-family: 'JetBrains Mono', monospace; }
+        .role.r-ng .role-header .title-row h3 { color: white; }
+        .role.r-ng .role-body .highlights-title { color: var(--netgain); }
+        .role.r-ng .role-body ul.highlights li { border-color: rgba(255,255,255,0.08); color: rgba(232,236,243,0.88); }
+        .role.r-ng .role-body ul.highlights li::before { color: var(--netgain); }
+        .role.r-ng .role-body ul.highlights li .num { color: var(--netgain); }
+        .role.r-ng .star-panel { background: rgba(242,106,46,0.08); border: 1px solid rgba(242,106,46,0.25); }
+        .role.r-ng .star-panel .star-label { color: var(--netgain); }
+        .role.r-ng .star-panel .star-headline { color: white; }
+        .role.r-ng .star-panel strong { color: var(--netgain); }
+
+        /* Role: Foxit (dev-tools dark) */
+        .role.r-fx { background: #0B0F1A; color: #E7EAF3; border: 1px solid #1F2436; }
+        .role.r-fx .tag { background: var(--foxit); color: white; font-family: 'Source Serif Pro', serif; }
+        .role.r-fx .co { font-family: 'Source Serif Pro', serif; }
+        .role.r-fx .tagline { color: #8089A3; font-family: 'JetBrains Mono', monospace; }
+        .role.r-fx .dates { color: #8089A3; font-family: 'JetBrains Mono', monospace; }
+        .role.r-fx .role-header .title-row h3 { color: white; }
+        .role.r-fx .role-body .highlights-title { color: var(--foxit); font-family: 'JetBrains Mono', monospace; }
+        .role.r-fx .role-body ul.highlights li { border-color: rgba(255,255,255,0.06); color: #BDC5D8; }
+        .role.r-fx .role-body ul.highlights li::before { color: var(--foxit); }
+        .role.r-fx .role-body ul.highlights li .num { color: var(--foxit); }
+        .role.r-fx .star-panel { background: #141827; border: 1px solid #1F2436; }
+        .role.r-fx .star-panel .star-label { color: var(--foxit); font-family: 'JetBrains Mono', monospace; }
+        .role.r-fx .star-panel .star-headline { color: white; }
+        .role.r-fx .star-panel strong { color: var(--foxit); }
+
+        /* Generic light role (Healthicity, Tuff Toe, RGM) */
+        .role.r-lt { background: white; border: 1px solid var(--line); }
+        .role.r-lt .tag { background: var(--ink); color: white; }
+        .role.r-lt .tagline { color: var(--muted); }
+        .role.r-lt .dates { color: var(--muted); }
+        .role.r-lt .role-body .highlights-title { color: var(--ink); }
+        .role.r-lt .role-body ul.highlights li { border-color: var(--line); }
+        .role.r-lt .role-body ul.highlights li::before { color: var(--ink); }
+        .role.r-lt .role-body ul.highlights li .num { color: var(--ink); }
+        .role.r-lt .star-panel { background: var(--paper-alt); border: 1px solid var(--line); }
+
+        /* Education & skills */
+        .edu-skills { display: grid; grid-template-columns: 1fr 1.6fr; gap: 32px; }
+        .panel { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 28px 30px; }
+        .panel h3 { font-family: 'Source Serif Pro', serif; font-size: 20px; font-weight: 700; margin-bottom: 18px; color: var(--ink); }
+        .edu-item { padding: 12px 0; border-top: 1px dashed var(--line); font-size: 14px; }
+        .edu-item:first-of-type { border-top: none; padding-top: 0; }
+        .edu-item .deg { font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+        .edu-item .inst { font-size: 13px; color: var(--muted); }
+
+        .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+        .skills-col h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.8px; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+        .skill-pill { display: inline-block; font-size: 12px; padding: 5px 11px; border-radius: 99px; background: var(--paper); border: 1px solid var(--line); margin: 0 4px 6px 0; color: var(--ink); font-weight: 500; }
+        .skill-pill.pri { background: var(--ink); color: white; border-color: var(--ink); }
+
+        /* Footer */
+        footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        footer a { color: var(--muted); text-decoration: underline; }
+
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 40px; }
+            .pillar-grid, .skills-grid { grid-template-columns: 1fr; }
+            .role-body { grid-template-columns: 1fr; }
+            .edu-skills { grid-template-columns: 1fr; }
+            .hero-stats { grid-template-columns: 1fr 1fr; }
+            .top-nav { flex-direction: column; gap: 16px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <nav class="top-nav">
+            <a href="dashboards/index.html" class="brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="nav-links">
+                <a href="dashboards/index.html">Dashboards</a>
+                <a href="accomplishments.html" class="active">Accomplishments</a>
+                <a href="models/index.html">Marketing Models</a>
+                <a href="plan.html">60/90 Day Plan</a>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-text">
+                <div class="eyebrow">Career Accomplishments &bull; Apr 2026</div>
+                <h1>13 years of <span class="hl">measurement infrastructure</span> for revenue and marketing teams.</h1>
+                <p class="lede">I build the pipelines, dashboards, attribution, and lead-scoring layer from the ground up &mdash; then use it to compound growth. Below: the track record, role by role, with the outcome and the approach that produced it.</p>
+                <div class="contact-row">
+                    <span><strong>Salt Lake City, UT</strong></span>
+                    <span>801-850-1253</span>
+                    <span>sthill01@gmail.com</span>
+                    <span>linkedin.com/in/sthill</span>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat"><div class="v"><em>+250%</em></div><div class="l">Mid-Funnel Lift</div><div class="sub">Netgain, 6-product SaaS</div></div>
+                <div class="hero-stat"><div class="v"><em>&minus;60%</em></div><div class="l">CAC Reduction</div><div class="sub">Website Squirrel lead scoring</div></div>
+                <div class="hero-stat"><div class="v"><em>72<span style="font-size:18px">hrs/wk</span></em></div><div class="l">Reporting Eliminated</div><div class="sub">Foxit eSign Python ETL</div></div>
+                <div class="hero-stat"><div class="v"><em>3&times;</em></div><div class="l">ROI in a Quarter</div><div class="sub">Foxit unified data layer</div></div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-head">
+                <div class="eyebrow">Four Themes Across Every Role</div>
+                <h2>What I build, end to end.</h2>
+                <p>Each pillar below spans multiple companies and industries &mdash; the common thread is instrumenting and operationalizing the measurement layer, not just reporting on top of whatever exists.</p>
+            </div>
+            <div class="pillar-grid">
+                <div class="pillar p1">
+                    <h3>Data Infrastructure &amp; Automation</h3>
+                    <div class="pillar-kpi">Python / SQL / AWS pipelines</div>
+                    <ul>
+                        <li><span class="bold">72 hrs/wk</span> of manual executive reporting eliminated at Foxit via automated Python infrastructure &mdash; fueled 3&times; quarterly ROI.</li>
+                        <li><span class="bold">15 hrs/wk</span> of manual reporting removed at Website Squirrel through Python pipelines on AWS.</li>
+                        <li>SQL lead-scoring and customer-segmentation models across CRM + transactional + behavioral data at multiple companies.</li>
+                        <li>Unified product, billing, support, marketing into one reconciled source of truth at Foxit (first time leadership had one).</li>
+                    </ul>
+                </div>
+                <div class="pillar p2">
+                    <h3>Attribution &amp; Measurement</h3>
+                    <div class="pillar-kpi">Multi-touch models &bull; ROAS &bull; CAC</div>
+                    <ul>
+                        <li>Owned online + offline multi-touch attribution across a <span class="bold">6-product SaaS portfolio</span> at Netgain, driving weekly exec reporting and budget allocation.</li>
+                        <li>Attribution dashboards informing <span class="bold">$50M+</span> in client media spend at RGM Group (performance agency).</li>
+                        <li>Granular ROI analysis across <span class="bold">48+ campaigns</span> at Website Squirrel, surfacing durable repeat-revenue patterns.</li>
+                        <li>ARIMAX forecasting models at UTA projecting fare-structure demand, revenue, and outcome probabilities for exec policy decisions.</li>
+                    </ul>
+                </div>
+                <div class="pillar p3">
+                    <h3>Paid Channel Optimization &amp; CAC</h3>
+                    <div class="pillar-kpi">Acquisition efficiency</div>
+                    <ul>
+                        <li><span class="bold">60%+ lead CAC reduction</span> at Website Squirrel through automated lead-scoring + behavioral segmentation + targeted nurture.</li>
+                        <li><span class="bold">250% mid-funnel lift</span> at Netgain via "Moments that Matter" NSM isolation and high-velocity testing sprints.</li>
+                        <li><span class="bold">62% ad-response uplift</span> with <span class="bold">25% ACoS reduction</span> on B2B demand gen at Tuff Toe (ABM + marketing automation).</li>
+                        <li>Led 6-person Growth team + 8-person cross-functional team running high-velocity paid experiments at Foxit.</li>
+                    </ul>
+                </div>
+                <div class="pillar p4">
+                    <h3>Funnel Conversion &amp; Revenue Impact</h3>
+                    <div class="pillar-kpi">Full-funnel revenue</div>
+                    <ul>
+                        <li><span class="bold">Doubled app conversion</span> at Healthicity by rebuilding product-tracking analytics &mdash; 50% reduction in lead times.</li>
+                        <li><span class="bold">68% YoY B2B growth</span> + 20% organic traffic growth at Tuff Toe via ABM, content, automation.</li>
+                        <li>Social audience <span class="bold">400% in two months</span> at Healthicity (rebrand launch).</li>
+                        <li>Analyzed <span class="bold">20+ usage datasets</span> at Netgain surfacing product and cross-sell opportunities.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-spacer">
+            <div class="section-head">
+                <div class="eyebrow">Role-by-Role Timeline</div>
+                <h2>The work, in sequence.</h2>
+                <p>Each role is styled in the visual language of the company it was built for. Every STAR snapshot below is a signature story from that engagement.</p>
+            </div>
+            <div class="timeline">
+
+                <!-- Independent Trading Venture -->
+                <article class="role r-ivt">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">IV</div>
+                            <div>
+                                <div class="co">Independent Trading Venture</div>
+                                <div class="tagline">Market Analyst &amp; Quantitative Equity Trader</div>
+                            </div>
+                        </div>
+                        <div class="dates">Feb 2025 &rarr; Present</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>Full portfolio-analytics, research &amp; data-engineering stack, solo.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Running full portfolio management, research, and data engineering for an active quantitative equity trading operation. Responsible for pipeline architecture, systematic strategy design, backtesting, live trading infrastructure, risk management, and reporting.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li>Built end-to-end portfolio analytics stack from scratch &mdash; data ingestion, factor modeling, backtesting, live trading, reporting &mdash; in <span class="num">under 3 months</span> with zero external dependencies.</li>
+                                <li>Automated reconciliation + risk controls dropped position errors and drawdown violations from <span class="num">5+/month to zero</span>.</li>
+                                <li>Factor-based equity screening framework ranks <span class="num">500+ stocks</span> weekly across value, quality, momentum.</li>
+                                <li>Production-grade Power BI dashboard: real-time P&amp;L, Sharpe, factor exposure, daily drawdown monitoring.</li>
+                                <li>Statistical regime analysis reduced strategy drawdown by <span class="num">40%</span> during market dislocations.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">Highlighted Story</div>
+                            <div class="star-headline">Built a production-grade quant trading stack in 8 weeks.</div>
+                            <p><strong>Situation.</strong> Strong Python fundamentals, zero existing infrastructure; needed data ingestion, backtesting, live trading, dashboards, and risk controls with statistical rigor.</p>
+                            <p><strong>Action.</strong> Architected five layers: data, research (Jupyter), strategy (factor models + regime-based dynamic weighting), execution (automated reconciliation + risk controls), reporting (Power BI). AI-assisted development, human-in-the-loop on every model.</p>
+                            <p><strong>Result.</strong> Fully operational in 8 weeks. 100% daily position match. New strategy deployment in &lt;1 week. 40% drawdown reduction during Q1 dislocations.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- UTA -->
+                <article class="role r-uta">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">UTA</div>
+                            <div>
+                                <div class="co">Utah Transit Authority</div>
+                                <div class="tagline">Fare Analyst, Project Engagement</div>
+                            </div>
+                        </div>
+                        <div class="dates">Oct 2024 &rarr; Jan 2025</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>Fare-structure forecasting + vendor SLA accountability across a 250-machine fleet.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Two parallel work streams: (1) fare analytics and revenue forecasting with SQL, Python, and Power BI/Tableau; (2) vendor accountability analytics across the newly-installed 250+ TVM fleet &mdash; error-log analysis, field testing, and a scope accountability document that turned vendor-support failures into enforceable SLAs.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li>Built dashboards tracking <span class="num">20+ KPIs across 7 lines</span>, cutting report-gen time from 8 hrs/wk to 15 min automated.</li>
+                                <li>ARIMAX fare-structure forecast with elasticity incorporated &mdash; findings drove the exec decision to phase an <span class="num">8%</span> increase.</li>
+                                <li>A/B test on student discount: <span class="num">18% ridership uplift</span> with <span class="num">25% revenue-loss reduction</span> via targeted eligibility.</li>
+                                <li>Diagnosed the TVM vendor was filtering non-critical error classes at the source, leaving Control Center blind to machine outages.</li>
+                                <li>Authored the scope accountability document used in vendor negotiations &mdash; line-by-line contracted scope vs. field error data; vendor agreed to fix pipeline and accept SLA enforcement.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">Highlighted Story &bull; Vendor Accountability</div>
+                            <div class="star-headline">Turned a vendor-support failure into enforceable SLAs using data.</div>
+                            <p><strong>Situation.</strong> 250+ new TVMs across TRAX/FrontRunner/bus; machines were going down and the vendor wasn't surfacing error alerts to Control Center as contracted. UTA was losing revenue and rider trust blind.</p>
+                            <p><strong>Action.</strong> Three tracks in parallel: pulled raw vendor logs and cross-referenced to what Control Center actually received (class-by-class gap quantification), on-site field testing to reproduce outages, and a scope accountability document mapping contractual support scope line-by-line against observed field errors.</p>
+                            <p><strong>Result.</strong> Vendor agreed to fix the error-reporting pipeline and accepted ongoing SLA enforcement. Detection moved from rider-complaint-driven to near-real-time. The scope accountability doc became the standing reference for future vendor-support reviews.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Website Squirrel -->
+                <article class="role r-ws">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">WS</div>
+                            <div>
+                                <div class="co">Website Squirrel</div>
+                                <div class="tagline">Director of Growth &amp; Marketing Data Analytics</div>
+                            </div>
+                        </div>
+                        <div class="dates">Apr 2023 &rarr; 2024</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>Lead scoring &amp; <em>behavioral segmentation</em> that cut CAC 60%+.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Owned growth marketing and analytics for a fast-growing B2B SaaS. Built automated lead-scoring and customer-segmentation models in SQL across CRM, transactional, and behavioral data. Architected Python/AWS pipelines. Analyzed 48+ campaigns and 120+ competitors.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li>Lead CAC <span class="num">down 60%+</span> via automated scoring + behavioral segmentation; top quintile converted at 28% vs. 8% company average.</li>
+                                <li>Customer retention <span class="num">up 20%</span> via automated win-back campaigns; 35% of at-risk customers recovered before renewal.</li>
+                                <li>Automated Python/AWS pipelines eliminated <span class="num">15 hrs/wk</span> of manual reporting.</li>
+                                <li>Contributed to <span class="num">15% YoY profit growth</span> through channel optimization and improved targeting.</li>
+                                <li>ROI analysis across <span class="num">48+ campaigns</span> drove <span class="num">22%</span> improvement in marketing efficiency.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">Highlighted Story</div>
+                            <div class="star-headline">Predictive scoring turned a 40% churn problem into a growth lever.</div>
+                            <p><strong>Situation.</strong> 40% of new customers churning within 12 months; marketing spending equally on high-intent and low-intent segments.</p>
+                            <p><strong>Action.</strong> Pulled 2 years of CRM + transactional + behavioral data. Built logistic regression models for conversion probability and churn risk, deployed into HubSpot via API for automated scoring + triggered nurture tracks (accelerated sales for high-score, longer nurture for low-score, win-back 60 days pre-renewal for at-risk).</p>
+                            <p><strong>Result.</strong> <strong>60%+ CAC reduction</strong>, <strong>20% retention lift</strong>, time-to-nurture cut from 5+ days manual to &lt;2 hrs automated. Combined: 22% marketing-efficiency gain, 15% contribution to YoY profit.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Netgain -->
+                <article class="role r-ng">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">N</div>
+                            <div>
+                                <div class="co">Netgain Solutions</div>
+                                <div class="tagline">Director, Marketing Operations &amp; Analytics</div>
+                            </div>
+                        </div>
+                        <div class="dates">Sep 2021 &rarr; Mar 2023</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>6-product portfolio, 30-touchpoint journeys, +250% mid-funnel lift.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Owned marketing ops analytics across a 6-product B2B SaaS portfolio with lead cycles from 1 to 18 months and 30 touchpoints per closed deal. Built multi-touch attribution, lead/user scoring, and cohort analysis. Isolated the "Moments that Matter" &mdash; the North Star Metric &mdash; and ran high-velocity testing sprints to drive more leads through them faster.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li><span class="num">250% lift</span> in PPC/SEO mid-funnel conversion (SQL-to-SAL) by isolating the NSM.</li>
+                                <li>Built online + offline multi-touch attribution across <span class="num">6 products</span> and 1&ndash;18 month lead cycles.</li>
+                                <li>Lead/user scoring assigned a <span class="num">dollar value to every click, view, form, event</span> &mdash; real ROAS and CAC by channel.</li>
+                                <li>Automated lead routing + scoring lifted <span class="num">sales productivity 15%</span>.</li>
+                                <li>Usage analysis across <span class="num">20+ customer segments</span> surfaced 8 expansion opportunities, drove 12% YoY NDR growth.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">Highlighted Story</div>
+                            <div class="star-headline">"Moments that Matter" &mdash; a single NSM across 6 products.</div>
+                            <p><strong>Situation.</strong> 6-product portfolio, 30-touchpoint average journey, mid-funnel SQL-to-SAL underperforming; budget split roughly equally with no dollar-value attribution back to source.</p>
+                            <p><strong>Action.</strong> Built multi-touch attribution + dollar-weighted scoring. Ran cohort analysis across 12 months of leads to surface the sequence that best predicted conversion: second product-page revisit + pricing-page touch + sales-collateral download in a 14-day window. Made NSM throughput the primary mid-funnel KPI. Ran high-velocity sprints to drive more leads through it faster.</p>
+                            <p><strong>Result.</strong> Mid-funnel conversion <strong>8% &rarr; 20% (+250%)</strong>. NSM throughput tripled. Low-intent spend reallocated; PPC contribution +18%. Combined impact directly influenced <strong>$4M+ pipeline growth in year 2</strong>.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Foxit -->
+                <article class="role r-fx">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">F</div>
+                            <div>
+                                <div class="co">Foxit eSign</div>
+                                <div class="tagline">Senior Marketing Director &mdash; Emerging Markets / Growth</div>
+                            </div>
+                        </div>
+                        <div class="dates">Feb 2020 &rarr; Sep 2021</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>In-app lifecycle trigger engine + 72 hrs/week of reporting eliminated.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Ran Growth across a 4-product Foxit eSign portfolio. Built an in-app tracking + cohort segmentation system that targeted users for upsell/cross-sell based on actual product-usage patterns. Led a 6-person Growth team and 8-person cross-functional team unifying product, billing, support, and marketing data into one reconciled source of truth.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li>In-app tracking + cohort segmentation across <span class="num">4 products</span>: frequency + duration + feature-mix signals drove upsell/cross-sell audiences.</li>
+                                <li>Lifecycle trigger engine fired in-app messages, nurture emails, and sales/onboarding calls based on cohort &mdash; tested and scaled via high-velocity sprints.</li>
+                                <li>Python reporting infrastructure eliminated <span class="num">72 hrs/week</span> of manual reporting (18 funnel + 25 billing reconciliation + 29 usage analysis).</li>
+                                <li>Drove <span class="num">3&times; ROI in a single quarter</span> by scaling highest-LTV channels and highest-converting lifecycle triggers.</li>
+                                <li>Executed <span class="num">40+ growth experiments</span>, scaled 12 high-impact initiatives, contributed to 28% YoY revenue growth.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">&gt; Highlighted Story</div>
+                            <div class="star-headline">Unified data + lifecycle engine. 3&times; ROI in one quarter.</div>
+                            <p><strong>Situation.</strong> Growth, marketing, product, sales each looked at customer behavior through siloed systems. Upsell was manual and reactive. Cross-channel funnel analysis alone consumed 18 hrs/week.</p>
+                            <p><strong>Action.</strong> Two systems in parallel. (1) In-app tracking + cohort segmentation across 4 products, with triggered lifecycle actions promoted from high-velocity tests. (2) Python data layer reconciling product + billing + support + marketing into a unified customer dataset with LTV/CAC by channel. Two months of validation against manual reports before go-live.</p>
+                            <p><strong>Result.</strong> Lifecycle triggers became the biggest expansion lever on the team. <strong>72 hrs/week</strong> of manual reporting eliminated. API partnership revealed as 3.2&times; LTV vs. self-serve, driving 3&times; partnership investment. <strong>3&times; ROI in Q1 2021.</strong></p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Healthicity -->
+                <article class="role r-lt">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">H</div>
+                            <div>
+                                <div class="co">Healthicity</div>
+                                <div class="tagline">Digital Marketing Director &amp; B2B Demand Gen Manager</div>
+                            </div>
+                        </div>
+                        <div class="dates">Dec 2018 &rarr; Feb 2020</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>Doubled app conversion during rebrand launch.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Led consumer and B2B marketing during company rebrand. Managed demand gen for healthcare compliance SaaS. Doubled app conversion through analytics improvements. Grew social audience 400% in two months. Recruited and developed three team members.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li>App conversion <span class="num">doubled (8% &rarr; 16%)</span> by rebuilding product tracking, identifying friction, and optimizing mobile form flow.</li>
+                                <li>Social audience <span class="num">18K &rarr; 90K (+400%)</span> in two months during rebrand launch.</li>
+                                <li>Automated lead routing + scoring drove a <span class="num">15% increase</span> in qualified lead volume.</li>
+                                <li>Nurture workflows cut time-to-first-touch from <span class="num">4 days to &lt;1 day</span>; 22% conversion-velocity lift.</li>
+                                <li>Recruited and developed 3 direct reports; established marketing processes for sustained growth.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">Highlighted Story</div>
+                            <div class="star-headline">Found the form-page-2 friction and doubled sign-ups before rebrand launch.</div>
+                            <p><strong>Situation.</strong> 8% sign-up conversion vs. 15&ndash;20% benchmark; no funnel visibility; rebrand launch 2 weeks out.</p>
+                            <p><strong>Action.</strong> Instrumented every step of the sign-up flow in GA + pixel tracking; identified 65% drop-off on form page 2 (license details). A/B tested form length, field clarity, and mobile experience in parallel.</p>
+                            <p><strong>Result.</strong> Conversion <strong>8% &rarr; 16%</strong>. Form completion time <strong>4 min &rarr; 2 min</strong>. Mobile conversion <strong>4% &rarr; 12%</strong>. During rebrand launch the improvements delivered <strong>40% more sign-ups from the same traffic</strong>, driving 3&times; ROI on rebrand investment.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Tuff Toe -->
+                <article class="role r-lt">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">TT</div>
+                            <div>
+                                <div class="co">Tuff Toe, Inc.</div>
+                                <div class="tagline">Marketing Director &mdash; E-commerce Direct-to-Consumer</div>
+                            </div>
+                        </div>
+                        <div class="dates">Sep 2015 &rarr; Oct 2018</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>ABM program grew B2B 68% YoY.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Led DTC and B2B marketing for premium footwear. Drove 68% YoY B2B growth via ABM + marketing automation. Achieved 62% ad-response uplift with 25% ACoS reduction. Grew organic traffic 20% YoY.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li>B2B revenue <span class="num">+68% YoY</span> through ABM and automated lead nurture across 150 target accounts.</li>
+                                <li><span class="num">62% ad-response uplift</span> with <span class="num">25% ACoS reduction</span> via audience segmentation and creative testing.</li>
+                                <li>Organic traffic <span class="num">+20% YoY</span> via content + technical SEO improvements.</li>
+                                <li>Email program (welcome, cart abandonment, re-engagement) contributed <span class="num">15% of online revenue</span>.</li>
+                                <li>Account avg deal size <span class="num">+35%</span> through multi-stakeholder nurture identifying upsell earlier.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">Highlighted Story</div>
+                            <div class="star-headline">Reframed B2B as an ABM program, not a DTC sidecar.</div>
+                            <p><strong>Situation.</strong> B2B growing single digits while DTC was strong; no systematic way to target, nurture, or qualify B2B with 4&ndash;8 week cycles and multiple decision makers.</p>
+                            <p><strong>Action.</strong> Researched 4 buyer personas, identified 150 target accounts across corporate safety / industrial / healthcare. Vertical-specific landing pages, role-specific nurture (safety, procurement, compliance), 8-week multi-touch cadence, sales enablement (ROI calculators, battlecards).</p>
+                            <p><strong>Result.</strong> B2B revenue <strong>+68% YoY</strong> (vs. 8% baseline). Engagement 3&times; vs. broad B2B. Win rate <strong>+22%</strong>. B2B moved from <strong>10% to 22% of company revenue</strong>.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- RGM -->
+                <article class="role r-lt">
+                    <div class="role-header">
+                        <div class="ident">
+                            <div class="tag">R</div>
+                            <div>
+                                <div class="co">RGM Group</div>
+                                <div class="tagline">Director of Marketing Analytics &amp; Paid Media</div>
+                            </div>
+                        </div>
+                        <div class="dates">Dec 2012 &rarr; Aug 2015</div>
+                    </div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>Multi-touch attribution across $50M+ in agency media spend.</h3></div>
+                    <div class="role-body">
+                        <div>
+                            <p class="lede">Directed marketing analytics and paid media ops for full-service performance agency. Built attribution dashboards and KPI reporting for multi-million-dollar media budgets. Owned the marketing data intelligence function.</p>
+                            <div class="highlights-title">Key Accomplishments</div>
+                            <ul class="highlights">
+                                <li>Attribution dashboards for <span class="num">8+ clients</span> managing <span class="num">$50M+</span> in annual media spend.</li>
+                                <li>Multi-touch model for B2B client with 8-week cycle improved budget allocation accuracy <span class="num">18%</span>, increased pipeline-contribution attribution <span class="num">40%</span>.</li>
+                                <li>Cross-client analysis surfaced best practices applied to <span class="num">6 client campaigns</span>.</li>
+                                <li>Self-service Excel/Tableau templates reduced time-to-reporting <span class="num">60%</span> for new clients.</li>
+                            </ul>
+                        </div>
+                        <div class="star-panel">
+                            <div class="star-label">Highlighted Story</div>
+                            <div class="star-headline">Built the MTA model that reframed 70% of marketing ROI.</div>
+                            <p><strong>Situation.</strong> B2B SaaS client with 8-week cycle; last-touch attribution credited only the final touch, leaving the bulk of marketing spend undervalued.</p>
+                            <p><strong>Action.</strong> Analyzed 2 years of deal data, tracking every touch through close. Built a linear multi-touch model validated against time-decay and position-based alternatives, stress-tested for edge cases, delivered with 95% CIs and documented assumptions.</p>
+                            <p><strong>Result.</strong> Full-funnel marketing now credited with <strong>70% of revenue impact</strong> (vs. 20% last-touch). Budget allocation <strong>+18%</strong>. Sales and marketing aligned on attribution credibility. Client expanded relationship into content marketing + ABM.</p>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="section-spacer">
+            <div class="section-head">
+                <div class="eyebrow">Education &amp; Technical Stack</div>
+                <h2>The toolkit.</h2>
+            </div>
+            <div class="edu-skills">
+                <div class="panel">
+                    <h3>Education</h3>
+                    <div class="edu-item">
+                        <div class="deg">MBA</div>
+                        <div class="inst">Pepperdine University &bull; Graziadio School of Business</div>
+                    </div>
+                    <div class="edu-item">
+                        <div class="deg">BS, Business</div>
+                        <div class="inst">Argosy University</div>
+                    </div>
+                    <div class="edu-item">
+                        <div class="deg">AS, Business</div>
+                        <div class="inst">Utah Valley University</div>
+                    </div>
+                    <div class="edu-item">
+                        <div class="deg">In Progress</div>
+                        <div class="inst">Microsoft PL-300 (Power BI) &bull; Google Data Analytics</div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <h3>Core Technical Skills</h3>
+                    <div class="skills-grid">
+                        <div class="skills-col">
+                            <h4>Languages</h4>
+                            <span class="skill-pill pri">SQL</span>
+                            <span class="skill-pill pri">Python</span>
+                            <span class="skill-pill">DAX</span>
+                            <span class="skill-pill">HTML/CSS</span>
+                            <h4 style="margin-top: 16px;">BI &amp; Visualization</h4>
+                            <span class="skill-pill pri">Power BI</span>
+                            <span class="skill-pill">Tableau</span>
+                            <span class="skill-pill">Looker</span>
+                            <span class="skill-pill">Data Studio</span>
+                            <h4 style="margin-top: 16px;">Data Stack</h4>
+                            <span class="skill-pill">pandas</span>
+                            <span class="skill-pill">NumPy</span>
+                            <span class="skill-pill">dbt</span>
+                            <span class="skill-pill">AWS (S3, Lambda)</span>
+                            <span class="skill-pill">BigQuery</span>
+                            <span class="skill-pill">Airflow</span>
+                        </div>
+                        <div class="skills-col">
+                            <h4>Marketing &amp; Business Tools</h4>
+                            <span class="skill-pill">HubSpot</span>
+                            <span class="skill-pill">Salesforce</span>
+                            <span class="skill-pill">Google Ads</span>
+                            <span class="skill-pill">Meta Ads</span>
+                            <span class="skill-pill">LinkedIn Ads</span>
+                            <span class="skill-pill">GA4</span>
+                            <span class="skill-pill">Mixpanel</span>
+                            <span class="skill-pill">Amplitude</span>
+                            <span class="skill-pill">SEMrush</span>
+                            <span class="skill-pill">Ahrefs</span>
+                            <h4 style="margin-top: 16px;">Methodologies</h4>
+                            <span class="skill-pill">Multi-touch Attribution</span>
+                            <span class="skill-pill">A/B &amp; MVT Testing</span>
+                            <span class="skill-pill">Cohort Analysis</span>
+                            <span class="skill-pill">ARIMAX</span>
+                            <span class="skill-pill">Logistic Regression</span>
+                            <span class="skill-pill">Elasticity</span>
+                            <span class="skill-pill">Factor Models</span>
+                            <span class="skill-pill">Regime Analysis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
+            <div>Salt Lake City, UT &bull; Currently open to Marketing Analytics and BI roles.</div>
+        </footer>
+    </div>
+</body>
+</html>

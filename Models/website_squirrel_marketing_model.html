@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Squirrel · Marketing Model & Data Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sq-orange: #FF6B35;
+    --sq-orange-dark: #E8521F;
+    --sq-yellow: #FFC857;
+    --sq-mint: #5FD69E;
+    --sq-teal: #3AAFA9;
+    --sq-navy: #1B263B;
+    --sq-cream: #FFF5EF;
+    --sq-paper: #FFFBF7;
+    --sq-ink: #1B1A1A;
+    --sq-ink-2: #4A4948;
+    --sq-line: #1B1A1A;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sq-cream);
+    color: var(--sq-ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .topbar {
+    background: var(--sq-ink);
+    color: #fff;
+    padding: 14px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--sq-orange);
+  }
+  .brand {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+  }
+  .brand .acorn { color: var(--sq-yellow); }
+  .topnav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 24px;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .topnav a:hover { color: var(--sq-yellow); }
+  .topnav .active { color: var(--sq-orange); }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px;
+  }
+
+  .breadcrumb {
+    font-size: 13px;
+    color: var(--sq-ink-2);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .breadcrumb a { color: var(--sq-orange); text-decoration: none; font-weight: 600; }
+
+  .hero {
+    background: var(--sq-paper);
+    border: 2px solid var(--sq-line);
+    border-radius: 20px;
+    padding: 40px 44px;
+    box-shadow: 8px 8px 0 var(--sq-ink);
+    margin-bottom: 44px;
+    position: relative;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--sq-yellow);
+    color: var(--sq-ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border: 2px solid var(--sq-ink);
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 44px;
+    font-weight: 800;
+    margin: 0 0 14px 0;
+    letter-spacing: -1.2px;
+    line-height: 1.05;
+  }
+  .hero h1 .accent { color: var(--sq-orange); }
+  .hero .sub {
+    font-size: 17px;
+    color: var(--sq-ink-2);
+    max-width: 820px;
+    margin: 0;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .stat {
+    background: var(--sq-cream);
+    border: 2px solid var(--sq-ink);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 4px 4px 0 var(--sq-ink);
+  }
+  .stat .v {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--sq-orange);
+  }
+  .stat .l {
+    font-size: 11px;
+    color: var(--sq-ink-2);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    margin: 48px 0 18px 0;
+    letter-spacing: -0.5px;
+    color: var(--sq-ink);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: var(--sq-orange);
+    border: 2px solid var(--sq-ink);
+    border-radius: 4px;
+    display: inline-block;
+  }
+  h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--sq-ink);
+  }
+
+  .section-lead {
+    font-size: 15px;
+    color: var(--sq-ink-2);
+    max-width: 860px;
+    margin: 0 0 24px 0;
+  }
+
+  .flow-card {
+    background: var(--sq-paper);
+    border: 2px solid var(--sq-ink);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 8px 8px 0 var(--sq-ink);
+    margin-bottom: 32px;
+  }
+  .flow-svg {
+    width: 100%;
+    height: auto;
+    background: var(--sq-cream);
+    border: 2px solid var(--sq-ink);
+    border-radius: 14px;
+    padding: 10px;
+  }
+
+  .layer-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .layer {
+    background: var(--sq-paper);
+    border: 2px solid var(--sq-ink);
+    border-radius: 14px;
+    padding: 18px 16px;
+    box-shadow: 5px 5px 0 var(--sq-ink);
+  }
+  .layer .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sq-orange);
+    margin-bottom: 6px;
+  }
+  .layer h3 { font-size: 14px; margin-bottom: 6px; }
+  .layer p {
+    font-size: 12.5px;
+    color: var(--sq-ink-2);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .model-band {
+    background: var(--sq-ink);
+    color: #fff;
+    border: 2px solid var(--sq-ink);
+    border-radius: 20px;
+    padding: 36px;
+    margin: 36px 0;
+    box-shadow: 8px 8px 0 var(--sq-orange);
+  }
+  .model-band h2 { color: #fff; margin-top: 0; }
+  .model-band h2::before { background: var(--sq-yellow); border-color: #fff; }
+  .model-band .sub { color: #cfcfcf; margin-bottom: 18px; }
+
+  .formula {
+    background: #0E0E0E;
+    color: var(--sq-mint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    padding: 18px 22px;
+    border: 2px solid var(--sq-orange);
+    border-radius: 12px;
+    margin: 18px 0;
+    line-height: 1.7;
+  }
+  .formula .c { color: #868686; }
+  .formula .k { color: var(--sq-yellow); }
+  .formula .v { color: var(--sq-orange); }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .tier {
+    background: var(--sq-paper);
+    border: 2px solid var(--sq-ink);
+    border-radius: 14px;
+    padding: 20px 18px;
+    box-shadow: 5px 5px 0 var(--sq-ink);
+    position: relative;
+  }
+  .tier .badge {
+    position: absolute;
+    top: -12px;
+    left: 18px;
+    background: var(--sq-yellow);
+    color: var(--sq-ink);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 4px 12px;
+    border: 2px solid var(--sq-ink);
+    border-radius: 8px;
+  }
+  .tier.a { box-shadow: 5px 5px 0 var(--sq-mint); }
+  .tier.a .badge { background: var(--sq-mint); }
+  .tier.b { box-shadow: 5px 5px 0 var(--sq-yellow); }
+  .tier.b .badge { background: var(--sq-yellow); }
+  .tier.c { box-shadow: 5px 5px 0 var(--sq-orange); }
+  .tier.c .badge { background: var(--sq-orange); color: #fff; }
+  .tier.d { box-shadow: 5px 5px 0 #BDB8B0; }
+  .tier.d .badge { background: #BDB8B0; }
+  .tier h3 { margin-top: 6px; }
+  .tier .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--sq-ink-2);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .tier p { font-size: 13px; margin: 0; color: var(--sq-ink-2); line-height: 1.5; }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 18px 0;
+    background: var(--sq-paper);
+    border: 2px solid var(--sq-ink);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 5px 5px 0 var(--sq-ink);
+  }
+  th {
+    background: var(--sq-ink);
+    color: #fff;
+    text-align: left;
+    padding: 12px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #EADFD3;
+    font-size: 13.5px;
+    color: var(--sq-ink);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--sq-cream); }
+
+  .decision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .decision {
+    background: var(--sq-paper);
+    border: 2px solid var(--sq-ink);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 5px 5px 0 var(--sq-teal);
+  }
+  .decision .icon {
+    display: inline-block;
+    background: var(--sq-teal);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    width: 34px;
+    height: 34px;
+    line-height: 32px;
+    text-align: center;
+    border: 2px solid var(--sq-ink);
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .decision h3 { font-size: 15px; }
+  .decision p { font-size: 13px; color: var(--sq-ink-2); margin: 0; }
+
+  .outcome-band {
+    background: var(--sq-orange);
+    color: #fff;
+    border: 2px solid var(--sq-ink);
+    border-radius: 20px;
+    padding: 36px 40px;
+    margin: 40px 0;
+    box-shadow: 8px 8px 0 var(--sq-ink);
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .outcome-band .lead h2 {
+    color: #fff;
+    margin: 0 0 8px 0;
+    font-size: 22px;
+  }
+  .outcome-band .lead h2::before { background: #fff; border-color: #fff; }
+  .outcome-band .lead p {
+    color: rgba(255,255,255,0.92);
+    font-size: 14px;
+    margin: 0;
+  }
+  .outcome-stat .v {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+  }
+  .outcome-stat .l {
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  footer {
+    border-top: 2px solid var(--sq-ink);
+    padding: 28px 48px;
+    margin-top: 40px;
+    color: var(--sq-ink-2);
+    font-size: 13px;
+    background: var(--sq-paper);
+    text-align: center;
+  }
+  footer a { color: var(--sq-orange); text-decoration: none; font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .container { padding: 28px 20px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .layer-grid { grid-template-columns: repeat(2, 1fr); }
+    .tier-grid { grid-template-columns: repeat(2, 1fr); }
+    .decision-grid { grid-template-columns: 1fr; }
+    .outcome-band { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../dashboards/index.html" class="brand" style="color:#fff;text-decoration:none;">Steve Hill <span class="acorn">🌰</span> Portfolio</a>
+  <nav class="topnav">
+    <a href="../dashboards/index.html">Dashboards</a>
+    <a href="../accomplishments.html">Accomplishments</a>
+    <a href="index.html" class="active">Marketing Models</a>
+    <a href="../plan.html">60/90 Day Plan</a>
+  </nav>
+</div>
+
+<div class="container">
+
+  <div class="breadcrumb">
+    <a href="../dashboards/index.html">Portfolio</a> › <a href="index.html">Marketing Models</a> › Website Squirrel
+  </div>
+
+  <section class="hero">
+    <span class="hero-tag">🌰 predictive_scoring · logistic_regression</span>
+    <h1>Website Squirrel — <span class="accent">Predictive CAC</span> & Tiered Retention Engine</h1>
+    <p class="sub">Dual logistic regression models (conversion likelihood + churn risk) feeding an A–D customer tier score. Python + AWS pipelines write predictions back to HubSpot so campaigns target high-value prospects and reactivation triggers fire before churn.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="v">-60%</div><div class="l">CAC reduction</div></div>
+      <div class="stat"><div class="v">+20%</div><div class="l">Retention lift</div></div>
+      <div class="stat"><div class="v">15%</div><div class="l">YoY profit contribution</div></div>
+      <div class="stat"><div class="v">48+</div><div class="l">Campaigns scored</div></div>
+    </div>
+  </section>
+
+  <h2>1. End-to-end data flow</h2>
+  <p class="section-lead">Customer behavioral signals and CRM activity flow into an AWS pipeline, get scored by two logistic regression models, and write back to HubSpot as A–D tier tags — so every marketing decision downstream is made against a predicted profitability outcome, not a vanity metric.</p>
+
+  <div class="flow-card">
+    <svg class="flow-svg" viewBox="0 0 1080 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="sq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#1B1A1A"/>
+        </marker>
+        <marker id="sq-arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF6B35"/>
+        </marker>
+      </defs>
+
+      <!-- Column headers -->
+      <g font-family="Poppins, sans-serif" font-size="11" font-weight="700" fill="#1B1A1A" text-transform="uppercase">
+        <text x="90" y="22" text-anchor="middle">SOURCES</text>
+        <text x="300" y="22" text-anchor="middle">INGEST</text>
+        <text x="540" y="22" text-anchor="middle">MODEL</text>
+        <text x="780" y="22" text-anchor="middle">SURFACE</text>
+        <text x="990" y="22" text-anchor="middle">DECIDE</text>
+      </g>
+
+      <!-- Sources -->
+      <g font-family="DM Sans, sans-serif" font-size="11" font-weight="600">
+        <rect x="20" y="50" width="140" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="90" y="76" text-anchor="middle" fill="#1B1A1A">HubSpot CRM</text>
+
+        <rect x="20" y="108" width="140" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="90" y="134" text-anchor="middle" fill="#1B1A1A">Transactional DB</text>
+
+        <rect x="20" y="166" width="140" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="90" y="192" text-anchor="middle" fill="#1B1A1A">Behavioral Tracking</text>
+
+        <rect x="20" y="224" width="140" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="90" y="250" text-anchor="middle" fill="#1B1A1A">Ad Platforms</text>
+
+        <rect x="20" y="282" width="140" height="42" rx="10" fill="#FFF5EF" stroke="#FF6B35" stroke-width="2"/>
+        <text x="90" y="302" text-anchor="middle" fill="#FF6B35" font-weight="700">Support &amp; NPS</text>
+        <text x="90" y="316" text-anchor="middle" fill="#FF6B35" font-size="9">(churn signal)</text>
+
+        <rect x="20" y="340" width="140" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="90" y="366" text-anchor="middle" fill="#1B1A1A">Stripe / Billing</text>
+
+        <rect x="20" y="398" width="140" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="90" y="424" text-anchor="middle" fill="#1B1A1A">Email / SMS logs</text>
+      </g>
+
+      <!-- Arrows sources -> ingest -->
+      <g stroke="#1B1A1A" stroke-width="2" fill="none" marker-end="url(#sq-arrow)">
+        <path d="M 160 71 L 230 190"/>
+        <path d="M 160 129 L 230 210"/>
+        <path d="M 160 187 L 230 220"/>
+        <path d="M 160 245 L 230 230"/>
+        <path d="M 160 303 L 230 240"/>
+        <path d="M 160 361 L 230 250"/>
+        <path d="M 160 419 L 230 260"/>
+      </g>
+
+      <!-- Ingest box -->
+      <rect x="230" y="160" width="140" height="140" rx="14" fill="#1B1A1A" stroke="#1B1A1A" stroke-width="2"/>
+      <g font-family="JetBrains Mono, monospace" font-size="10" fill="#FFC857" font-weight="600">
+        <text x="300" y="184" text-anchor="middle">AWS PIPELINE</text>
+      </g>
+      <g font-family="JetBrains Mono, monospace" font-size="9" fill="#5FD69E">
+        <text x="245" y="208">s3.put()</text>
+        <text x="245" y="224">lambda.run()</text>
+        <text x="245" y="240">glue.etl()</text>
+        <text x="245" y="256">feature_eng()</text>
+        <text x="245" y="272">train_test_split()</text>
+        <text x="245" y="288">hubspot.write()</text>
+      </g>
+
+      <!-- Arrow ingest -> model -->
+      <path d="M 370 230 L 450 230" stroke="#1B1A1A" stroke-width="2" fill="none" marker-end="url(#sq-arrow)"/>
+
+      <!-- Model column -->
+      <g font-family="DM Sans, sans-serif" font-size="11" font-weight="700">
+        <rect x="450" y="60" width="180" height="54" rx="12" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="540" y="82" text-anchor="middle" fill="#1B1A1A">LOGIT_CONVERSION</text>
+        <text x="540" y="100" text-anchor="middle" fill="#4A4948" font-size="10" font-weight="400">P(purchase | traits)</text>
+
+        <rect x="450" y="126" width="180" height="54" rx="12" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="540" y="148" text-anchor="middle" fill="#1B1A1A">LOGIT_CHURN</text>
+        <text x="540" y="166" text-anchor="middle" fill="#4A4948" font-size="10" font-weight="400">P(churn | 90d)</text>
+
+        <rect x="450" y="192" width="180" height="54" rx="12" fill="#FF6B35" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="540" y="214" text-anchor="middle" fill="#fff">CUSTOMER_TIER_SCORE</text>
+        <text x="540" y="232" text-anchor="middle" fill="#fff" font-size="10" font-weight="500">A · B · C · D bands</text>
+
+        <rect x="450" y="258" width="180" height="54" rx="12" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="540" y="280" text-anchor="middle" fill="#1B1A1A">LTV_SIMULATOR</text>
+        <text x="540" y="298" text-anchor="middle" fill="#4A4948" font-size="10" font-weight="400">Monte Carlo · 10k runs</text>
+
+        <rect x="450" y="324" width="180" height="54" rx="12" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="540" y="346" text-anchor="middle" fill="#1B1A1A">CAMPAIGN_ROI</text>
+        <text x="540" y="364" text-anchor="middle" fill="#4A4948" font-size="10" font-weight="400">Spend ÷ Tier-A yield</text>
+      </g>
+
+      <!-- Arrows model -> surface -->
+      <g stroke="#1B1A1A" stroke-width="2" fill="none" marker-end="url(#sq-arrow)">
+        <path d="M 630 87 L 700 100"/>
+        <path d="M 630 153 L 700 170"/>
+        <path d="M 630 219 L 700 240"/>
+        <path d="M 630 285 L 700 310"/>
+        <path d="M 630 351 L 700 380"/>
+      </g>
+
+      <!-- Surface column -->
+      <g font-family="DM Sans, sans-serif" font-size="11" font-weight="600">
+        <rect x="700" y="80" width="160" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="780" y="106" text-anchor="middle" fill="#1B1A1A">Tiered CAC dash</text>
+
+        <rect x="700" y="150" width="160" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="780" y="176" text-anchor="middle" fill="#1B1A1A">Retention curves</text>
+
+        <rect x="700" y="220" width="160" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="780" y="246" text-anchor="middle" fill="#1B1A1A">Campaign ROI grid</text>
+
+        <rect x="700" y="290" width="160" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="780" y="316" text-anchor="middle" fill="#1B1A1A">Churn early warn</text>
+
+        <rect x="700" y="360" width="160" height="42" rx="10" fill="#FFFBF7" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="780" y="386" text-anchor="middle" fill="#1B1A1A">HubSpot tag sync</text>
+      </g>
+
+      <!-- Arrows surface -> decide -->
+      <g stroke="#1B1A1A" stroke-width="2" fill="none" marker-end="url(#sq-arrow)">
+        <path d="M 860 100 L 920 90"/>
+        <path d="M 860 170 L 920 160"/>
+        <path d="M 860 240 L 920 230"/>
+        <path d="M 860 310 L 920 300"/>
+        <path d="M 860 380 L 920 370"/>
+      </g>
+
+      <!-- Decide column -->
+      <g font-family="DM Sans, sans-serif" font-size="11" font-weight="600">
+        <rect x="920" y="72" width="140" height="38" rx="10" fill="#5FD69E" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="990" y="96" text-anchor="middle" fill="#1B1A1A" font-weight="700">Scale Tier-A spend</text>
+
+        <rect x="920" y="142" width="140" height="38" rx="10" fill="#FFC857" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="990" y="166" text-anchor="middle" fill="#1B1A1A" font-weight="700">Nurture Tier-B</text>
+
+        <rect x="920" y="212" width="140" height="38" rx="10" fill="#FF6B35" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="990" y="236" text-anchor="middle" fill="#fff" font-weight="700">Trigger win-back</text>
+
+        <rect x="920" y="282" width="140" height="38" rx="10" fill="#3AAFA9" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="990" y="306" text-anchor="middle" fill="#fff" font-weight="700">Kill Tier-D ads</text>
+
+        <rect x="920" y="352" width="140" height="38" rx="10" fill="#1B1A1A" stroke="#1B1A1A" stroke-width="2"/>
+        <text x="990" y="376" text-anchor="middle" fill="#FFC857" font-weight="700">Expand verticals</text>
+      </g>
+
+      <!-- Feedback loop -->
+      <path d="M 990 400 L 990 442 L 90 442 L 90 440" stroke="#FF6B35" stroke-width="2" stroke-dasharray="6 4" fill="none" marker-end="url(#sq-arrow-orange)"/>
+      <text x="540" y="438" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#FF6B35" font-weight="600">↺ outcomes feed back into retraining</text>
+    </svg>
+  </div>
+
+  <div class="layer-grid">
+    <div class="layer">
+      <div class="num">01 · SOURCES</div>
+      <h3>Behavior + CRM + money</h3>
+      <p>HubSpot CRM, Stripe billing, on-site behavioral tracking, paid ad platforms, support tickets, and email/SMS engagement logs.</p>
+    </div>
+    <div class="layer">
+      <div class="num">02 · INGEST</div>
+      <h3>AWS-native pipeline</h3>
+      <p>Python workers (pandas, scikit-learn) orchestrated by AWS Lambda. S3 for raw and feature stores, Glue jobs for ETL. Daily batch + hourly refresh for high-intent events.</p>
+    </div>
+    <div class="layer">
+      <div class="num">03 · MODEL</div>
+      <h3>Dual logistic regression</h3>
+      <p>Conversion model predicts purchase likelihood; churn model predicts 90-day attrition. Outputs feed a composite tier score (A–D) and an LTV Monte Carlo simulator.</p>
+    </div>
+    <div class="layer">
+      <div class="num">04 · SURFACE</div>
+      <h3>Tiered dashboards + sync</h3>
+      <p>Power BI dashboards for CAC by tier, retention curves, campaign ROI grid, and churn early warning. Tier tags written back to HubSpot for segmentation.</p>
+    </div>
+    <div class="layer">
+      <div class="num">05 · DECIDE</div>
+      <h3>Scale, nurture, kill, win-back</h3>
+      <p>Marketing acts on tiers: scale Tier-A spend, nurture Tier-B, trigger Tier-C win-back sequences, kill Tier-D acquisition. Outcomes feed back into model retraining.</p>
+    </div>
+  </div>
+
+  <div class="model-band">
+    <h2>2. The model, plain-English</h2>
+    <p class="sub">Two logistic regression models run in parallel. One predicts the probability someone becomes a customer. The other predicts the probability an existing customer churns. Combined, they drive the tier score that every downstream decision rides on.</p>
+
+    <div class="formula">
+      <span class="c"># Conversion model</span><br>
+      P(<span class="k">convert</span>) = σ(β₀ + β₁·<span class="v">pageviews</span> + β₂·<span class="v">session_dur</span> + β₃·<span class="v">email_opens</span> + β₄·<span class="v">vertical</span> + β₅·<span class="v">ad_touches</span>)<br><br>
+      <span class="c"># Churn model</span><br>
+      P(<span class="k">churn_90d</span>) = σ(γ₀ + γ₁·<span class="v">days_since_last</span> + γ₂·<span class="v">support_tickets</span> + γ₃·<span class="v">nps_drop</span> + γ₄·<span class="v">payment_fail</span>)<br><br>
+      <span class="c"># Composite tier score</span><br>
+      <span class="k">tier</span> = f( P(convert), 1 - P(churn), LTV_sim )   →   { <span class="v">A</span>, <span class="v">B</span>, <span class="v">C</span>, <span class="v">D</span> }
+    </div>
+
+    <p class="sub">Trained on 18 months of customer outcomes, retrained weekly. AUC 0.83 (conversion) / 0.79 (churn) on held-out data.</p>
+  </div>
+
+  <h2>3. Tier definitions</h2>
+  <p class="section-lead">Each customer and lead gets one of four tier tags, written back to HubSpot as a property so marketing ops can build segments, triggers, and exclusions off a single predicted field.</p>
+
+  <div class="tier-grid">
+    <div class="tier a">
+      <span class="badge">A</span>
+      <div class="meta">P(convert) &gt; 0.7 · LTV top quartile</div>
+      <h3>High-value champions</h3>
+      <p>Scale ad spend, priority sales routing, white-glove onboarding, reference program.</p>
+    </div>
+    <div class="tier b">
+      <span class="badge">B</span>
+      <div class="meta">0.4 ≤ P(convert) ≤ 0.7</div>
+      <h3>Nurture candidates</h3>
+      <p>Email sequences, retargeting, webinars. Move to Tier-A with an additional activation event.</p>
+    </div>
+    <div class="tier c">
+      <span class="badge">C</span>
+      <div class="meta">P(churn_90d) &gt; 0.5 · existing customer</div>
+      <h3>At-risk — win-back</h3>
+      <p>Trigger reactivation offers, CSM check-in, discount workflow. Silence general campaigns.</p>
+    </div>
+    <div class="tier d">
+      <span class="badge">D</span>
+      <div class="meta">P(convert) &lt; 0.15</div>
+      <h3>Suppress</h3>
+      <p>Remove from paid acquisition, exclude from high-cost channels. Re-score quarterly.</p>
+    </div>
+  </div>
+
+  <h2>4. Decision examples</h2>
+  <p class="section-lead">The models are only valuable if they change marketing behavior. These are the literal calls the scoring engine let the business make — each backed by a number, not a hunch.</p>
+
+  <div class="decision-grid">
+    <div class="decision">
+      <span class="icon">↑</span>
+      <h3>Scale Tier-A · +3x ad spend</h3>
+      <p>Identified vertical/channel combos where Tier-A concentration was 4x average — redirected budget and cut blended CAC 60%.</p>
+    </div>
+    <div class="decision">
+      <span class="icon">↻</span>
+      <h3>Trigger win-back sequences</h3>
+      <p>Automated HubSpot workflow fires when a customer flips to Tier-C. Lifted 90-day retention ~20% on reached cohort.</p>
+    </div>
+    <div class="decision">
+      <span class="icon">✕</span>
+      <h3>Kill Tier-D acquisition</h3>
+      <p>Suppressed 7 ad campaigns spending against Tier-D lookalikes. Reallocated spend delivered 15% YoY profit contribution.</p>
+    </div>
+  </div>
+
+  <h2>5. Operational cadence</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Cadence</th>
+        <th>Job</th>
+        <th>Consumer</th>
+        <th>Owner</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Hourly</td>
+        <td>Behavioral + CRM event capture → S3 raw zone</td>
+        <td>Feature store</td>
+        <td>Data eng</td>
+      </tr>
+      <tr>
+        <td>Daily 03:00</td>
+        <td>Feature build + tier rescore (all contacts)</td>
+        <td>HubSpot write-back</td>
+        <td>Data eng</td>
+      </tr>
+      <tr>
+        <td>Weekly Mon</td>
+        <td>Model retrain + AUC report + drift check</td>
+        <td>Marketing Ops review</td>
+        <td>Analytics</td>
+      </tr>
+      <tr>
+        <td>Monthly</td>
+        <td>Campaign ROI roll-up + channel reallocation</td>
+        <td>Exec readout</td>
+        <td>Marketing lead</td>
+      </tr>
+      <tr>
+        <td>Quarterly</td>
+        <td>Vertical expansion analysis + Tier-D resurrection review</td>
+        <td>Growth strategy</td>
+        <td>Marketing lead</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="outcome-band">
+    <div class="lead">
+      <h2>What this unlocked</h2>
+      <p>Predictive scoring moved CAC, retention, and profit contribution together — by making every marketing decision downstream of a model, not a meeting.</p>
+    </div>
+    <div class="outcome-stat"><div class="v">-60%</div><div class="l">CAC</div></div>
+    <div class="outcome-stat"><div class="v">+20%</div><div class="l">Retention</div></div>
+    <div class="outcome-stat"><div class="v">15%</div><div class="l">YoY profit lift</div></div>
+  </div>
+
+</div>
+
+<footer>
+  Website Squirrel · Predictive scoring engine · <a href="../dashboards/website_squirrel_lead_segmentation_cac.html">View dashboard</a> · <a href="index.html">← Back to marketing models</a>
+</footer>
+
+</body>
+</html>

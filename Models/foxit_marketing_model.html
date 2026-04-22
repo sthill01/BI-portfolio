@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foxit &mdash; In-App Lifecycle Engine &amp; Unified Data Layer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fx-orange: #FF5F00;
+            --fx-orange-2: #FF8533;
+            --fx-ink: #0B0F1A;
+            --fx-panel: #141827;
+            --fx-panel-2: #1F2436;
+            --fx-line: #262B3F;
+            --fx-text: #E7EAF3;
+            --fx-muted: #8089A3;
+            --fx-dim: #5A6280;
+            --fx-green: #3DD598;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', -apple-system, sans-serif; background: var(--fx-ink); color: var(--fx-text); line-height: 1.55; }
+        .wrap { max-width: 1200px; margin: 0 auto; padding: 0 36px 80px; }
+
+        /* Terminal-style top bar */
+        .topbar { border-bottom: 1px solid var(--fx-line); background: var(--fx-panel); margin: 0 -36px 44px; padding: 18px 36px; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-family: 'Barlow', sans-serif; font-weight: 800; color: white; text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .brand .mark { width: 34px; height: 34px; background: var(--fx-orange); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Open Sans', sans-serif; font-size: 16px; color: white; font-weight: 800; }
+        .brand .sub { color: var(--fx-muted); font-weight: 400; font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-left: 4px; }
+        .nav-links { display: flex; gap: 22px; font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+        .nav-links a { color: var(--fx-muted); text-decoration: none; }
+        .nav-links a:hover { color: var(--fx-orange); }
+        .nav-links a::before { content: "/ "; color: var(--fx-dim); }
+
+        .breadcrumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--fx-muted); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--fx-muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--fx-orange); }
+
+        /* Sidebar + main layout */
+        .page-grid { display: grid; grid-template-columns: 260px 1fr; gap: 36px; }
+        .sidebar { background: var(--fx-panel); border: 1px solid var(--fx-line); border-radius: 10px; padding: 24px 22px; position: sticky; top: 20px; align-self: start; }
+        .sidebar .label { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--fx-orange); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 14px; }
+        .sidebar .toc a { display: block; padding: 9px 12px 9px 14px; color: var(--fx-muted); text-decoration: none; font-size: 13px; border-left: 2px solid transparent; transition: 0.15s; border-radius: 0 5px 5px 0; }
+        .sidebar .toc a:hover { color: var(--fx-text); background: rgba(255,95,0,0.06); border-left-color: var(--fx-orange); }
+        .sidebar .toc a.active { color: var(--fx-orange); background: rgba(255,95,0,0.08); border-left-color: var(--fx-orange); font-weight: 600; }
+
+        .sidebar .spec { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--fx-line); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--fx-muted); }
+        .sidebar .spec .row { padding: 5px 0; display: flex; justify-content: space-between; gap: 10px; }
+        .sidebar .spec .row .v { color: var(--fx-text); }
+        .sidebar .spec .row .v em { font-style: normal; color: var(--fx-orange); }
+
+        /* Hero */
+        .hero { background: var(--fx-panel); border: 1px solid var(--fx-line); border-radius: 14px; padding: 40px 42px; margin-bottom: 44px; position: relative; overflow: hidden; }
+        .hero::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--fx-orange); }
+        .hero .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--fx-orange); margin-bottom: 16px; letter-spacing: 1px; }
+        .hero h1 { font-family: 'Barlow', sans-serif; font-size: 42px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; color: white; margin-bottom: 16px; }
+        .hero h1 .hl { color: var(--fx-orange); }
+        .hero p { font-size: 15px; color: var(--fx-muted); max-width: 700px; margin-bottom: 0; }
+
+        /* Sections */
+        .section { margin-bottom: 56px; }
+        .section-head { margin-bottom: 22px; }
+        .section-head .num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--fx-orange); letter-spacing: 1.2px; margin-bottom: 8px; }
+        .section-head h2 { font-family: 'Barlow', sans-serif; font-size: 26px; font-weight: 700; color: white; letter-spacing: -0.4px; margin-bottom: 6px; }
+        .section-head p { font-size: 13.5px; color: var(--fx-muted); max-width: 700px; }
+
+        /* Flow canvas */
+        .flow-canvas { background: var(--fx-panel); border: 1px solid var(--fx-line); border-radius: 12px; padding: 24px 16px; overflow-x: auto; }
+        .flow-canvas svg { display: block; margin: 0 auto; min-width: 980px; }
+
+        /* Layers detail */
+        .layers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 22px; }
+        .layer { background: var(--fx-panel); border: 1px solid var(--fx-line); border-radius: 10px; padding: 22px 24px; }
+        .layer .badge { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--fx-orange); letter-spacing: 1.2px; margin-bottom: 8px; }
+        .layer h4 { font-family: 'Barlow', sans-serif; font-size: 17px; font-weight: 700; color: white; margin-bottom: 10px; }
+        .layer ul { list-style: none; }
+        .layer ul li { font-size: 12.5px; color: var(--fx-muted); padding: 7px 0 7px 16px; position: relative; line-height: 1.5; border-top: 1px solid var(--fx-line); }
+        .layer ul li:first-child { border-top: none; padding-top: 0; }
+        .layer ul li:first-child::before { top: 0; }
+        .layer ul li::before { content: "&gt;"; position: absolute; left: 0; top: 7px; color: var(--fx-orange); font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+        .layer ul li strong { color: var(--fx-text); font-weight: 600; }
+
+        /* Lifecycle trigger table */
+        .trigger-table { background: var(--fx-panel); border: 1px solid var(--fx-line); border-radius: 12px; overflow: hidden; font-family: 'Open Sans', sans-serif; }
+        .tt-head { display: grid; grid-template-columns: 1.4fr 2fr 1.8fr 1.3fr; gap: 14px; padding: 16px 22px; background: #0F1322; border-bottom: 1px solid var(--fx-line); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--fx-orange); letter-spacing: 1.4px; text-transform: uppercase; font-weight: 700; }
+        .tt-row { display: grid; grid-template-columns: 1.4fr 2fr 1.8fr 1.3fr; gap: 14px; padding: 18px 22px; border-bottom: 1px solid var(--fx-line); font-size: 12.5px; align-items: center; }
+        .tt-row:last-child { border-bottom: none; }
+        .tt-row .cohort { color: white; font-weight: 600; }
+        .tt-row .signal { color: var(--fx-muted); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+        .tt-row .action { color: var(--fx-text); }
+        .tt-row .action .chip { background: rgba(255,95,0,0.12); color: var(--fx-orange); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; margin-right: 6px; }
+        .tt-row .outcome { color: var(--fx-green); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 600; }
+
+        /* Unified data layer visualization */
+        .unified-layer { background: var(--fx-panel); border: 1px solid var(--fx-line); border-radius: 12px; padding: 30px; }
+        .silos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+        .silo { background: var(--fx-ink); border: 1px solid var(--fx-line); border-radius: 8px; padding: 18px 14px; text-align: center; }
+        .silo .icon { width: 40px; height: 40px; background: var(--fx-panel-2); border-radius: 8px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; color: var(--fx-orange); font-weight: 700; font-size: 12px; border: 1px solid var(--fx-line); }
+        .silo h5 { font-family: 'Barlow', sans-serif; font-size: 13px; color: white; margin-bottom: 4px; font-weight: 700; }
+        .silo p { font-size: 11px; color: var(--fx-muted); line-height: 1.4; }
+        .unified-arrow { text-align: center; color: var(--fx-orange); font-size: 22px; margin-bottom: 16px; }
+        .unified-box { background: var(--fx-orange); color: white; border-radius: 10px; padding: 24px 28px; text-align: center; }
+        .unified-box .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; opacity: 0.85; margin-bottom: 6px; }
+        .unified-box h3 { font-family: 'Barlow', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px; }
+        .unified-box p { font-size: 13px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+
+        /* Outcome cards */
+        .outcomes-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+        .outcome-card { background: var(--fx-panel); border: 1px solid var(--fx-line); border-radius: 10px; padding: 28px 24px; text-align: center; }
+        .outcome-card .big { font-family: 'Barlow', sans-serif; font-size: 52px; font-weight: 800; color: var(--fx-orange); letter-spacing: -1.5px; line-height: 1; margin-bottom: 8px; }
+        .outcome-card .big span.unit { font-size: 22px; font-weight: 700; }
+        .outcome-card .lbl { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--fx-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+        .outcome-card p { font-size: 13px; color: var(--fx-text); line-height: 1.5; }
+
+        footer.page { margin-top: 70px; padding-top: 22px; border-top: 1px solid var(--fx-line); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--fx-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        footer.page a { color: var(--fx-orange); text-decoration: none; }
+
+        @media (max-width: 960px) {
+            .page-grid { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .hero h1 { font-size: 30px; }
+            .silos { grid-template-columns: 1fr 1fr; }
+            .tt-head, .tt-row { grid-template-columns: 1fr; gap: 4px; }
+            .outcomes-grid { grid-template-columns: 1fr; }
+            .layers { grid-template-columns: 1fr; }
+            .topbar { flex-direction: column; gap: 12px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <a href="../dashboards/index.html" class="brand"><div class="mark">F</div> Foxit Marketing Model <span class="sub">// steve_hill</span></a>
+        <div class="nav-links">
+            <a href="../dashboards/index.html">Dashboards</a>
+            <a href="../accomplishments.html">Accomplishments</a>
+            <a href="index.html">Models</a>
+            <a href="../plan.html">60/90 Day Plan</a>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="breadcrumb">&gt; <a href="index.html">marketing_models</a> / foxit_esign.model</div>
+
+        <div class="page-grid">
+            <aside class="sidebar">
+                <div class="label">// contents</div>
+                <nav class="toc">
+                    <a href="#overview" class="active">Overview</a>
+                    <a href="#dataflow">01. Data Flow</a>
+                    <a href="#unified">02. Unified Data Layer</a>
+                    <a href="#lifecycle">03. Lifecycle Triggers</a>
+                    <a href="#outcome">04. Outcomes</a>
+                </nav>
+                <div class="spec">
+                    <div class="row"><span>products</span><span class="v">4</span></div>
+                    <div class="row"><span>silos_unified</span><span class="v">4</span></div>
+                    <div class="row"><span>reporting_cut</span><span class="v"><em>&minus;72h/wk</em></span></div>
+                    <div class="row"><span>q1_roi</span><span class="v"><em>3&times;</em></span></div>
+                    <div class="row"><span>experiments</span><span class="v">40+</span></div>
+                    <div class="row"><span>yoy_revenue</span><span class="v"><em>+28%</em></span></div>
+                </div>
+            </aside>
+
+            <main>
+                <section class="hero" id="overview">
+                    <div class="tag">[ lifecycle_engine.v1 ]</div>
+                    <h1>In-app events in. <span class="hl">Triggered lifecycle actions out.</span></h1>
+                    <p>Growth, marketing, product, and sales each looked at Foxit customers through their own siloed system. No one could answer "who's ready to upgrade?" or "who's about to churn?" &mdash; so upsell was manual and reactive. Two parallel builds fixed it: an in-app tracking + cohort segmentation system that routed lifecycle actions by usage pattern, and an automated Python data layer unifying product, billing, support, and marketing into a single reconciled customer dataset. Validated against manual reports for two months before go-live.</p>
+                </section>
+
+                <section class="section" id="dataflow">
+                    <div class="section-head">
+                        <div class="num">// 01 &mdash; data_flow</div>
+                        <h2>In-app events &rarr; cohorts &rarr; triggers</h2>
+                        <p>Raw usage events land, get reconciled into cohorts by frequency + duration + feature-mix, then fire the right lifecycle action per cohort definition.</p>
+                    </div>
+                    <div class="flow-canvas">
+                        <svg viewBox="0 0 1000 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Foxit data flow pipeline">
+                            <defs>
+                                <marker id="fx-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF5F00"/>
+                                </marker>
+                            </defs>
+
+                            <!-- Column headers -->
+                            <g font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" fill="#FF5F00" text-anchor="middle" letter-spacing="1.5">
+                                <text x="95" y="26">[ SOURCES ]</text>
+                                <text x="285" y="26">[ INGEST ]</text>
+                                <text x="500" y="26">[ MODEL ]</text>
+                                <text x="720" y="26">[ SURFACE ]</text>
+                                <text x="910" y="26">[ DECIDE ]</text>
+                            </g>
+
+                            <!-- SOURCES -->
+                            <g font-family="Open Sans, sans-serif" font-size="11" fill="#E7EAF3" text-anchor="middle">
+                                <rect x="28" y="50" width="140" height="38" rx="5" fill="#1F2436" stroke="#2C3248"/><text x="98" y="73">Product A &mdash; eSign</text>
+                                <rect x="28" y="95" width="140" height="38" rx="5" fill="#1F2436" stroke="#2C3248"/><text x="98" y="118">Product B &mdash; Admin</text>
+                                <rect x="28" y="140" width="140" height="38" rx="5" fill="#1F2436" stroke="#2C3248"/><text x="98" y="163">Product C &mdash; API</text>
+                                <rect x="28" y="185" width="140" height="38" rx="5" fill="#1F2436" stroke="#2C3248"/><text x="98" y="208">Product D &mdash; SDK</text>
+                                <rect x="28" y="235" width="140" height="38" rx="5" fill="#141827" stroke="#FF5F00"/><text x="98" y="258" font-size="10.5" fill="#FF5F00" font-family="JetBrains Mono, monospace">billing_db</text>
+                                <rect x="28" y="280" width="140" height="38" rx="5" fill="#141827" stroke="#FF5F00"/><text x="98" y="303" font-size="10.5" fill="#FF5F00" font-family="JetBrains Mono, monospace">support_tickets</text>
+                                <rect x="28" y="325" width="140" height="38" rx="5" fill="#141827" stroke="#FF5F00"/><text x="98" y="348" font-size="10.5" fill="#FF5F00" font-family="JetBrains Mono, monospace">marketing_crm</text>
+                            </g>
+
+                            <!-- Arrows to ingest -->
+                            <g stroke="#FF5F00" stroke-width="1" fill="none" opacity="0.5" marker-end="url(#fx-arrow)">
+                                <path d="M 168 70 L 220 175"/>
+                                <path d="M 168 115 L 220 190"/>
+                                <path d="M 168 160 L 220 205"/>
+                                <path d="M 168 205 L 220 220"/>
+                                <path d="M 168 255 L 220 235"/>
+                                <path d="M 168 300 L 220 250"/>
+                                <path d="M 168 345 L 220 265"/>
+                            </g>
+
+                            <!-- INGEST (reconciliation layer) -->
+                            <g font-family="JetBrains Mono, monospace">
+                                <rect x="220" y="140" width="180" height="170" rx="8" fill="#141827" stroke="#FF5F00" stroke-width="1.5"/>
+                                <text x="310" y="165" font-size="11" font-weight="700" fill="#FF5F00" text-anchor="middle">PYTHON_RECON_LAYER</text>
+                                <line x1="240" y1="175" x2="380" y2="175" stroke="#262B3F"/>
+                                <g font-family="Open Sans, sans-serif">
+                                    <text x="310" y="197" font-size="11" fill="#E7EAF3" text-anchor="middle">event_capture()</text>
+                                    <text x="310" y="217" font-size="11" fill="#E7EAF3" text-anchor="middle">api_extract()</text>
+                                    <text x="310" y="237" font-size="11" fill="#E7EAF3" text-anchor="middle">reconcile()</text>
+                                    <text x="310" y="257" font-size="11" fill="#E7EAF3" text-anchor="middle">validate_dq()</text>
+                                    <text x="310" y="277" font-size="11" fill="#E7EAF3" text-anchor="middle">unify_customer()</text>
+                                    <text x="310" y="297" font-size="10.5" fill="#8089A3" text-anchor="middle" font-style="italic">daily refresh &bull; alerts</text>
+                                </g>
+                            </g>
+                            <path d="M 400 225 L 440 225" stroke="#FF5F00" stroke-width="2" fill="none" marker-end="url(#fx-arrow)"/>
+
+                            <!-- MODEL -->
+                            <g font-family="Open Sans, sans-serif">
+                                <rect x="440" y="50" width="180" height="70" rx="7" fill="#141827" stroke="#FF5F00"/>
+                                <text x="530" y="72" font-size="11" font-weight="700" fill="#FF5F00" text-anchor="middle" font-family="JetBrains Mono, monospace">COHORT_SEGMENTATION</text>
+                                <text x="530" y="92" font-size="10.5" fill="#E7EAF3" text-anchor="middle">Frequency &times; Duration</text>
+                                <text x="530" y="109" font-size="10.5" fill="#8089A3" text-anchor="middle">&times; Feature-mix</text>
+
+                                <rect x="440" y="135" width="180" height="70" rx="7" fill="#141827" stroke="#FF5F00"/>
+                                <text x="530" y="157" font-size="11" font-weight="700" fill="#FF5F00" text-anchor="middle" font-family="JetBrains Mono, monospace">LTV_CAC_ATTRIBUTION</text>
+                                <text x="530" y="177" font-size="10.5" fill="#E7EAF3" text-anchor="middle">LTV by acquisition channel</text>
+                                <text x="530" y="194" font-size="10.5" fill="#8089A3" text-anchor="middle">95% CIs included</text>
+
+                                <rect x="440" y="220" width="180" height="70" rx="7" fill="#141827" stroke="#FF5F00"/>
+                                <text x="530" y="242" font-size="11" font-weight="700" fill="#FF5F00" text-anchor="middle" font-family="JetBrains Mono, monospace">RETENTION_COHORTS</text>
+                                <text x="530" y="262" font-size="10.5" fill="#E7EAF3" text-anchor="middle">12-mo rolling retention</text>
+                                <text x="530" y="279" font-size="10.5" fill="#8089A3" text-anchor="middle">by acquisition month</text>
+
+                                <rect x="440" y="305" width="180" height="70" rx="7" fill="#FF5F00" stroke="#FF5F00"/>
+                                <text x="530" y="327" font-size="11" font-weight="800" fill="white" text-anchor="middle" font-family="JetBrains Mono, monospace">LIFECYCLE_TRIGGER_ENGINE</text>
+                                <text x="530" y="347" font-size="10.5" fill="white" text-anchor="middle">Cohort-to-action rules</text>
+                                <text x="530" y="364" font-size="10" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-style="italic">validated via high-velocity tests</text>
+                            </g>
+                            <path d="M 620 215 L 660 215" stroke="#FF5F00" stroke-width="2" fill="none" marker-end="url(#fx-arrow)"/>
+
+                            <!-- SURFACE -->
+                            <g font-family="Open Sans, sans-serif">
+                                <rect x="660" y="70" width="160" height="50" rx="6" fill="#141827" stroke="#262B3F"/>
+                                <text x="740" y="90" font-size="11" font-weight="700" fill="#E7EAF3" text-anchor="middle">API Growth Funnel</text>
+                                <text x="740" y="107" font-size="10" fill="#8089A3" text-anchor="middle" font-family="JetBrains Mono, monospace">trial / active / paid</text>
+
+                                <rect x="660" y="135" width="160" height="50" rx="6" fill="#141827" stroke="#262B3F"/>
+                                <text x="740" y="155" font-size="11" font-weight="700" fill="#E7EAF3" text-anchor="middle">LTV:CAC by Channel</text>
+                                <text x="740" y="172" font-size="10" fill="#8089A3" text-anchor="middle" font-family="JetBrains Mono, monospace">api_partnership: 3.2&times;</text>
+
+                                <rect x="660" y="200" width="160" height="50" rx="6" fill="#141827" stroke="#262B3F"/>
+                                <text x="740" y="220" font-size="11" font-weight="700" fill="#E7EAF3" text-anchor="middle">Retention Heatmap</text>
+                                <text x="740" y="237" font-size="10" fill="#8089A3" text-anchor="middle" font-family="JetBrains Mono, monospace">12-mo cohort grid</text>
+
+                                <rect x="660" y="265" width="160" height="50" rx="6" fill="#141827" stroke="#262B3F"/>
+                                <text x="740" y="285" font-size="11" font-weight="700" fill="#E7EAF3" text-anchor="middle">Trigger Response</text>
+                                <text x="740" y="302" font-size="10" fill="#8089A3" text-anchor="middle" font-family="JetBrains Mono, monospace">win_rate by cohort</text>
+                            </g>
+                            <path d="M 820 215 L 860 215" stroke="#FF5F00" stroke-width="2" fill="none" marker-end="url(#fx-arrow)"/>
+
+                            <!-- DECIDE -->
+                            <g font-family="JetBrains Mono, monospace">
+                                <rect x="860" y="95" width="120" height="36" rx="5" fill="#FF5F00"/>
+                                <text x="920" y="117" font-size="10.5" font-weight="700" fill="white" text-anchor="middle">3&times; PARTNERSHIP</text>
+
+                                <rect x="860" y="140" width="120" height="36" rx="5" fill="#FF5F00" opacity="0.88"/>
+                                <text x="920" y="162" font-size="10.5" font-weight="700" fill="white" text-anchor="middle">SCALE TRIGGERS</text>
+
+                                <rect x="860" y="185" width="120" height="36" rx="5" fill="#FF5F00" opacity="0.78"/>
+                                <text x="920" y="207" font-size="10.5" font-weight="700" fill="white" text-anchor="middle">SUNSET LOSERS</text>
+
+                                <rect x="860" y="230" width="120" height="36" rx="5" fill="#FF5F00" opacity="0.68"/>
+                                <text x="920" y="252" font-size="10.5" font-weight="700" fill="white" text-anchor="middle">CS INTERVENE</text>
+
+                                <rect x="860" y="275" width="120" height="36" rx="5" fill="#FF5F00" opacity="0.58"/>
+                                <text x="920" y="297" font-size="10.5" font-weight="700" fill="white" text-anchor="middle">NEW COHORTS</text>
+                            </g>
+
+                            <!-- Feedback loop -->
+                            <path d="M 920 315 Q 920 405 500 405 Q 98 405 98 370" stroke="#FF5F00" stroke-width="1.2" stroke-dasharray="5,4" fill="none" opacity="0.5" marker-end="url(#fx-arrow)"/>
+                            <text x="500" y="427" font-family="JetBrains Mono, monospace" font-size="10" fill="#8089A3" text-anchor="middle">// decisions re-enter source layer: product changes, CS outreach, new tests</text>
+                        </svg>
+                    </div>
+
+                    <div class="layers">
+                        <div class="layer">
+                            <div class="badge">// data_layer</div>
+                            <h4>Python reconciliation layer</h4>
+                            <ul>
+                                <li>API extract from every system with <strong>daily refresh + alerting</strong>.</li>
+                                <li>Four silos (product / billing / support / marketing) reconciled by customer ID.</li>
+                                <li><strong>Data quality gates</strong> and error handling before promotion.</li>
+                                <li><strong>Two months of validation</strong> against existing manual reports before go-live.</li>
+                            </ul>
+                        </div>
+                        <div class="layer">
+                            <div class="badge">// sql_layer</div>
+                            <h4>Unified customer lifecycle table</h4>
+                            <ul>
+                                <li>One row per customer, with product + billing + support + marketing rolled in.</li>
+                                <li><strong>LTV, CAC, and cohort</strong> calculated once, referenced everywhere.</li>
+                                <li>Tableau reporting layer reads directly from this table.</li>
+                                <li>Refresh window documented with confidence intervals for downstream consumers.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="unified">
+                    <div class="section-head">
+                        <div class="num">// 02 &mdash; unified_data_layer</div>
+                        <h2>Four silos &rarr; one source of truth.</h2>
+                        <p>First time product, finance, and marketing leadership saw one set of customer numbers they agreed on.</p>
+                    </div>
+                    <div class="unified-layer">
+                        <div class="silos">
+                            <div class="silo">
+                                <div class="icon">PROD</div>
+                                <h5>Product Usage</h5>
+                                <p>4 products, event-level telemetry: frequency, duration, feature adoption</p>
+                            </div>
+                            <div class="silo">
+                                <div class="icon">BILL</div>
+                                <h5>Billing</h5>
+                                <p>Plan tier, MRR / ARR, overage, expansion, contract renewal dates</p>
+                            </div>
+                            <div class="silo">
+                                <div class="icon">SUPP</div>
+                                <h5>Support</h5>
+                                <p>Tickets, priority, resolution time, satisfaction, customer health signals</p>
+                            </div>
+                            <div class="silo">
+                                <div class="icon">MKT</div>
+                                <h5>Marketing / CRM</h5>
+                                <p>Acquisition channel, campaign source, engagement, nurture history</p>
+                            </div>
+                        </div>
+                        <div class="unified-arrow">&darr;</div>
+                        <div class="unified-box">
+                            <div class="label">[ unified_customer_layer ]</div>
+                            <h3>One reconciled customer dataset. LTV and CAC by channel.</h3>
+                            <p>Joined on customer ID, reconciled for identity edge cases, with documented refresh cadence and 95% confidence intervals. This became the canonical table read by every downstream dashboard.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="lifecycle">
+                    <div class="section-head">
+                        <div class="num">// 03 &mdash; lifecycle_engine</div>
+                        <h2>Cohort &rarr; action mapping.</h2>
+                        <p>Each cohort has a triggered lifecycle action. Every action started as a high-velocity test (copy / channel / timing / cohort definition) before being promoted into always-on production.</p>
+                    </div>
+                    <div class="trigger-table">
+                        <div class="tt-head">
+                            <div>Cohort</div>
+                            <div>Usage Signal</div>
+                            <div>Triggered Action</div>
+                            <div>Outcome</div>
+                        </div>
+                        <div class="tt-row">
+                            <div class="cohort">Feature-shallow, frequent</div>
+                            <div class="signal">high_freq + low_feature_depth</div>
+                            <div class="action"><span class="chip">IN-APP</span>feature-education nurture</div>
+                            <div class="outcome">+22% activation</div>
+                        </div>
+                        <div class="tt-row">
+                            <div class="cohort">Plan-limited power user</div>
+                            <div class="signal">deep_use + hitting_plan_limit</div>
+                            <div class="action"><span class="chip">SALES</span>triggered upgrade call</div>
+                            <div class="outcome">+3&times; expansion rate</div>
+                        </div>
+                        <div class="tt-row">
+                            <div class="cohort">At-risk churn signal</div>
+                            <div class="signal">declining_duration + ticket_spike</div>
+                            <div class="action"><span class="chip">CS</span>retention in-app + CS outreach</div>
+                            <div class="outcome">&minus;35% churn vs. control</div>
+                        </div>
+                        <div class="tt-row">
+                            <div class="cohort">Multi-product candidate</div>
+                            <div class="signal">single_product_power_user</div>
+                            <div class="action"><span class="chip">EMAIL</span>cross-sell nurture + demo CTA</div>
+                            <div class="outcome">+18% cross-sell</div>
+                        </div>
+                        <div class="tt-row">
+                            <div class="cohort">API partnership prospect</div>
+                            <div class="signal">api_usage + integration_depth</div>
+                            <div class="action"><span class="chip">PARTNER</span>dedicated partner-success track</div>
+                            <div class="outcome">3.2&times; LTV vs. self-serve</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="outcome">
+                    <div class="section-head">
+                        <div class="num">// 04 &mdash; outcomes</div>
+                        <h2>What the unified layer + trigger engine delivered.</h2>
+                    </div>
+                    <div class="outcomes-grid">
+                        <div class="outcome-card">
+                            <div class="big">&minus;72<span class="unit">h/wk</span></div>
+                            <div class="lbl">[ manual_reporting ]</div>
+                            <p>Eliminated &mdash; 18 hrs funnel + 25 hrs billing reconciliation + 29 hrs usage analysis. Freed 2 FTE for strategy.</p>
+                        </div>
+                        <div class="outcome-card">
+                            <div class="big">3<span class="unit">&times; Q1</span></div>
+                            <div class="lbl">[ roi ]</div>
+                            <p>Scaled highest-LTV channels (API partnership at 3.2&times; LTV) and highest-converting lifecycle triggers.</p>
+                        </div>
+                        <div class="outcome-card">
+                            <div class="big">+28<span class="unit">%</span></div>
+                            <div class="lbl">[ yoy_revenue ]</div>
+                            <p>40+ growth experiments, 12 high-impact scaled into production programs, aligned exec team on customer metrics.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="page">
+                    <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
+                    <div><a href="../dashboards/foxit_api_client_growth_funnel.html">&lt;&lt; view_foxit_dashboard</a></div>
+                </footer>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
