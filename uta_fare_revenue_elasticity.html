@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utah Transit Authority | Fare Revenue &amp; Elasticity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --uta-blue: #0055A4;
+            --uta-blue-dark: #002A52;
+            --uta-red: #DA291C;
+            --uta-gold: #FFB81C;
+            --uta-paper: #FAFAF7;
+            --uta-cream: #F3F0E6;
+            --uta-ink: #1A1A1A;
+            --uta-muted: #5C6370;
+            --uta-line: #D9D9D6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'IBM Plex Sans', sans-serif; background: var(--uta-paper); color: var(--uta-ink); }
+
+        /* Government banner */
+        .gov-banner { background: var(--uta-blue-dark); color: white; padding: 8px 40px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; justify-content: space-between; }
+        .gov-banner .chip { display: inline-flex; gap: 6px; align-items: center; }
+        .gov-banner .dot-red { width: 6px; height: 6px; background: var(--uta-red); border-radius: 50%; }
+        .gov-banner .dot-gold { width: 6px; height: 6px; background: var(--uta-gold); border-radius: 50%; }
+
+        /* Masthead with serif title */
+        .masthead { background: white; border-bottom: 6px solid var(--uta-blue); padding: 32px 40px 26px; }
+        .masthead .inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap; }
+        .mast-brand { display: flex; align-items: center; gap: 18px; }
+        .mast-seal { width: 68px; height: 68px; border-radius: 50%; background: var(--uta-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 30px; letter-spacing: -1px; position: relative; box-shadow: 0 4px 10px rgba(0,85,164,0.25); }
+        .mast-seal::after { content: ""; position: absolute; inset: -6px; border: 2px solid var(--uta-blue); border-radius: 50%; opacity: 0.3; }
+        .mast-text .eyebrow { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--uta-muted); }
+        .mast-text .title { font-family: 'Source Serif Pro', serif; font-size: 30px; font-weight: 700; color: var(--uta-blue-dark); letter-spacing: -0.3px; margin-top: 2px; line-height: 1.1; }
+        .mast-text .subtitle { font-size: 14px; color: var(--uta-muted); margin-top: 4px; }
+        .report-meta { font-size: 11px; color: var(--uta-muted); text-align: right; border-left: 3px solid var(--uta-red); padding-left: 14px; }
+        .report-meta .label { text-transform: uppercase; letter-spacing: 1.4px; font-weight: 600; color: var(--uta-ink); }
+        .report-meta .value { margin-top: 2px; }
+
+        .report { max-width: 1400px; margin: 0 auto; padding: 32px 40px 60px; }
+
+        /* Executive summary band */
+        .exec-band { background: white; border: 1px solid var(--uta-line); border-radius: 2px; padding: 28px 32px; margin-bottom: 28px; display: grid; grid-template-columns: 2fr 1fr; gap: 32px; position: relative; }
+        .exec-band::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--uta-blue); }
+        .exec-title { font-family: 'Source Serif Pro', serif; font-size: 22px; font-weight: 700; color: var(--uta-blue-dark); margin-bottom: 10px; }
+        .exec-text { font-size: 14px; line-height: 1.65; color: var(--uta-ink); }
+        .exec-text strong { color: var(--uta-blue-dark); }
+        .exec-callout { background: var(--uta-cream); border-left: 4px solid var(--uta-gold); padding: 18px 20px; }
+        .exec-callout .ck-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--uta-muted); font-weight: 600; margin-bottom: 8px; }
+        .exec-callout .ck-value { font-family: 'Source Serif Pro', serif; font-size: 36px; font-weight: 700; color: var(--uta-blue-dark); letter-spacing: -1px; line-height: 1; }
+        .exec-callout .ck-caption { font-size: 12px; color: var(--uta-muted); margin-top: 6px; font-style: italic; }
+
+        /* Sheet filter */
+        .control-sheet { background: white; border: 1px solid var(--uta-line); padding: 18px 24px; margin-bottom: 24px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; border-radius: 2px; }
+        .control-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--uta-muted); font-weight: 600; padding-right: 14px; border-right: 1px solid var(--uta-line); }
+        .control-field { display: flex; flex-direction: column; gap: 2px; }
+        .control-field label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--uta-muted); font-weight: 600; }
+        .control-field select { padding: 6px 10px; border: 1px solid var(--uta-line); background: white; font-family: inherit; font-size: 13px; border-radius: 2px; color: var(--uta-ink); }
+
+        /* Section heading */
+        .section-head { margin: 0 0 18px; border-bottom: 1px solid var(--uta-line); padding-bottom: 10px; }
+        .section-head h2 { font-family: 'Source Serif Pro', serif; font-size: 20px; font-weight: 700; color: var(--uta-blue-dark); }
+        .section-head .section-num { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--uta-red); font-weight: 700; margin-bottom: 2px; }
+
+        /* KPI ruled row */
+        .kpi-ruled { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; background: white; border: 1px solid var(--uta-line); margin-bottom: 24px; }
+        .kpi-cell { padding: 22px 22px; border-right: 1px solid var(--uta-line); }
+        .kpi-cell:last-child { border-right: none; }
+        .kpi-cell .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--uta-muted); font-weight: 600; margin-bottom: 10px; }
+        .kpi-cell .val { font-family: 'Source Serif Pro', serif; font-size: 26px; font-weight: 700; color: var(--uta-blue-dark); letter-spacing: -0.5px; }
+        .kpi-cell .meta { font-size: 11px; color: var(--uta-muted); margin-top: 4px; }
+        .kpi-cell .meta.up { color: #1F7A3F; font-weight: 600; }
+        .kpi-cell .meta.down { color: var(--uta-red); font-weight: 600; }
+
+        /* Figures */
+        .figure { background: white; border: 1px solid var(--uta-line); padding: 24px 28px; margin-bottom: 20px; border-radius: 2px; }
+        .fig-num { font-size: 10px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--uta-red); font-weight: 700; margin-bottom: 4px; }
+        .fig-title { font-family: 'Source Serif Pro', serif; font-size: 17px; font-weight: 700; color: var(--uta-blue-dark); margin-bottom: 4px; }
+        .fig-sub { font-size: 13px; color: var(--uta-muted); margin-bottom: 18px; font-style: italic; }
+        .chart-box { position: relative; height: 380px; }
+        .fig-note { font-size: 11px; color: var(--uta-muted); margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--uta-line); font-style: italic; }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        /* Scenario table */
+        .scenario-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+        .scenario-table th { background: var(--uta-blue-dark); color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .scenario-table td { padding: 10px 14px; border-bottom: 1px solid var(--uta-line); }
+        .scenario-table tr:nth-child(even) td { background: var(--uta-cream); }
+        .scenario-table td.pos { color: #1F7A3F; font-weight: 600; }
+        .scenario-table td.neg { color: var(--uta-red); font-weight: 600; }
+
+        @media (max-width: 1100px) {
+            .exec-band, .kpi-ruled, .two-col { grid-template-columns: 1fr; }
+            .kpi-cell { border-right: none; border-bottom: 1px solid var(--uta-line); }
+            .kpi-cell:last-child { border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gov-banner">
+        <div class="chip"><span class="dot-red"></span>Utah Transit Authority &bull; Market Analysis</div>
+        <div class="chip"><span class="dot-gold"></span>Internal Report &bull; For Planning Use</div>
+    </div>
+
+    <div class="masthead">
+        <div class="inner">
+            <div class="mast-brand">
+                <div class="mast-seal">UTA</div>
+                <div class="mast-text">
+                    <div class="eyebrow">Utah Transit Authority</div>
+                    <div class="title">Fare Revenue &amp; Elasticity Analysis</div>
+                    <div class="subtitle">Market analytics for rider-facing fare policy decisions</div>
+                </div>
+            </div>
+            <div class="report-meta">
+                <div class="label">Report Period</div>
+                <div class="value">Mar 2023 &ndash; Feb 2025</div>
+                <div class="label" style="margin-top: 8px;">Coverage</div>
+                <div class="value">Bus / Rail / FrontRunner &bull; $300M+ annual fare revenue</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="report">
+        <div class="exec-band">
+            <div>
+                <div class="exec-title">Executive Summary</div>
+                <div class="exec-text">
+                    Fare revenue is tracking <strong>+3.2% MoM</strong> against a <strong>&minus;1.1%</strong> rider volume decline
+                    &mdash; a divergence consistent with a fare-elasticity signal, not a ridership recovery. Modeled scenarios
+                    show revenue lift of <strong>+8.2% to +11.8%</strong> under three fare structures, with rider retention
+                    trade-offs ranging from <strong>&minus;1.2% to &minus;5.4%</strong>. Peak-pricing (Scenario B) delivers
+                    the strongest dollar lift but the steepest rider impact; distance-based tiering (Scenario C) minimizes
+                    rider loss at the cost of some revenue upside. Segment-level elasticity curves indicate <strong>commuters
+                    and occasional riders</strong> drive most sensitivity; students and seniors are comparatively inelastic.
+                </div>
+            </div>
+            <div class="exec-callout">
+                <div class="ck-label">Modeled Revenue Lift</div>
+                <div class="ck-value">+11.8%</div>
+                <div class="ck-caption">Peak-pricing scenario, gross of rider attrition</div>
+            </div>
+        </div>
+
+        <div class="control-sheet">
+            <div class="control-label">Slice the data</div>
+            <div class="control-field">
+                <label>Route Type</label>
+                <select><option>All Routes</option><option>Bus</option><option>Rail</option><option>FrontRunner</option></select>
+            </div>
+            <div class="control-field">
+                <label>Rider Segment</label>
+                <select><option>All Segments</option><option>Commuter</option><option>Occasional</option><option>Student</option><option>Senior</option></select>
+            </div>
+            <div class="control-field">
+                <label>Time Window</label>
+                <select><option>Peak Hours</option><option>Off-Peak</option><option>All Day</option></select>
+            </div>
+        </div>
+
+        <div class="section-head">
+            <div class="section-num">Section 1</div>
+            <h2>Revenue Performance Indicators</h2>
+        </div>
+
+        <div class="kpi-ruled">
+            <div class="kpi-cell">
+                <div class="lbl">Monthly Fare Revenue</div>
+                <div class="val">$4.82M</div>
+                <div class="meta up">&uarr; 3.2% MoM</div>
+            </div>
+            <div class="kpi-cell">
+                <div class="lbl">Total Riders / Month</div>
+                <div class="val">2.34M</div>
+                <div class="meta down">&darr; 1.1% MoM</div>
+            </div>
+            <div class="kpi-cell">
+                <div class="lbl">Avg Revenue / Rider</div>
+                <div class="val">$2.06</div>
+                <div class="meta up">&uarr; $0.08 MoM</div>
+            </div>
+            <div class="kpi-cell">
+                <div class="lbl">Load Factor</div>
+                <div class="val">29.4%</div>
+                <div class="meta">Capacity utilization</div>
+            </div>
+            <div class="kpi-cell">
+                <div class="lbl">Farebox Recovery</div>
+                <div class="val">24.8%</div>
+                <div class="meta up">&uarr; 0.9pp vs. baseline</div>
+            </div>
+        </div>
+
+        <div class="figure">
+            <div class="fig-num">Figure 1</div>
+            <div class="fig-title">Revenue vs. Rider Volume &mdash; 24-Month Trend</div>
+            <div class="fig-sub">Dual-axis view showing divergence between revenue growth and rider decline</div>
+            <div class="chart-box"><canvas id="revenueTrendChart"></canvas></div>
+            <div class="fig-note">Divergence widens meaningfully after Jan 2024; consistent with successful fare-policy adjustments absorbing modest rider attrition without offsetting revenue gains.</div>
+        </div>
+
+        <div class="section-head" style="margin-top: 32px;">
+            <div class="section-num">Section 2</div>
+            <h2>Scenario &amp; Elasticity Modeling</h2>
+        </div>
+
+        <div class="two-col">
+            <div class="figure">
+                <div class="fig-num">Figure 2</div>
+                <div class="fig-title">Fare Scenario Projections</div>
+                <div class="fig-sub">Revenue and rider impact &mdash; % change vs. baseline</div>
+                <div class="chart-box"><canvas id="scenarioChart"></canvas></div>
+                <table class="scenario-table">
+                    <thead>
+                        <tr><th>Scenario</th><th>Revenue &Delta;</th><th>Rider &Delta;</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>A &mdash; Flat +10%</td><td class="pos">+8.2%</td><td class="neg">&minus;3.1%</td></tr>
+                        <tr><td>B &mdash; Peak Pricing</td><td class="pos">+11.8%</td><td class="neg">&minus;5.4%</td></tr>
+                        <tr><td>C &mdash; Distance-Based</td><td class="pos">+9.5%</td><td class="neg">&minus;1.2%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="figure">
+                <div class="fig-num">Figure 3</div>
+                <div class="fig-title">Price Elasticity by Rider Segment</div>
+                <div class="fig-sub">Steeper curves indicate higher fare sensitivity</div>
+                <div class="chart-box"><canvas id="elasticityChart"></canvas></div>
+                <div class="fig-note">Commuters show the highest elasticity at low price points; seniors remain relatively inelastic across the full fare range.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+        Chart.defaults.color = '#5C6370';
+        Chart.defaults.borderColor = '#D9D9D6';
+
+        const UTA_BLUE = '#0055A4';
+        const UTA_BLUE_DARK = '#002A52';
+        const UTA_RED = '#DA291C';
+        const UTA_GOLD = '#FFB81C';
+
+        const data = {
+            months: ['Mar-23','Apr-23','May-23','Jun-23','Jul-23','Aug-23','Sep-23','Oct-23','Nov-23','Dec-23','Jan-24','Feb-24','Mar-24','Apr-24','May-24','Jun-24','Jul-24','Aug-24','Sep-24','Oct-24','Nov-24','Dec-24','Jan-25','Feb-25'],
+            monthlyRevenue: [4.62,4.68,4.71,4.64,4.58,4.55,4.61,4.72,4.78,4.81,4.74,4.69,4.75,4.81,4.84,4.78,4.72,4.68,4.73,4.81,4.86,4.84,4.79,4.82],
+            monthlyRiders:  [2.48,2.51,2.49,2.42,2.35,2.32,2.38,2.46,2.52,2.54,2.48,2.41,2.45,2.52,2.56,2.50,2.41,2.37,2.42,2.50,2.56,2.58,2.52,2.34],
+            scenarios: ['Baseline','A: Flat +10%','B: Peak Pricing','C: Distance-Based'],
+            pricePoints: [1.50,1.75,2.00,2.25,2.50,2.75,3.00],
+            commuterElasticity: [2.8,2.4,2.0,1.8,1.6,1.5,1.4],
+            occasionalElasticity: [1.8,1.6,1.4,1.3,1.2,1.1,1.0],
+            studentElasticity: [1.2,1.1,1.0,0.9,0.8,0.8,0.7],
+            seniorElasticity: [0.8,0.7,0.65,0.6,0.6,0.6,0.5]
+        };
+
+        new Chart(document.getElementById('revenueTrendChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: data.months,
+                datasets: [
+                    { label: 'Revenue ($M)', data: data.monthlyRevenue, borderColor: UTA_BLUE, backgroundColor: 'rgba(0,85,164,0.12)', yAxisID: 'y', tension: 0.3, borderWidth: 2.5, fill: true, pointRadius: 0, pointHoverRadius: 5 },
+                    { label: 'Riders (M)', data: data.monthlyRiders, borderColor: UTA_RED, backgroundColor: 'transparent', yAxisID: 'y1', tension: 0.3, borderWidth: 2.5, borderDash: [4,3], pointRadius: 0, pointHoverRadius: 5 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    y: { type: 'linear', position: 'left', min: 4.4, max: 5.0, ticks: { callback: v => '$' + v.toFixed(1) + 'M' }, grid: { color: '#EFEEE7' } },
+                    y1: { type: 'linear', position: 'right', min: 2.2, max: 2.6, ticks: { callback: v => v.toFixed(1) + 'M' }, grid: { display: false } },
+                    x: { grid: { display: false } }
+                },
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } }
+            }
+        });
+
+        new Chart(document.getElementById('scenarioChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: data.scenarios,
+                datasets: [
+                    { label: 'Revenue %', data: [0, 8.2, 11.8, 9.5], backgroundColor: UTA_BLUE, borderRadius: 3 },
+                    { label: 'Rider %', data: [0, -3.1, -5.4, -1.2], backgroundColor: UTA_RED, borderRadius: 3 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { y: { ticks: { callback: v => v + '%' }, grid: { color: '#EFEEE7' } }, x: { grid: { display: false } } },
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } }
+            }
+        });
+
+        new Chart(document.getElementById('elasticityChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: data.pricePoints.map(p => '$' + p.toFixed(2)),
+                datasets: [
+                    { label: 'Commuter', data: data.commuterElasticity, borderColor: UTA_BLUE, backgroundColor: 'rgba(0,85,164,0.08)', tension: 0.35, borderWidth: 3, fill: true, pointRadius: 0 },
+                    { label: 'Occasional', data: data.occasionalElasticity, borderColor: UTA_RED, backgroundColor: 'transparent', tension: 0.35, borderWidth: 2.5, pointRadius: 0 },
+                    { label: 'Student', data: data.studentElasticity, borderColor: UTA_GOLD, backgroundColor: 'transparent', tension: 0.35, borderWidth: 2.5, pointRadius: 0 },
+                    { label: 'Senior', data: data.seniorElasticity, borderColor: UTA_BLUE_DARK, backgroundColor: 'transparent', tension: 0.35, borderWidth: 2.5, borderDash: [4,3], pointRadius: 0 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Elasticity Coefficient', color: '#5C6370' }, grid: { color: '#EFEEE7' } }, x: { grid: { display: false } } },
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } }
+            }
+        });
+    </script>
+</body>
+</html>

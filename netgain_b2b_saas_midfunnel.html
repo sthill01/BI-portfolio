@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netgain | Mid-Funnel Performance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --ng-orange: #F26A2E;
+            --ng-orange-dark: #D9531A;
+            --ng-orange-soft: #FFE3D1;
+            --ng-navy: #0F1B2D;
+            --ng-slate: #1E2A3D;
+            --ng-mist: #F6F7FB;
+            --ng-line: #E7EAF1;
+            --ng-text: #1E2A3D;
+            --ng-muted: #6E788C;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--ng-mist); color: var(--ng-text); }
+        .topnav { background: var(--ng-navy); color: white; padding: 14px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--ng-orange); }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-mark { width: 34px; height: 34px; background: var(--ng-orange); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 18px; }
+        .brand-name { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+        .brand-tag { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 1px; }
+        .topnav-links { display: flex; gap: 28px; font-size: 13px; color: rgba(255,255,255,0.7); }
+        .topnav-links a { color: inherit; text-decoration: none; }
+        .topnav-links a.active { color: white; font-weight: 600; }
+        .wrap { max-width: 1400px; margin: 0 auto; padding: 32px 40px 60px; }
+        .page-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; gap: 20px; flex-wrap: wrap; }
+        .page-head h1 { font-size: 32px; font-weight: 800; color: var(--ng-navy); letter-spacing: -0.8px; line-height: 1.15; }
+        .page-head .sub { color: var(--ng-muted); font-size: 14px; margin-top: 6px; }
+        .breadcrumb { color: var(--ng-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
+        .breadcrumb span { color: var(--ng-orange); font-weight: 600; }
+        .filters { display: flex; gap: 10px; flex-wrap: wrap; }
+        .filters select { padding: 9px 14px; border: 1px solid var(--ng-line); border-radius: 8px; font-size: 13px; background: white; font-family: inherit; color: var(--ng-text); cursor: pointer; }
+        .filters select:focus { outline: none; border-color: var(--ng-orange); }
+
+        .hero-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+        .hero-metric { background: linear-gradient(135deg, var(--ng-navy) 0%, var(--ng-slate) 100%); color: white; padding: 28px; border-radius: 14px; position: relative; overflow: hidden; }
+        .hero-metric::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 180px; height: 180px; border-radius: 50%; background: var(--ng-orange); opacity: 0.12; }
+        .hero-metric .tag { display: inline-block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; background: var(--ng-orange); color: white; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; font-weight: 600; }
+        .hero-metric .label { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+        .hero-metric .value { font-size: 48px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; }
+        .hero-metric .delta { font-size: 13px; color: #7FD199; margin-top: 10px; font-weight: 500; }
+        .hero-metric .ctx { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.15); }
+
+        .side-metric { background: white; padding: 22px; border-radius: 14px; border: 1px solid var(--ng-line); display: flex; flex-direction: column; justify-content: space-between; }
+        .side-metric .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--ng-muted); font-weight: 600; }
+        .side-metric .value { font-size: 34px; font-weight: 800; color: var(--ng-navy); letter-spacing: -1px; margin: 8px 0 4px; }
+        .side-metric .delta { font-size: 12px; color: var(--ng-muted); }
+        .side-metric .delta.up { color: #2A9D5F; font-weight: 600; }
+        .side-metric .bar { height: 4px; background: var(--ng-line); border-radius: 2px; margin-top: 14px; overflow: hidden; }
+        .side-metric .bar-fill { height: 100%; background: var(--ng-orange); border-radius: 2px; }
+
+        .kpi-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+        .kpi-card { background: white; padding: 20px 22px; border-radius: 12px; border: 1px solid var(--ng-line); }
+        .kpi-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ng-muted); font-weight: 600; }
+        .kpi-card .value { font-size: 28px; font-weight: 800; color: var(--ng-navy); letter-spacing: -0.8px; margin: 8px 0 2px; }
+        .kpi-card .meta { font-size: 12px; color: var(--ng-muted); }
+
+        .panel { background: white; padding: 28px; border-radius: 14px; border: 1px solid var(--ng-line); margin-bottom: 18px; }
+        .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+        .panel-title { font-size: 16px; font-weight: 700; color: var(--ng-navy); }
+        .panel-sub { font-size: 12px; color: var(--ng-muted); }
+        .chip-row { display: flex; gap: 6px; }
+        .chip { background: var(--ng-mist); color: var(--ng-slate); padding: 6px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; border: 1px solid var(--ng-line); cursor: pointer; }
+        .chip.active { background: var(--ng-orange); color: white; border-color: var(--ng-orange); }
+        .chart-box { height: 360px; position: relative; }
+        .two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; }
+        @media (max-width: 1100px) {
+            .hero-row, .kpi-strip, .two-col { grid-template-columns: 1fr; }
+        }
+        .foot { font-size: 11px; color: var(--ng-muted); margin-top: 12px; font-style: italic; }
+        .pill-legend { display: inline-flex; gap: 6px; align-items: center; font-size: 11px; color: var(--ng-muted); margin-right: 14px; }
+        .pill-legend .swatch { width: 10px; height: 10px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="topnav">
+        <div class="brand">
+            <div class="brand-mark">N</div>
+            <div>
+                <div class="brand-name">Netgain</div>
+                <div class="brand-tag">Revenue Operations</div>
+            </div>
+        </div>
+        <div class="topnav-links">
+            <a href="#">Home</a>
+            <a href="#" class="active">Mid-Funnel</a>
+            <a href="#">Pipeline</a>
+            <a href="#">Attribution</a>
+            <a href="#">Forecast</a>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="page-head">
+            <div>
+                <div class="breadcrumb">RevOps / <span>Mid-Funnel Performance</span></div>
+                <h1>B2B SaaS Mid-Funnel</h1>
+                <div class="sub">MQL &rarr; SQL &rarr; Opp &rarr; Won with multi-touch attribution across 6 products</div>
+            </div>
+            <div class="filters">
+                <select><option>All Account Sizes</option><option>SMB</option><option>Mid-Market</option><option>Enterprise</option></select>
+                <select><option>All Industries</option><option>Tech</option><option>Finance</option><option>Healthcare</option></select>
+                <select><option>Q1 2025</option><option>Q4 2024</option><option>Q3 2024</option></select>
+            </div>
+        </div>
+
+        <div class="hero-row">
+            <div class="hero-metric">
+                <span class="tag">Moments that Matter</span>
+                <div class="label">Mid-Funnel Lift vs. Baseline</div>
+                <div class="value">+250%</div>
+                <div class="delta">&uarr; Isolated via high-velocity testing, 6-product portfolio</div>
+                <div class="ctx">1&ndash;18 mo sales cycles &bull; 30 touchpoints &bull; online + offline MTA</div>
+            </div>
+            <div class="side-metric">
+                <div>
+                    <div class="label">MQLs (Current Month)</div>
+                    <div class="value">1,047</div>
+                    <div class="delta up">&uarr; 14% vs. last month</div>
+                </div>
+                <div class="bar"><div class="bar-fill" style="width: 74%"></div></div>
+            </div>
+            <div class="side-metric">
+                <div>
+                    <div class="label">Avg Deal Size</div>
+                    <div class="value">$32.4K</div>
+                    <div class="delta up">&uarr; $2.1K vs. last qtr</div>
+                </div>
+                <div class="bar"><div class="bar-fill" style="width: 62%"></div></div>
+            </div>
+        </div>
+
+        <div class="kpi-strip">
+            <div class="kpi-card">
+                <div class="label">MQL &rarr; SQL</div>
+                <div class="value">24.3%</div>
+                <div class="meta">&uarr; 1.2pp vs. baseline</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">SQL &rarr; Opp</div>
+                <div class="value">47.8%</div>
+                <div class="meta">&uarr; 3.1pp YoY</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Opp &rarr; Closed Won</div>
+                <div class="value">26.4%</div>
+                <div class="meta">&darr; 0.8pp vs. last qtr</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <div class="panel-title">Conversion Rates: 12-Month Trend</div>
+                    <div class="panel-sub">Stage-by-stage transition health</div>
+                </div>
+                <div class="chip-row">
+                    <span class="chip active">All Stages</span>
+                    <span class="chip">MQL&rarr;SQL</span>
+                    <span class="chip">SQL&rarr;Opp</span>
+                    <span class="chip">Opp&rarr;Won</span>
+                </div>
+            </div>
+            <div class="chart-box"><canvas id="conversionTrendChart"></canvas></div>
+            <div class="foot">Each line = stage-to-stage transition rate, smoothed monthly.</div>
+        </div>
+
+        <div class="two-col">
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-title">Multi-Touch Attribution by Channel</div>
+                        <div class="panel-sub">First-touch vs. multi-touch credit allocation</div>
+                    </div>
+                </div>
+                <div class="chart-box"><canvas id="attributionChart"></canvas></div>
+                <div class="foot">Multi-touch re-weights away from paid search toward organic and direct influence.</div>
+            </div>
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-title">Time-in-Stage Distribution</div>
+                        <div class="panel-sub">Median days by stage, Q1 2025 vs. baseline</div>
+                    </div>
+                </div>
+                <div class="chart-box"><canvas id="stageTimeChart"></canvas></div>
+                <div class="foot">Lower = faster pipeline velocity.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
+        Chart.defaults.color = '#6E788C';
+        Chart.defaults.borderColor = '#E7EAF1';
+
+        const NG_ORANGE = '#F26A2E';
+        const NG_NAVY = '#0F1B2D';
+
+        const data = {
+            months: ['Apr-24', 'May-24', 'Jun-24', 'Jul-24', 'Aug-24', 'Sep-24', 'Oct-24', 'Nov-24', 'Dec-24', 'Jan-25', 'Feb-25', 'Mar-25'],
+            mqlSqlRate: [23.1, 23.8, 24.1, 23.9, 24.4, 25.2, 24.8, 24.1, 23.6, 24.5, 24.3, 24.3],
+            sqlOppRate: [44.2, 44.8, 45.3, 45.9, 46.2, 47.1, 48.2, 48.5, 47.9, 47.1, 47.8, 47.8],
+            oppWonRate: [27.3, 27.8, 27.4, 27.1, 26.8, 26.3, 25.9, 25.6, 25.3, 26.1, 26.4, 26.4],
+            channels: ['Paid Search', 'Paid Social', 'Organic', 'Email', 'Webinar', 'Direct'],
+            firstTouchCredit: [32, 24, 18, 12, 8, 6],
+            multiTouchCredit: [28, 22, 22, 14, 10, 4],
+            stages: ['MQL', 'SQL', 'Opp'],
+            q1Time: [8, 15, 25],
+            mediaTime: [12, 21, 35]
+        };
+
+        new Chart(document.getElementById('conversionTrendChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: data.months,
+                datasets: [
+                    { label: 'MQL \u2192 SQL', data: data.mqlSqlRate, borderColor: NG_ORANGE, backgroundColor: 'rgba(242,106,46,0.12)', tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: true },
+                    { label: 'SQL \u2192 Opp', data: data.sqlOppRate, borderColor: NG_NAVY, backgroundColor: 'rgba(15,27,45,0.08)', tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
+                    { label: 'Opp \u2192 Won', data: data.oppWonRate, borderColor: '#6E788C', backgroundColor: 'transparent', tension: 0.4, borderWidth: 2, borderDash: [5, 4], pointRadius: 0, pointHoverRadius: 5 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: false, min: 20, max: 55, ticks: { callback: v => v + '%' }, grid: { color: '#EEF0F4' } },
+                    x: { grid: { display: false } }
+                },
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 16 } } }
+            }
+        });
+
+        new Chart(document.getElementById('attributionChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: data.channels,
+                datasets: [
+                    { label: 'First-Touch', data: data.firstTouchCredit, backgroundColor: '#FFE3D1', borderRadius: 4 },
+                    { label: 'Multi-Touch', data: data.multiTouchCredit, backgroundColor: NG_ORANGE, borderRadius: 4 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, grid: { color: '#EEF0F4' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } }
+            }
+        });
+
+        new Chart(document.getElementById('stageTimeChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: data.stages,
+                datasets: [
+                    { label: 'Baseline', data: data.mediaTime, backgroundColor: '#C8CEDA', borderRadius: 6 },
+                    { label: 'Q1 2025', data: data.q1Time, backgroundColor: NG_NAVY, borderRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, grid: { color: '#EEF0F4' }, ticks: { callback: v => v + 'd' } }, x: { grid: { display: false } } },
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } }
+            }
+        });
+    </script>
+</body>
+</html>

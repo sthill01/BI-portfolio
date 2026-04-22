@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Squirrel | Lead Segmentation &amp; CAC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --ws-orange: #FF6B35;
+            --ws-orange-dark: #E8581E;
+            --ws-orange-soft: #FFD9C9;
+            --ws-cream: #FFF5EF;
+            --ws-ink: #1A1A1A;
+            --ws-navy: #1E3A5F;
+            --ws-muted: #6B6B6B;
+            --ws-line: #EEE6DF;
+            --ws-mint: #5FD69E;
+            --ws-yellow: #FFC857;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--ws-cream); color: var(--ws-ink); overflow-x: hidden; }
+        h1, h2, h3, .display { font-family: 'Poppins', sans-serif; }
+
+        /* Playful top bar with squiggle */
+        .topbar { padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; background: transparent; position: relative; z-index: 2; }
+        .logo { display: flex; align-items: center; gap: 12px; font-family: 'Poppins'; font-weight: 800; font-size: 22px; color: var(--ws-ink); letter-spacing: -0.5px; }
+        .logo-dot { width: 40px; height: 40px; background: var(--ws-orange); border-radius: 14px; position: relative; display: flex; align-items: center; justify-content: center; transform: rotate(-8deg); box-shadow: 0 6px 16px rgba(255,107,53,0.3); }
+        .logo-dot::after { content: ""; position: absolute; width: 10px; height: 10px; background: var(--ws-yellow); border-radius: 50%; top: -4px; right: -4px; }
+        .logo-dot span { color: white; font-weight: 800; font-size: 20px; transform: rotate(8deg); }
+        .top-actions { display: flex; gap: 10px; align-items: center; }
+        .pill-btn { padding: 8px 16px; background: white; border: 2px solid var(--ws-ink); border-radius: 50px; font-family: 'Poppins'; font-weight: 600; font-size: 13px; color: var(--ws-ink); cursor: pointer; }
+        .pill-btn.solid { background: var(--ws-ink); color: white; }
+
+        /* Hero with bold slab + blob bg */
+        .hero { max-width: 1400px; margin: 0 auto; padding: 16px 48px 40px; position: relative; }
+        .hero::before { content: ""; position: absolute; width: 420px; height: 420px; background: radial-gradient(circle, var(--ws-orange-soft) 0%, transparent 70%); top: -80px; right: -80px; z-index: 0; pointer-events: none; }
+        .hero-inner { position: relative; z-index: 1; }
+        .hero-kicker { display: inline-flex; align-items: center; gap: 8px; background: white; border: 2px solid var(--ws-ink); border-radius: 50px; padding: 6px 14px; font-size: 12px; font-weight: 700; color: var(--ws-ink); margin-bottom: 18px; box-shadow: 3px 3px 0 var(--ws-ink); }
+        .hero-kicker .emoji { width: 14px; height: 14px; background: var(--ws-orange); border-radius: 50%; }
+        .hero-title { font-family: 'Poppins'; font-size: 56px; font-weight: 800; line-height: 1.05; letter-spacing: -2px; color: var(--ws-ink); max-width: 720px; }
+        .hero-title em { font-style: normal; color: var(--ws-orange); position: relative; }
+        .hero-title em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 12px; background: var(--ws-yellow); z-index: -1; border-radius: 2px; }
+        .hero-sub { font-size: 16px; color: var(--ws-muted); margin-top: 16px; max-width: 580px; line-height: 1.5; }
+
+        /* Chunky filter pills */
+        .filter-row { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
+        .filter-row .chunky { background: white; border: 2px solid var(--ws-ink); border-radius: 50px; padding: 8px 16px; font-family: 'Poppins'; font-weight: 600; font-size: 13px; color: var(--ws-ink); cursor: pointer; box-shadow: 3px 3px 0 var(--ws-ink); transition: transform 0.1s; }
+        .filter-row .chunky:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ws-ink); }
+        .filter-row .chunky.active { background: var(--ws-orange); color: white; }
+        .filter-row select.chunky { padding: 8px 16px; appearance: none; padding-right: 28px; background-image: linear-gradient(45deg, transparent 50%, var(--ws-ink) 50%), linear-gradient(-45deg, transparent 50%, var(--ws-ink) 50%); background-position: calc(100% - 14px) 50%, calc(100% - 10px) 50%; background-size: 4px 4px; background-repeat: no-repeat; }
+
+        /* Asymmetric card grid */
+        .grid-wrap { max-width: 1400px; margin: 0 auto; padding: 0 48px 60px; }
+        .stat-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 20px; margin-top: 40px; margin-bottom: 40px; }
+        .stat { background: white; border: 2px solid var(--ws-ink); border-radius: 24px; padding: 26px; box-shadow: 6px 6px 0 var(--ws-ink); position: relative; }
+        .stat.hero-stat { background: var(--ws-orange); color: white; grid-row: span 2; display: flex; flex-direction: column; justify-content: space-between; }
+        .stat.hero-stat .stat-label { color: rgba(255,255,255,0.85); }
+        .stat.hero-stat .stat-value { color: white; font-size: 72px; }
+        .stat.hero-stat .stat-caption { color: rgba(255,255,255,0.85); }
+        .stat-label { font-family: 'Poppins'; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ws-muted); margin-bottom: 8px; }
+        .stat-value { font-family: 'Poppins'; font-size: 42px; font-weight: 800; letter-spacing: -1.5px; color: var(--ws-ink); line-height: 1; }
+        .stat-delta { margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--ws-mint); }
+        .stat-delta.down { color: var(--ws-orange); }
+        .stat-caption { margin-top: 16px; font-size: 13px; color: var(--ws-muted); line-height: 1.4; padding-top: 14px; border-top: 2px dashed var(--ws-line); }
+        .stat.hero-stat .stat-caption { border-top-color: rgba(255,255,255,0.25); }
+        .stat .icon-chip { position: absolute; top: 22px; right: 22px; width: 38px; height: 38px; background: var(--ws-orange-soft); border: 2px solid var(--ws-ink); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--ws-orange-dark); font-size: 14px; font-family: 'Poppins'; transform: rotate(-4deg); }
+        .stat.hero-stat .icon-chip { background: white; color: var(--ws-orange); border-color: white; }
+
+        /* Main chart — asymmetric full-width */
+        .big-panel { background: white; border: 2px solid var(--ws-ink); border-radius: 28px; padding: 32px 36px; box-shadow: 8px 8px 0 var(--ws-ink); margin-bottom: 28px; position: relative; overflow: hidden; }
+        .big-panel::before { content: ""; position: absolute; right: -80px; top: -80px; width: 240px; height: 240px; border-radius: 50%; background: var(--ws-yellow); opacity: 0.25; }
+        .panel-head { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+        .panel-head .ttl { font-family: 'Poppins'; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--ws-ink); }
+        .panel-head .sub { font-size: 13px; color: var(--ws-muted); margin-top: 4px; }
+        .legend-row { display: flex; gap: 14px; }
+        .legend-pill { display: flex; gap: 6px; align-items: center; background: var(--ws-cream); padding: 6px 12px; border-radius: 40px; font-size: 12px; font-weight: 600; border: 1.5px solid var(--ws-line); }
+        .legend-pill .sw { width: 10px; height: 10px; border-radius: 3px; }
+        .chart-box { position: relative; height: 360px; z-index: 1; }
+
+        /* Two panels with different heights */
+        .split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; margin-bottom: 28px; }
+        .card { background: white; border: 2px solid var(--ws-ink); border-radius: 24px; padding: 28px; box-shadow: 6px 6px 0 var(--ws-ink); }
+        .card.warm { background: var(--ws-navy); color: white; }
+        .card.warm .ttl { color: white; }
+        .card.warm .sub { color: rgba(255,255,255,0.7); }
+        .chart-box-sm { position: relative; height: 320px; }
+        .bottom-note { font-size: 12px; color: var(--ws-muted); margin-top: 14px; font-style: italic; }
+        .card.warm .bottom-note { color: rgba(255,255,255,0.65); }
+
+        @media (max-width: 1100px) {
+            .stat-grid { grid-template-columns: 1fr 1fr; }
+            .stat.hero-stat { grid-row: span 1; grid-column: span 2; }
+            .split { grid-template-columns: 1fr; }
+            .hero-title { font-size: 38px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="logo">
+            <div class="logo-dot"><span>S</span></div>
+            <div>Website Squirrel <span style="color: var(--ws-muted); font-weight: 500; font-size: 13px; display: block; margin-top: -2px; letter-spacing: 0;">growth analytics</span></div>
+        </div>
+        <div class="top-actions">
+            <button class="pill-btn">Export CSV</button>
+            <button class="pill-btn solid">Share View</button>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-kicker"><span class="emoji"></span>Lead segmentation &bull; CAC efficiency</div>
+            <h1 class="hero-title">Squirrels find <em>cheaper leads</em> by sorting acorns smarter.</h1>
+            <p class="hero-sub">Automated lead scoring + behavioral segmentation drives 60%+ CAC reduction. Here's the breakdown by tier, channel, and retention curve.</p>
+            <div class="filter-row">
+                <select class="chunky"><option>Last 30 days</option><option>Last 90 days</option><option>Last 365 days</option></select>
+                <span class="chunky active">All Campaigns</span>
+                <span class="chunky">Paid</span>
+                <span class="chunky">Organic</span>
+                <span class="chunky">Direct</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid-wrap">
+        <div class="stat-grid">
+            <div class="stat hero-stat">
+                <div>
+                    <div class="icon-chip">A+</div>
+                    <div class="stat-label">A-Tier CAC</div>
+                    <div class="stat-value">$47</div>
+                    <div class="stat-delta" style="color: white;">60%+ cheaper than blended average</div>
+                </div>
+                <div class="stat-caption">Highest-quality segment. Pipelined through Python/AWS lead-scoring. Drove 15% YoY profit contribution.</div>
+            </div>
+            <div class="stat">
+                <div class="icon-chip">#</div>
+                <div class="stat-label">Leads this month</div>
+                <div class="stat-value">3,847</div>
+                <div class="stat-delta">&uarr; 18% vs. last month</div>
+            </div>
+            <div class="stat">
+                <div class="icon-chip">$</div>
+                <div class="stat-label">Blended CAC</div>
+                <div class="stat-value">$114</div>
+                <div class="stat-delta down">&darr; 8% vs. last month</div>
+            </div>
+            <div class="stat">
+                <div class="icon-chip">&times;</div>
+                <div class="stat-label">Paid ROAS</div>
+                <div class="stat-value">3.24x</div>
+                <div class="stat-delta">&uarr; 0.18x vs. Q1</div>
+            </div>
+            <div class="stat">
+                <div class="icon-chip">%</div>
+                <div class="stat-label">90d Retention</div>
+                <div class="stat-value">64.2%</div>
+                <div class="stat-delta">&uarr; 2.1pp YoY</div>
+            </div>
+        </div>
+
+        <div class="big-panel">
+            <div class="panel-head">
+                <div>
+                    <div class="ttl">CAC by Lead Segment</div>
+                    <div class="sub">Current quarter vs. prior &bull; lower = more efficient</div>
+                </div>
+                <div class="legend-row">
+                    <span class="legend-pill"><span class="sw" style="background: var(--ws-orange)"></span>Current</span>
+                    <span class="legend-pill"><span class="sw" style="background: var(--ws-orange-soft)"></span>Prior</span>
+                </div>
+            </div>
+            <div class="chart-box"><canvas id="cacSegmentChart"></canvas></div>
+            <div class="bottom-note">A-tier has the lowest CAC; D-tier is volume play &mdash; still contribution-positive when retained through day-90.</div>
+        </div>
+
+        <div class="split">
+            <div class="card">
+                <div class="panel-head">
+                    <div>
+                        <div class="ttl">CAC by Channel</div>
+                        <div class="sub">Acquisition cost breakdown across traffic sources</div>
+                    </div>
+                </div>
+                <div class="chart-box-sm"><canvas id="cacChannelChart"></canvas></div>
+                <div class="bottom-note">Organic pulls the cheapest acquisition cost; direct is surprisingly high &mdash; a signal to audit brand-defense spend.</div>
+            </div>
+            <div class="card warm">
+                <div class="panel-head">
+                    <div>
+                        <div class="ttl">Retention by Tier (0 &rarr; 180 days)</div>
+                        <div class="sub">Cohort retention curve &mdash; A-tier is what you keep paying less to acquire</div>
+                    </div>
+                </div>
+                <div class="chart-box-sm"><canvas id="retentionChart"></canvas></div>
+                <div class="bottom-note">A-tier holds 59% at day 180; D-tier collapses to 22%. This is why segment-level CAC matters more than blended.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.defaults.font.family = "'DM Sans', sans-serif";
+        Chart.defaults.color = '#6B6B6B';
+        Chart.defaults.borderColor = '#EEE6DF';
+
+        const WS_ORANGE = '#FF6B35';
+        const WS_ORANGE_SOFT = '#FFD9C9';
+        const WS_YELLOW = '#FFC857';
+        const WS_MINT = '#5FD69E';
+        const WS_NAVY = '#1E3A5F';
+        const WS_INK = '#1A1A1A';
+
+        const data = {
+            segments: ['A-Tier', 'B-Tier', 'C-Tier', 'D-Tier'],
+            cacCurrent: [47, 78, 112, 186],
+            cacPrior: [52, 84, 119, 198],
+            channels: ['Google Search', 'Facebook', 'Organic', 'Referral', 'Direct'],
+            channelCAC: [68, 142, 38, 94, 156],
+            retentionDays: [0, 30, 60, 90, 120, 150, 180],
+            retentionA: [100, 88, 79, 71, 65, 62, 59],
+            retentionB: [100, 82, 71, 62, 54, 50, 48],
+            retentionC: [100, 75, 62, 51, 42, 37, 34],
+            retentionD: [100, 68, 54, 43, 32, 26, 22]
+        };
+
+        new Chart(document.getElementById('cacSegmentChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: data.segments,
+                datasets: [
+                    { label: 'Current', data: data.cacCurrent, backgroundColor: WS_ORANGE, borderRadius: 10, borderSkipped: false, barPercentage: 0.7 },
+                    { label: 'Prior', data: data.cacPrior, backgroundColor: WS_ORANGE_SOFT, borderRadius: 10, borderSkipped: false, barPercentage: 0.7 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, ticks: { callback: v => '$' + v }, grid: { color: '#F2ECE6' } },
+                    x: { grid: { display: false }, ticks: { font: { family: 'Poppins', weight: '600', size: 13 }, color: WS_INK } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        new Chart(document.getElementById('cacChannelChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: data.channels,
+                datasets: [{
+                    label: 'CAC',
+                    data: data.channelCAC,
+                    backgroundColor: [WS_ORANGE, WS_YELLOW, WS_MINT, '#FF9472', '#C77B5C'],
+                    borderRadius: 10, borderSkipped: false
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                scales: {
+                    x: { beginAtZero: true, ticks: { callback: v => '$' + v }, grid: { color: '#F2ECE6' } },
+                    y: { grid: { display: false }, ticks: { font: { family: 'Poppins', weight: '600', size: 12 }, color: WS_INK } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        new Chart(document.getElementById('retentionChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: data.retentionDays.map(d => d + 'd'),
+                datasets: [
+                    { label: 'A-Tier', data: data.retentionA, borderColor: WS_ORANGE, backgroundColor: 'rgba(255,107,53,0.2)', tension: 0.4, borderWidth: 3, pointBackgroundColor: WS_ORANGE, pointBorderColor: 'white', pointBorderWidth: 2, pointRadius: 4, fill: true },
+                    { label: 'B-Tier', data: data.retentionB, borderColor: WS_YELLOW, backgroundColor: 'transparent', tension: 0.4, borderWidth: 2.5, pointBackgroundColor: WS_YELLOW, pointRadius: 3 },
+                    { label: 'C-Tier', data: data.retentionC, borderColor: WS_MINT, backgroundColor: 'transparent', tension: 0.4, borderWidth: 2.5, pointBackgroundColor: WS_MINT, pointRadius: 3 },
+                    { label: 'D-Tier', data: data.retentionD, borderColor: '#C0C0C0', backgroundColor: 'transparent', tension: 0.4, borderWidth: 2, borderDash: [4,3], pointRadius: 2 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%', color: 'rgba(255,255,255,0.6)' }, grid: { color: 'rgba(255,255,255,0.08)' } },
+                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.7)' } }
+                },
+                plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.85)', usePointStyle: true, boxWidth: 8, padding: 12 } } }
+            }
+        });
+    </script>
+</body>
+</html>
