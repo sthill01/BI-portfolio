@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steve Hill &mdash; BI Dashboard Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <title>Steve Hill &mdash; Dashboards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
+
         :root {
             --ink: #0F1B2D;
             --paper: #F6F4EE;
@@ -15,198 +28,172 @@
             --foxit: #FF5F00;
             --uta: #0055A4;
             --squirrel: #FF6B35;
+            --healthicity: #ff3d4d;
+            --hc-amber: #FFB000;
+            --hl: #FFD77A;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.5; }
+        a { color: inherit; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 60px 40px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 56px 40px 80px; }
 
-        .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px; padding-bottom: 60px; border-bottom: 1px solid var(--line); }
-        .hero-text .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 16px; }
-        .hero-text h1 { font-family: 'Source Serif Pro', serif; font-size: 56px; font-weight: 700; letter-spacing: -1.5px; line-height: 1.05; color: var(--ink); margin-bottom: 20px; }
-        .hero-text h1 span.hl { position: relative; white-space: nowrap; }
-        .hero-text h1 span.hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 14px; background: #FFD77A; z-index: -1; }
-        .hero-text p { font-size: 17px; color: var(--muted); margin-bottom: 28px; max-width: 500px; }
-        .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 36px; }
-        .meta-item .m-val { font-family: 'Source Serif Pro', serif; font-size: 34px; font-weight: 700; letter-spacing: -1px; color: var(--ink); }
-        .meta-item .m-lbl { font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+        /* Page head */
+        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; }
+        .crumb a { text-decoration: none; color: var(--muted); }
+        .crumb a:hover { color: var(--ink); }
+        .crumb span { color: var(--ink); font-weight: 600; }
 
-        /* Hero visual: stacked tilted dashboard cards */
-        .hero-visual { position: relative; height: 420px; }
-        .visual-card { position: absolute; width: 300px; padding: 20px; border-radius: 14px; box-shadow: 0 10px 35px rgba(15,27,45,0.18); transition: transform 0.3s; }
-        .visual-card:hover { transform: translateY(-4px) rotate(0deg) !important; }
-        .visual-card .swatch-row { display: flex; gap: 4px; margin-bottom: 12px; }
-        .visual-card .swatch { width: 10px; height: 10px; border-radius: 50%; }
-        .visual-card .vc-title { font-weight: 700; font-size: 13px; margin-bottom: 10px; }
-        .visual-card .vc-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
-        .visual-card .vc-bar { flex: 1; border-radius: 3px; }
-        .vc1 { top: 0; left: 20px; transform: rotate(-4deg); background: #141827; color: white; border: 1px solid #262B3F; }
-        .vc1 .swatch:nth-child(1) { background: var(--foxit); } .vc1 .swatch:nth-child(2) { background: #FF8533; } .vc1 .swatch:nth-child(3) { background: #3DD598; }
-        .vc2 { top: 60px; right: 0; transform: rotate(3deg); background: white; border: 1px solid var(--line); }
-        .vc2 .swatch:nth-child(1) { background: var(--netgain); } .vc2 .swatch:nth-child(2) { background: #0F1B2D; } .vc2 .swatch:nth-child(3) { background: #FFE3D1; }
-        .vc3 { top: 180px; left: 40px; transform: rotate(2deg); background: #FAFAF7; border: 1px solid var(--line); border-top: 4px solid var(--uta); }
-        .vc3 .swatch:nth-child(1) { background: var(--uta); } .vc3 .swatch:nth-child(2) { background: #DA291C; } .vc3 .swatch:nth-child(3) { background: #FFB81C; }
-        .vc4 { top: 230px; right: 30px; transform: rotate(-3deg); background: #FFF5EF; border: 2px solid #1A1A1A; box-shadow: 5px 5px 0 #1A1A1A; }
-        .vc4 .swatch:nth-child(1) { background: var(--squirrel); } .vc4 .swatch:nth-child(2) { background: #FFC857; } .vc4 .swatch:nth-child(3) { background: #5FD69E; }
+        .head-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: end; padding-bottom: 30px; border-bottom: 1px solid var(--line); margin-bottom: 44px; }
+        .head-row h1 { font-family: 'Source Serif Pro', serif; font-size: 50px; font-weight: 700; letter-spacing: -1.4px; line-height: 1.05; color: var(--ink); }
+        .head-row h1 .hl { position: relative; white-space: nowrap; }
+        .head-row h1 .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 12px; background: var(--hl); z-index: -1; }
+        .head-row .intro { font-size: 15px; color: var(--muted); line-height: 1.65; }
+        .head-row .intro strong { color: var(--ink); font-weight: 600; }
+
+        .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 50px; }
+        .stat-tile { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+        .stat-tile .k { font-family: 'Source Serif Pro', serif; font-size: 28px; font-weight: 700; letter-spacing: -0.6px; color: var(--ink); }
+        .stat-tile .l { font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.8px; }
 
         /* Grid of dashboard cards, each branded */
-        .section-title { font-family: 'Source Serif Pro', serif; font-size: 32px; font-weight: 700; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.8px; }
-        .section-sub { color: var(--muted); margin-bottom: 36px; font-size: 15px; }
-
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-        .dash-card { text-decoration: none; color: inherit; border-radius: 18px; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease; display: flex; flex-direction: column; min-height: 360px; }
+        .dash-card { text-decoration: none; color: inherit; border-radius: 18px; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease; display: flex; flex-direction: column; min-height: 340px; }
         .dash-card:hover { transform: translateY(-6px); }
+        .card-header { padding: 22px 28px 18px; display: flex; align-items: center; gap: 12px; }
+        .logo-mark { width: 34px; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; }
+        .co-name { font-weight: 700; font-size: 17px; letter-spacing: -0.3px; }
+        .co-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .card-body { padding: 18px 28px 24px; flex: 1; display: flex; flex-direction: column; }
+        .dash-title { font-size: 19px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 8px; }
+        .dash-desc { font-size: 13.5px; line-height: 1.55; flex: 1; }
+        .card-footer { padding: 14px 28px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
 
-        /* Netgain card */
-        .d-netgain { background: #0F1B2D; color: white; box-shadow: 0 4px 20px rgba(15,27,45,0.15); }
-        .d-netgain:hover { box-shadow: 0 14px 40px rgba(15,27,45,0.35); }
-        .d-netgain .card-header { padding: 28px 30px 22px; border-bottom: 3px solid var(--netgain); display: flex; align-items: center; gap: 12px; }
-        .d-netgain .logo-mark { width: 36px; height: 36px; background: var(--netgain); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }
-        .d-netgain .co-name { font-weight: 700; font-size: 18px; letter-spacing: -0.3px; }
-        .d-netgain .co-tag { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1.5px; }
-        .d-netgain .card-body { padding: 26px 30px 30px; flex: 1; display: flex; flex-direction: column; }
-        .d-netgain .dash-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
-        .d-netgain .dash-desc { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.55; flex: 1; }
-        .d-netgain .card-footer { padding: 18px 30px; background: rgba(242,106,46,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        /* Netgain card - warm + minimal (B2B SaaS) */
+        .d-netgain { background: #FFF5EF; border: 1px solid var(--line); }
+        .d-netgain .card-header { border-bottom: 3px solid var(--netgain); }
+        .d-netgain .logo-mark { background: var(--netgain); color: white; }
+        .d-netgain .co-tag { color: var(--muted); }
+        .d-netgain .card-footer { background: white; border-top: 1px solid var(--line); }
         .d-netgain .card-footer .cta { color: var(--netgain); font-weight: 600; }
+        .d-netgain .card-footer .chip { background: #FFE3D1; color: var(--netgain); padding: 3px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 600; }
 
-        /* Foxit card */
-        .d-foxit { background: #0B0F1A; color: #E7EAF3; border: 1px solid #262B3F; }
-        .d-foxit .card-header { padding: 28px 30px 22px; display: flex; align-items: center; gap: 12px; background: #141827; border-bottom: 1px solid #262B3F; }
-        .d-foxit .logo-mark { width: 36px; height: 36px; background: var(--foxit); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: white; font-family: 'Source Serif Pro', serif; }
-        .d-foxit .co-name { font-weight: 700; font-size: 18px; letter-spacing: -0.3px; }
-        .d-foxit .co-tag { font-size: 10px; color: #8089A3; text-transform: uppercase; letter-spacing: 1.5px; font-family: monospace; }
-        .d-foxit .card-body { padding: 26px 30px 30px; flex: 1; display: flex; flex-direction: column; }
-        .d-foxit .dash-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
-        .d-foxit .dash-desc { font-size: 14px; color: #8089A3; line-height: 1.55; flex: 1; }
-        .d-foxit .card-footer { padding: 18px 30px; background: rgba(255,95,0,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 13px; border-top: 1px solid #262B3F; }
-        .d-foxit .card-footer .cta { color: var(--foxit); font-weight: 600; font-family: monospace; }
+        /* Foxit card - bold, dark (developer tools) */
+        .d-foxit { background: #141827; color: white; border: 1px solid #262B3F; }
+        .d-foxit .card-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .d-foxit .logo-mark { background: var(--foxit); }
+        .d-foxit .co-tag { color: rgba(255,255,255,0.55); }
+        .d-foxit .dash-desc { color: rgba(255,255,255,0.65); }
+        .d-foxit .card-footer { background: rgba(255,95,0,0.08); color: rgba(255,255,255,0.7); }
+        .d-foxit .card-footer .cta { color: var(--foxit); font-weight: 600; }
+        .d-foxit .card-footer .chip { background: rgba(61,213,152,0.15); color: #5FD69E; padding: 3px 10px; border-radius: 3px; font-size: 10.5px; font-weight: 600; }
 
-        /* UTA card */
-        .d-uta { background: white; border: 1px solid var(--line); border-top: 6px solid var(--uta); color: var(--ink); }
-        .d-uta:hover { box-shadow: 0 14px 40px rgba(0,85,164,0.2); }
-        .d-uta .card-header { padding: 28px 30px 22px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
-        .d-uta .seal { width: 48px; height: 48px; background: var(--uta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; }
-        .d-uta .co-name { font-weight: 700; font-size: 18px; font-family: 'Source Serif Pro', serif; color: #002A52; }
-        .d-uta .co-tag { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; }
-        .d-uta .card-body { padding: 26px 30px 30px; flex: 1; display: flex; flex-direction: column; }
-        .d-uta .dash-title { font-family: 'Source Serif Pro', serif; font-size: 22px; font-weight: 700; color: #002A52; margin-bottom: 8px; }
-        .d-uta .dash-desc { font-size: 14px; color: var(--muted); line-height: 1.55; flex: 1; }
-        .d-uta .card-footer { padding: 18px 30px; background: #F3F0E6; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        /* UTA card - government/civic (clean, authoritative) */
+        .d-uta { background: #FAFAF7; border: 1px solid var(--line); border-top: 5px solid var(--uta); }
+        .d-uta .card-header { padding-top: 18px; }
+        .d-uta .logo-mark { background: var(--uta); color: white; border-radius: 2px; }
+        .d-uta .co-name { color: var(--uta); letter-spacing: 1px; text-transform: uppercase; font-size: 13px; }
+        .d-uta .co-tag { color: var(--muted); }
+        .d-uta .card-body { border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 20px; }
+        .d-uta .dash-desc { color: #3B4252; }
+        .d-uta .card-footer { background: white; border-top: 1px solid var(--line); color: var(--muted); }
         .d-uta .card-footer .cta { color: var(--uta); font-weight: 600; }
-        .d-uta .card-footer .mark { display: inline-flex; align-items: center; gap: 4px; color: #DA291C; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        .d-uta .card-footer .mark::before { content: ""; width: 5px; height: 5px; background: #DA291C; border-radius: 50%; }
+        .d-uta .card-footer .chip { background: #FFF8E0; color: #8B6914; padding: 3px 10px; border-radius: 20px; border: 1px solid #FFE08A; font-size: 10.5px; font-weight: 600; }
 
-        /* Squirrel card */
-        .d-squirrel { background: #FFF5EF; border: 2px solid #1A1A1A; border-radius: 22px; box-shadow: 8px 8px 0 #1A1A1A; color: var(--ink); }
-        .d-squirrel:hover { transform: translate(-2px, -8px); box-shadow: 10px 14px 0 #1A1A1A; }
-        .d-squirrel .card-header { padding: 28px 30px 22px; display: flex; align-items: center; gap: 12px; }
-        .d-squirrel .logo-mark { width: 42px; height: 42px; background: var(--squirrel); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: white; transform: rotate(-6deg); box-shadow: 0 4px 12px rgba(255,107,53,0.25); position: relative; }
-        .d-squirrel .logo-mark::after { content: ""; position: absolute; width: 10px; height: 10px; background: #FFC857; border-radius: 50%; top: -3px; right: -3px; }
-        .d-squirrel .co-name { font-weight: 800; font-size: 18px; letter-spacing: -0.3px; }
-        .d-squirrel .co-tag { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; }
-        .d-squirrel .card-body { padding: 10px 30px 30px; flex: 1; display: flex; flex-direction: column; }
-        .d-squirrel .dash-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
-        .d-squirrel .dash-title em { font-style: normal; color: var(--squirrel); position: relative; }
-        .d-squirrel .dash-title em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 1px; height: 8px; background: #FFC857; z-index: -1; }
-        .d-squirrel .dash-desc { font-size: 14px; color: var(--muted); line-height: 1.55; flex: 1; }
-        .d-squirrel .card-footer { padding: 18px 30px; background: white; border-top: 2px solid #1A1A1A; display: flex; justify-content: space-between; align-items: center; font-size: 13px; border-radius: 0 0 20px 20px; }
+        /* Website Squirrel card - playful creative */
+        .d-squirrel { background: #FFF5EF; border: 2px solid #1A1A1A; box-shadow: 5px 5px 0 #1A1A1A; }
+        .d-squirrel:hover { box-shadow: 8px 8px 0 #1A1A1A; transform: translate(-3px, -3px); }
+        .d-squirrel .card-header { border-bottom: 1px solid rgba(26,26,26,0.1); }
+        .d-squirrel .logo-mark { background: var(--squirrel); color: white; }
+        .d-squirrel .co-tag { color: #5A5A5A; font-weight: 600; }
+        .d-squirrel .dash-desc { color: #3B4252; }
+        .d-squirrel .card-footer { background: rgba(255,107,53,0.08); border-top: 1px solid rgba(26,26,26,0.1); }
         .d-squirrel .card-footer .cta { color: var(--squirrel); font-weight: 700; }
+        .d-squirrel .card-footer .chip { background: #1A1A1A; color: white; padding: 3px 10px; font-weight: 600; font-size: 10.5px; }
 
-        .card-footer .metrics-chip { font-size: 11px; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-        .d-uta .card-footer .metrics-chip { background: white; color: var(--muted); border: 1px solid var(--line); }
-        .d-squirrel .card-footer .metrics-chip { background: #FFF5EF; color: var(--ink); border: 1.5px solid #1A1A1A; font-weight: 700; }
+        /* Healthicity card - coral red (real brand) */
+        .d-healthicity { background: #323232; color: white; border: 1px solid var(--healthicity); }
+        .d-healthicity:hover { box-shadow: 0 14px 40px rgba(255,61,77,0.28); }
+        .d-healthicity .card-header { border-bottom: 3px solid var(--healthicity); }
+        .d-healthicity .logo-mark { background: var(--healthicity); }
+        .d-healthicity .co-tag { color: rgba(255,255,255,0.6); }
+        .d-healthicity .dash-desc { color: rgba(255,255,255,0.72); }
+        .d-healthicity .card-footer { background: rgba(255,61,77,0.14); }
+        .d-healthicity .card-footer .cta { color: var(--healthicity); font-weight: 600; }
+        .d-healthicity .card-footer .chip { background: rgba(0,188,212,0.18); color: #4DD0E1; padding: 3px 10px; border-radius: 3px; font-weight: 600; font-size: 10.5px; }
 
-        footer { margin-top: 80px; padding-top: 30px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-        footer a { color: var(--muted); text-decoration: underline; }
+        /* Hill Capital card - Bloomberg terminal */
+        .d-hc { background: #0B0B0B; color: #E8E8E8; border: 1px solid var(--hc-amber); font-family: 'JetBrains Mono', monospace; }
+        .d-hc:hover { box-shadow: 0 14px 40px rgba(255,176,0,0.2); }
+        .d-hc .card-header { border-bottom: 1px solid rgba(255,176,0,0.25); }
+        .d-hc .logo-mark { background: transparent; border: 1px solid var(--hc-amber); color: var(--hc-amber); border-radius: 4px; font-size: 13px; letter-spacing: -0.5px; }
+        .d-hc .co-name { color: var(--hc-amber); letter-spacing: 0.5px; font-size: 15px; }
+        .d-hc .co-tag { color: rgba(255,255,255,0.5); }
+        .d-hc .dash-title { color: white; font-family: 'Inter', sans-serif; font-size: 18px; }
+        .d-hc .dash-desc { color: rgba(255,255,255,0.6); font-family: 'Inter', sans-serif; }
+        .d-hc .card-footer { background: rgba(255,176,0,0.05); border-top: 1px solid rgba(255,176,0,0.15); font-size: 11px; }
+        .d-hc .card-footer .cta { color: var(--hc-amber); font-weight: 600; }
+        .d-hc .card-footer .chip { background: rgba(61,213,152,0.12); color: #3DD598; padding: 3px 10px; border-radius: 3px; font-weight: 600; font-size: 10.5px; }
+
+        .foot-note { margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .foot-note a { color: var(--ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--ink); }
 
         @media (max-width: 900px) {
-            .hero { grid-template-columns: 1fr; }
-            .hero-text h1 { font-size: 40px; }
-            .hero-visual { height: 360px; }
+            .head-row { grid-template-columns: 1fr; gap: 22px; }
+            .head-row h1 { font-size: 38px; }
+            .stat-strip { grid-template-columns: repeat(2, 1fr); }
             .dash-grid { grid-template-columns: 1fr; }
-            .meta-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+    <nav class="p-topbar">
+        <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../Dashboards/index.html" class="active">Dashboards</a>
+            <a href="../Models/index.html">Models</a>
+            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+            <a href="../IHS/plan.html">60/90 Day Plan</a>
+        </div>
+    </nav>
+
     <div class="container">
-        <header class="hero">
-            <div class="hero-text">
-                <div class="eyebrow">Steve Hill &bull; BI Dashboard Portfolio</div>
-                <h1>Marketing &amp; revenue analytics, built for the <span class="hl">messy middle</span>.</h1>
-                <p>Four dashboards rebuilt from the work I've led: B2B SaaS mid-funnel at Netgain, API client growth at Foxit, fare-policy modeling at Utah Transit Authority, and DTC lead-scoring at Website Squirrel. All dashboards use illustrative data &mdash; real numbers are proprietary.</p>
-                <div class="meta-grid">
-                    <div class="meta-item"><div class="m-val">4</div><div class="m-lbl">Industries</div></div>
-                    <div class="meta-item"><div class="m-val">13+</div><div class="m-lbl">Years RevOps</div></div>
-                    <div class="meta-item"><div class="m-val">$300M+</div><div class="m-lbl">Revenue under analysis</div></div>
-                </div>
-            </div>
+        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <span>Dashboards</span></div>
 
-            <div class="hero-visual">
-                <div class="visual-card vc1">
-                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
-                    <div class="vc-title">Foxit &bull; Dark UI</div>
-                    <div class="vc-bars">
-                        <div class="vc-bar" style="height: 60%; background: #FF5F00;"></div>
-                        <div class="vc-bar" style="height: 85%; background: #FF8533;"></div>
-                        <div class="vc-bar" style="height: 45%; background: #262B3F;"></div>
-                        <div class="vc-bar" style="height: 70%; background: #FF5F00;"></div>
-                        <div class="vc-bar" style="height: 30%; background: #262B3F;"></div>
-                    </div>
-                </div>
-                <div class="visual-card vc2">
-                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
-                    <div class="vc-title">Netgain &bull; SaaS Ops</div>
-                    <div class="vc-bars">
-                        <div class="vc-bar" style="height: 35%; background: #F26A2E;"></div>
-                        <div class="vc-bar" style="height: 50%; background: #F26A2E;"></div>
-                        <div class="vc-bar" style="height: 70%; background: #0F1B2D;"></div>
-                        <div class="vc-bar" style="height: 85%; background: #0F1B2D;"></div>
-                    </div>
-                </div>
-                <div class="visual-card vc3">
-                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
-                    <div class="vc-title">UTA &bull; Policy Report</div>
-                    <div class="vc-bars">
-                        <div class="vc-bar" style="height: 70%; background: #0055A4;"></div>
-                        <div class="vc-bar" style="height: 40%; background: #DA291C;"></div>
-                        <div class="vc-bar" style="height: 55%; background: #0055A4;"></div>
-                        <div class="vc-bar" style="height: 30%; background: #FFB81C;"></div>
-                    </div>
-                </div>
-                <div class="visual-card vc4">
-                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
-                    <div class="vc-title">Website Squirrel &bull; Playful</div>
-                    <div class="vc-bars">
-                        <div class="vc-bar" style="height: 40%; background: #FF6B35; border-radius: 8px;"></div>
-                        <div class="vc-bar" style="height: 65%; background: #FFC857; border-radius: 8px;"></div>
-                        <div class="vc-bar" style="height: 50%; background: #5FD69E; border-radius: 8px;"></div>
-                        <div class="vc-bar" style="height: 80%; background: #FF6B35; border-radius: 8px;"></div>
-                    </div>
-                </div>
+        <div class="head-row">
+            <h1>Six <span class="hl">dashboards</span>. Six brand systems. One analyst.</h1>
+            <div class="intro">
+                Each dashboard is built in the <strong>visual language of the company it was made for</strong> &mdash;
+                SaaS, developer platform, government transit, local lead-gen, compliance healthcare, and quantitative
+                trading. The underlying analytics backbone is the same across all six; the storytelling isn't.
             </div>
-        </header>
+        </div>
 
-        <div class="section-title">Four dashboards, four visual languages</div>
-        <div class="section-sub">Each dashboard adopts the brand palette and layout style of the company it was built for.</div>
+        <div class="stat-strip">
+            <div class="stat-tile"><div class="k">6</div><div class="l">Branded Dashboards</div></div>
+            <div class="stat-tile"><div class="k">18+</div><div class="l">KPIs Tracked</div></div>
+            <div class="stat-tile"><div class="k">$300M+</div><div class="l">Revenue Analyzed</div></div>
+            <div class="stat-tile"><div class="k">13+ yrs</div><div class="l">Across Industries</div></div>
+        </div>
 
         <div class="dash-grid">
+
             <a href="netgain_b2b_saas_midfunnel.html" class="dash-card d-netgain">
                 <div class="card-header">
                     <div class="logo-mark">N</div>
                     <div>
                         <div class="co-name">Netgain</div>
-                        <div class="co-tag">Revenue Operations</div>
+                        <div class="co-tag">B2B SaaS &bull; Accounting</div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="dash-title">B2B SaaS Mid-Funnel</div>
-                    <div class="dash-desc">MQL &rarr; SQL &rarr; Opp conversion with multi-touch attribution across 6 products. Hero &quot;Moments that Matter&quot; callout reflects the 250% mid-funnel lift delivered through high-velocity testing.</div>
+                    <div class="dash-title">Mid-Funnel Velocity Dashboard</div>
+                    <div class="dash-desc">MQL→SQL→Opp→Closed-Won funnel with stage velocity, channel attribution, and deal-size cohorts. Targeted at NetSuite/Sage Intacct buyers.</div>
                 </div>
                 <div class="card-footer">
                     <span class="cta">Open dashboard &rarr;</span>
-                    <span class="metrics-chip">+250% lift</span>
+                    <span class="chip">SaaS funnel</span>
                 </div>
             </a>
 
@@ -215,60 +202,97 @@
                     <div class="logo-mark">F</div>
                     <div>
                         <div class="co-name">Foxit</div>
-                        <div class="co-tag">eSign Analytics</div>
+                        <div class="co-tag">PDF &bull; Developer Platform</div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="dash-title">API Client Growth Funnel</div>
-                    <div class="dash-desc">Trial &rarr; Activated &rarr; Paid funnel with MRR waterfall and 12-month cohort retention heatmap. Dark dev-ops-inspired layout references the lifecycle trigger engine that freed 72 hrs/week.</div>
+                    <div class="dash-title">API Client Growth &amp; Activation Funnel</div>
+                    <div class="dash-desc">Dev-sign-up → first API call → paid conversion, split by SDK language. Retention cohorts and feature-adoption signal for a bottoms-up dev motion.</div>
                 </div>
                 <div class="card-footer">
-                    <span class="cta">&gt;_ open dashboard</span>
-                    <span class="metrics-chip">72 hrs/wk saved</span>
+                    <span class="cta">Open dashboard &rarr;</span>
+                    <span class="chip">PLG + API</span>
                 </div>
             </a>
 
             <a href="uta_fare_revenue_elasticity.html" class="dash-card d-uta">
                 <div class="card-header">
-                    <div class="seal">UTA</div>
+                    <div class="logo-mark">UTA</div>
                     <div>
-                        <div class="co-name">Utah Transit Authority</div>
-                        <div class="co-tag">Market Analysis</div>
+                        <div class="co-name">UTA</div>
+                        <div class="co-tag">Utah Transit Authority</div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="dash-title">Fare Revenue &amp; Elasticity</div>
-                    <div class="dash-desc">Revenue vs. rider volume divergence, three-scenario fare projections, and price elasticity by rider segment. Policy-report-style layout for $300M+ annual fare revenue analysis.</div>
+                    <div class="dash-title">Fare Revenue &amp; Price Elasticity</div>
+                    <div class="dash-desc">Route-level fare revenue, ridership volume, and elasticity bands with TVM (ticket vending machine) uptime overlay &mdash; the vendor-accountability story, visualized.</div>
                 </div>
                 <div class="card-footer">
-                    <span class="cta">View report &rarr;</span>
-                    <span class="mark">Internal report</span>
+                    <span class="cta">Open dashboard &rarr;</span>
+                    <span class="chip">Public sector</span>
                 </div>
             </a>
 
             <a href="website_squirrel_lead_segmentation_cac.html" class="dash-card d-squirrel">
                 <div class="card-header">
-                    <div class="logo-mark">S</div>
+                    <div class="logo-mark">WS</div>
                     <div>
                         <div class="co-name">Website Squirrel</div>
-                        <div class="co-tag">Growth Analytics</div>
+                        <div class="co-tag">Lead Gen &bull; Small Biz</div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="dash-title">Lead <em>Segmentation</em> &amp; CAC</div>
-                    <div class="dash-desc">A-D tiered lead scoring with segment CAC, channel-level efficiency, and 180-day retention curves. Driving 60%+ CAC reduction through Python/AWS pipelines and behavioral segmentation.</div>
+                    <div class="dash-title">Lead Segmentation &amp; CAC Dashboard</div>
+                    <div class="dash-desc">Micro-market segmentation, cost-per-lead by source, and CAC payback by service line. Built for a lean SMB marketing team that needs one screen to decide spend.</div>
                 </div>
                 <div class="card-footer">
                     <span class="cta">Open dashboard &rarr;</span>
-                    <span class="metrics-chip">60%+ CAC drop</span>
+                    <span class="chip">CAC + LTV</span>
                 </div>
             </a>
+
+            <a href="healthicity_lead_scoring.html" class="dash-card d-healthicity">
+                <div class="card-header">
+                    <div class="logo-mark">H</div>
+                    <div>
+                        <div class="co-name">Healthicity</div>
+                        <div class="co-tag">Healthcare &bull; Compliance</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="dash-title">Lead Scoring &amp; Tier Performance</div>
+                    <div class="dash-desc">A+ through F lead-grade distribution, SQL conversion by tier, and a 7-dimension scoring breakdown &mdash; modeled on the Healthicity HubSpot lead-scoring proposal.</div>
+                </div>
+                <div class="card-footer">
+                    <span class="cta">Open dashboard &rarr;</span>
+                    <span class="chip">Lead scoring</span>
+                </div>
+            </a>
+
+            <a href="hill_capital_quant_portfolio.html" class="dash-card d-hc">
+                <div class="card-header">
+                    <div class="logo-mark">HC</div>
+                    <div>
+                        <div class="co-name">HILL CAPITAL</div>
+                        <div class="co-tag">Quant &bull; Portfolio Analytics</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="dash-title">Quant Portfolio Terminal</div>
+                    <div class="dash-desc">Bloomberg-inspired terminal for equity portfolio analytics &mdash; positions, factor exposure, P&amp;L attribution, and backtest-driven risk monitoring. My post-UTA work.</div>
+                </div>
+                <div class="card-footer">
+                    <span class="cta">Open dashboard &rarr;</span>
+                    <span class="chip">Quant &bull; Python</span>
+                </div>
+            </a>
+
         </div>
 
-        <footer>
-            <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
-            <div>All dashboards use illustrative data to demonstrate structure and analytical approach.</div>
-        </footer>
+        <div class="foot-note">
+            <div>Looking for the data-flow models that power these dashboards? &nbsp;<a href="../Models/index.html">See the Models section &rarr;</a></div>
+            <div>&larr; <a href="../index.html">Back to portfolio home</a></div>
+        </div>
     </div>
 </body>
 </html>

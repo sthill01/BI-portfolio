@@ -569,24 +569,37 @@
     .weeks { grid-template-columns: 1fr; }
     .two-col, .why-grid { grid-template-columns: 1fr; }
   }
+/* Portfolio cross-page topbar */
+.p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+.p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+.p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+.p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+.p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+.p-topbar .p-nav a:hover { color: #FFD77A; }
+.p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+@media (max-width: 720px) {
+  .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+  .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <a href="dashboards/index.html" class="brand" style="color:#fff;text-decoration:none;">Steve Hill <span class="sub">· Portfolio</span></a>
-  <nav class="topnav">
-    <a href="dashboards/index.html">Dashboards</a>
-    <a href="accomplishments.html">Accomplishments</a>
-    <a href="models/index.html">Marketing Models</a>
+<nav class="p-topbar">
+  <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+  <div class="p-nav">
+    <a href="../index.html">Home</a>
+    <a href="../Dashboards/index.html">Dashboards</a>
+    <a href="../Models/index.html">Models</a>
+    <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
     <a href="plan.html" class="active">60 / 90 Day Plan</a>
-  </nav>
-</div>
+  </div>
+</nav>
 
 <div class="container">
 
   <div class="breadcrumb">
-    <a href="dashboards/index.html">Portfolio</a> › 60 / 90 Day Plan
+    <a href="../index.html">Portfolio</a> › 60 / 90 Day Plan
   </div>
 
   <section class="hero">
@@ -859,7 +872,7 @@
 </div>
 
 <footer>
-  60 / 90 Day Plan · Prepared April 2026 · <a href="dashboards/index.html">← Portfolio home</a>
+  60 / 90 Day Plan · Prepared April 2026 · <a href="../index.html">← Portfolio home</a>
 </footer>
 
 </body>

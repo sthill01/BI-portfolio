@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthicity &mdash; Lead Scoring Model &amp; Data Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
+
+        :root {
+            /* Healthicity brand palette (sourced from healthicity.com CSS).
+               Dark mode model page: charcoal surface + coral primary + cyan secondary. */
+            --hc-coral: #ff3d4d;
+            --hc-coral-dark: #d71525;
+            --hc-coral-deep: #a60e1b;
+            --hc-coral-light: #ff6575;
+            --hc-coral-soft: rgba(255,61,77,0.14);
+            --hc-cyan: #00BCD4;
+            --hc-cyan-dark: #0097A7;
+            --hc-bg: #1a1f24;            /* deep charcoal page bg */
+            --hc-bg-2: #232a31;           /* surface variant */
+            --hc-card: #2a323a;           /* elevated surfaces */
+            --hc-ink: #E8ECF3;
+            --hc-slate: #8A94A8;
+            --hc-line: rgba(255,255,255,0.08);
+            /* Back-compat aliases — teal slot = coral (primary), accent slot = cyan */
+            --hc-teal: var(--hc-coral);
+            --hc-teal-dark: var(--hc-coral-dark);
+            --hc-teal-deep: var(--hc-coral-deep);
+            --hc-teal-light: var(--hc-coral-light);
+            --hc-teal-soft: var(--hc-coral-soft);
+            --hc-navy: var(--hc-bg);
+            --hc-navy-2: var(--hc-bg-2);
+            --hc-accent: var(--hc-cyan);
+            --hc-accent-dark: var(--hc-cyan-dark);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--hc-navy); color: var(--hc-ink); line-height: 1.55; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 36px 40px 80px; }
+
+        /* Top nav */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 44px; padding-bottom: 18px; border-bottom: 1px solid var(--hc-line); }
+        .brand { font-weight: 800; font-size: 18px; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .brand .logo { width: 32px; height: 32px; background: var(--hc-teal); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; }
+        .brand span.sub { font-weight: 400; color: var(--hc-slate); font-size: 14px; margin-left: 4px; }
+        .nav-links { display: flex; gap: 24px; font-size: 13px; }
+        .nav-links a { color: var(--hc-slate); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .nav-links a:hover { color: white; }
+
+        /* Breadcrumb + hero */
+        .breadcrumb { font-size: 12px; color: var(--hc-slate); margin-bottom: 14px; }
+        .breadcrumb a { color: var(--hc-slate); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--hc-teal); }
+
+        .hero { margin-bottom: 44px; padding-bottom: 36px; border-bottom: 1px solid var(--hc-line); display: grid; grid-template-columns: 1.7fr 1fr; gap: 36px; align-items: start; }
+        .hero h1 { font-size: 42px; font-weight: 800; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 16px; color: white; }
+        .hero h1 .hl { color: var(--hc-teal); }
+        .hero p { color: var(--hc-slate); font-size: 16px; max-width: 640px; margin-bottom: 0; }
+        .hero-meta { background: var(--hc-card); border: 1px solid var(--hc-line); border-radius: 14px; padding: 22px 24px; }
+        .hero-meta .stat { padding: 10px 0; border-top: 1px solid var(--hc-line); display: flex; justify-content: space-between; font-size: 13px; }
+        .hero-meta .stat:first-child { border-top: none; padding-top: 0; }
+        .hero-meta .stat .k { color: var(--hc-slate); }
+        .hero-meta .stat .v { color: white; font-weight: 600; }
+        .hero-meta .stat .v em { font-style: normal; color: var(--hc-teal); }
+
+        /* Sections */
+        .section-head { margin: 60px 0 28px; }
+        .section-head .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.2px; color: var(--hc-teal); margin-bottom: 10px; }
+        .section-head h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.6px; color: white; margin-bottom: 8px; }
+        .section-head p { color: var(--hc-slate); font-size: 14px; max-width: 700px; }
+
+        /* Data flow SVG container */
+        .flow-canvas { background: var(--hc-card); border: 1px solid var(--hc-line); border-radius: 18px; padding: 28px 20px; overflow-x: auto; }
+        .flow-canvas svg { display: block; margin: 0 auto; min-width: 1040px; }
+
+        /* Layer deep-dive */
+        .layers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 28px; }
+        .layer { background: var(--hc-card); border: 1px solid var(--hc-line); border-radius: 12px; padding: 20px 18px; position: relative; }
+        .layer .num { width: 28px; height: 28px; background: var(--hc-teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; margin-bottom: 12px; }
+        .layer h4 { font-size: 14px; font-weight: 700; color: white; margin-bottom: 6px; }
+        .layer .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--hc-teal); font-weight: 700; margin-bottom: 10px; }
+        .layer ul { list-style: none; }
+        .layer ul li { font-size: 12px; color: var(--hc-slate); padding: 6px 0; border-top: 1px dashed var(--hc-line); line-height: 1.45; }
+        .layer ul li:first-child { border-top: none; padding-top: 0; }
+        .layer ul li strong { color: var(--hc-ink); font-weight: 600; }
+        @media (max-width: 900px) { .layers { grid-template-columns: 1fr 1fr; } }
+
+        /* Scoring calculator */
+        .calc-wrap { background: var(--hc-card); border: 1px solid var(--hc-line); border-radius: 18px; padding: 32px 34px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; }
+        .calc-form { display: grid; gap: 18px; }
+        .calc-row { display: grid; gap: 6px; }
+        .calc-row label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--hc-slate); font-weight: 700; }
+        .calc-row select { padding: 11px 14px; border: 1px solid var(--hc-line); border-radius: 8px; background: var(--hc-navy-2); color: white; font-size: 14px; font-family: inherit; cursor: pointer; }
+        .calc-row select:focus { outline: none; border-color: var(--hc-teal); }
+        .calc-row .pts { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--hc-teal); margin-top: 2px; font-weight: 600; }
+
+        .calc-result { background: linear-gradient(150deg, var(--hc-teal-deep) 0%, var(--hc-navy) 70%); border-radius: 14px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; border: 1px solid rgba(0,179,176,0.3); }
+        .calc-result::before { content: ""; position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; border-radius: 50%; background: var(--hc-teal); opacity: 0.08; }
+        .calc-result .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--hc-teal); font-weight: 700; margin-bottom: 8px; }
+        .calc-result .grade { font-family: 'JetBrains Mono', monospace; font-size: 96px; font-weight: 700; line-height: 1; color: white; letter-spacing: -4px; margin-bottom: 8px; position: relative; z-index: 2; }
+        .calc-result .score { font-size: 14px; color: var(--hc-slate); margin-bottom: 18px; }
+        .calc-result .score strong { color: white; font-family: 'JetBrains Mono', monospace; }
+        .calc-result .route { background: rgba(0,179,176,0.15); border: 1px solid rgba(0,179,176,0.35); border-radius: 10px; padding: 14px 16px; position: relative; z-index: 2; }
+        .calc-result .route .r-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--hc-teal); font-weight: 700; margin-bottom: 4px; }
+        .calc-result .route .r-body { font-size: 13px; color: white; font-weight: 500; line-height: 1.4; }
+        .calc-result .breakdown { margin-top: 18px; position: relative; z-index: 2; }
+        .calc-result .brk-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 11px; color: var(--hc-slate); border-top: 1px dashed rgba(255,255,255,0.08); }
+        .calc-result .brk-row:first-child { border-top: none; }
+        .calc-result .brk-row .v { font-family: 'JetBrains Mono', monospace; color: var(--hc-teal-light); font-weight: 600; }
+
+        @media (max-width: 900px) { .calc-wrap { grid-template-columns: 1fr; } }
+
+        /* Feedback loop callout */
+        .loop-callout { margin-top: 30px; background: rgba(0,179,176,0.12); border: 1px solid rgba(0,179,176,0.35); border-radius: 12px; padding: 24px 26px; display: grid; grid-template-columns: 90px 1fr; gap: 24px; align-items: center; }
+        .loop-callout .badge { background: var(--hc-teal); color: white; padding: 12px 10px; border-radius: 8px; text-align: center; }
+        .loop-callout .badge .l { font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; font-weight: 700; opacity: 0.9; }
+        .loop-callout .badge .v { font-size: 20px; font-weight: 800; }
+        .loop-callout .body h4 { color: white; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .loop-callout .body p { color: var(--hc-slate); font-size: 13.5px; }
+
+        /* Outcome strip */
+        .outcome { margin-top: 50px; background: linear-gradient(135deg, var(--hc-teal-dark) 0%, var(--hc-teal-deep) 100%); border-radius: 16px; padding: 32px 36px; display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: center; }
+        .outcome .hero-num { font-size: 60px; font-weight: 800; letter-spacing: -2px; color: white; line-height: 1; }
+        .outcome .hero-num .unit { font-size: 22px; font-weight: 700; }
+        .outcome h3 { color: white; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .outcome p { color: rgba(255,255,255,0.85); font-size: 14px; }
+
+        /* Decision strip */
+        .decisions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .decision { background: var(--hc-card); border: 1px solid var(--hc-line); border-left: 3px solid var(--hc-teal); border-radius: 10px; padding: 20px 22px; }
+        .decision h4 { color: white; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+        .decision p { color: var(--hc-slate); font-size: 12.5px; line-height: 1.5; }
+        @media (max-width: 900px) { .decisions { grid-template-columns: 1fr; } }
+
+        /* Footer */
+        .footer { margin-top: 60px; padding-top: 26px; border-top: 1px solid var(--hc-line); color: var(--hc-slate); font-size: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+        .footer a { color: var(--hc-teal); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="p-topbar">
+        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+        <nav class="p-nav">
+            <a href="../index.html">Portfolio Home</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="index.html" class="active">Marketing Models</a>
+            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+            <a href="../IHS/plan.html">60/90 Day Plan</a>
+        </nav>
+    </div>
+
+    <div class="wrap">
+        <nav class="top-nav">
+            <a href="index.html" class="brand">
+                <div class="logo">H</div>
+                Healthicity <span class="sub">&middot; Lead Scoring Model</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">All Models</a>
+                <a href="../Dashboards/healthicity_lead_scoring.html">Dashboard</a>
+                <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+            </div>
+        </nav>
+
+        <div class="breadcrumb">
+            <a href="../index.html">Portfolio</a> &middot; <a href="index.html">Marketing Models</a> &middot; Healthicity Lead Scoring
+        </div>
+
+        <div class="hero">
+            <div>
+                <h1>Turning MQL volume into <span class="hl">tiered revenue signal</span></h1>
+                <p>A 7-dimension scoring model built in HubSpot and synced to Salesforce. Each dimension scores 0&ndash;10 points based on deal-size distribution analysis of the historical closed-won population. The composite score maps to an A+&ndash;F grade that drives sales routing, nurture cadence, and content targeting.</p>
+            </div>
+            <div class="hero-meta">
+                <div class="stat"><span class="k">Dimensions</span><span class="v">7</span></div>
+                <div class="stat"><span class="k">Grade tiers</span><span class="v">11 (A+ &rarr; F)</span></div>
+                <div class="stat"><span class="k">Score range</span><span class="v">0 &ndash; 70 pts</span></div>
+                <div class="stat"><span class="k">Stack</span><span class="v">HubSpot + Salesforce</span></div>
+                <div class="stat"><span class="k">App conv. lift</span><span class="v"><em>2.0&times;</em></span></div>
+                <div class="stat"><span class="k">Social engagement</span><span class="v"><em>+400% YoY</em></span></div>
+            </div>
+        </div>
+
+        <!-- DATA FLOW DIAGRAM -->
+        <div class="section-head">
+            <div class="eyebrow">Data Flow</div>
+            <h2>HubSpot &rarr; Scoring &rarr; Salesforce &rarr; Closed Loop</h2>
+            <p>Every form submission flows through the same five-layer pipeline: capture, enrichment, scoring, routing, and feedback. The feedback layer is what keeps the model honest &mdash; closed-won/closed-lost outcomes are written back to the scoring inputs to validate the weights.</p>
+        </div>
+        <div class="flow-canvas">
+            <svg viewBox="0 0 1040 320" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#ff3d4d"/>
+                    </marker>
+                    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ff3d4d"/>
+                        <stop offset="100%" stop-color="#d71525"/>
+                    </linearGradient>
+                </defs>
+
+                <!-- 1. Capture -->
+                <rect x="10" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#ff3d4d" stroke-width="1.5"/>
+                <text x="100" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">① CAPTURE</text>
+                <text x="100" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">HubSpot Forms</text>
+                <text x="100" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Demo requests</text>
+                <text x="100" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Webinar / TL d/l</text>
+                <text x="100" y="200" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Blog subscribe</text>
+
+                <!-- 2. Enrichment -->
+                <rect x="220" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#ff3d4d" stroke-width="1.5"/>
+                <text x="310" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">② ENRICH</text>
+                <text x="310" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">Firmographic Data</text>
+                <text x="310" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Org type, size</text>
+                <text x="310" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Title standardization</text>
+                <text x="310" y="200" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Source attribution</text>
+
+                <!-- 3. Scoring -->
+                <rect x="430" y="60" width="180" height="200" rx="10" fill="url(#tealGrad)" stroke="#ff3d4d" stroke-width="1.5"/>
+                <text x="520" y="88" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter" opacity="0.85">③ SCORE</text>
+                <text x="520" y="112" fill="white" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter">7-Dim Model</text>
+                <line x1="450" y1="124" x2="590" y2="124" stroke="white" opacity="0.3" stroke-width="1"/>
+                <text x="520" y="142" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Org Type · 0-10</text>
+                <text x="520" y="158" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Employees · 0-10</text>
+                <text x="520" y="174" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Job Title · 0-10</text>
+                <text x="520" y="190" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Form Subs · 0-10</text>
+                <text x="520" y="206" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Last Seen · 0-10</text>
+                <text x="520" y="222" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">1st Conv. · 0-10</text>
+                <text x="520" y="238" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Source · 0-10</text>
+
+                <!-- 4. Route -->
+                <rect x="640" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#ff3d4d" stroke-width="1.5"/>
+                <text x="730" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">④ ROUTE</text>
+                <text x="730" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">Salesforce</text>
+                <text x="730" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">A+/A &rarr; priority queue</text>
+                <text x="730" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">B &rarr; standard cadence</text>
+                <text x="730" y="200" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">C/D/F &rarr; nurture</text>
+
+                <!-- 5. Feedback -->
+                <rect x="850" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#00BCD4" stroke-width="1.5"/>
+                <text x="940" y="128" fill="#00BCD4" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">⑤ FEEDBACK</text>
+                <text x="940" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">Closed-Loop</text>
+                <text x="940" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Closed-won writes back</text>
+                <text x="940" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Re-calibrate weights</text>
+                <text x="940" y="200" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Quarterly review</text>
+
+                <!-- Arrows -->
+                <line x1="190" y1="160" x2="218" y2="160" stroke="#ff3d4d" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="400" y1="160" x2="428" y2="160" stroke="#ff3d4d" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="610" y1="160" x2="638" y2="160" stroke="#ff3d4d" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="820" y1="160" x2="848" y2="160" stroke="#ff3d4d" stroke-width="2" marker-end="url(#arrow)"/>
+
+                <!-- Feedback arrow looping back -->
+                <path d="M 940 220 Q 940 290 520 290 Q 100 290 100 225" fill="none" stroke="#00BCD4" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrow)" opacity="0.75"/>
+                <text x="520" y="308" fill="#00BCD4" font-size="10" text-anchor="middle" font-family="Inter" font-weight="600" opacity="0.9">CLOSED-WON OUTCOMES FEED BACK INTO SCORING MODEL</text>
+            </svg>
+        </div>
+
+        <!-- LAYER DEEP-DIVE -->
+        <div class="layers">
+            <div class="layer">
+                <div class="num">1</div>
+                <div class="tag">CAPTURE</div>
+                <h4>HubSpot Forms</h4>
+                <ul>
+                    <li><strong>On-demand demo</strong> — highest intent</li>
+                    <li><strong>Webinar reg.</strong> — live + on-demand</li>
+                    <li>TL / white paper download</li>
+                    <li>Blog / newsletter subscribe</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">2</div>
+                <div class="tag">ENRICH</div>
+                <h4>Firmographic Layer</h4>
+                <ul>
+                    <li><strong>Org type</strong> from domain + form</li>
+                    <li>Employee count range</li>
+                    <li>Job-title standardization</li>
+                    <li>UTM &rarr; source attribution</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">3</div>
+                <div class="tag">SCORE</div>
+                <h4>7-Dim Composite</h4>
+                <ul>
+                    <li>Each dim: <strong>0&ndash;10 pts</strong></li>
+                    <li>Total possible: <strong>70 pts</strong></li>
+                    <li>Percentile &rarr; letter grade</li>
+                    <li>Re-score on every new event</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">4</div>
+                <div class="tag">ROUTE</div>
+                <h4>Salesforce Routing</h4>
+                <ul>
+                    <li><strong>A+ / A</strong> &rarr; priority queue, same-day</li>
+                    <li><strong>B+ / B</strong> &rarr; standard SDR cadence</li>
+                    <li><strong>B-/C</strong> &rarr; lighter-touch nurture</li>
+                    <li><strong>D / F</strong> &rarr; recycle, no sales touch</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <div class="num">5</div>
+                <div class="tag">FEEDBACK</div>
+                <h4>Closed-Loop</h4>
+                <ul>
+                    <li>Closed-won flag writes back</li>
+                    <li>Validate dim weights vs outcome</li>
+                    <li>Quarterly re-calibration</li>
+                    <li>Flag dim drift</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE CALCULATOR -->
+        <div class="section-head">
+            <div class="eyebrow">Interactive &middot; Try It</div>
+            <h2>Lead Scoring Calculator</h2>
+            <p>Pick values for the 7 inputs and watch the score, tier, and routing decision update in real time. The math is the same model logic that ran in production.</p>
+        </div>
+
+        <div class="calc-wrap">
+            <div class="calc-form">
+                <div class="calc-row">
+                    <label for="f-org">Organization Type</label>
+                    <select id="f-org">
+                        <option value="10">Hospital / Health System</option>
+                        <option value="8">Physician Group</option>
+                        <option value="7">Payer</option>
+                        <option value="6">LTC / SNF / Post-Acute</option>
+                        <option value="5">Private Practice</option>
+                        <option value="4">Consultant / Self-Employed</option>
+                        <option value="2">Other / Unknown</option>
+                    </select>
+                </div>
+                <div class="calc-row">
+                    <label for="f-emp">Employee Count</label>
+                    <select id="f-emp">
+                        <option value="10">1,000+</option>
+                        <option value="10">401 – 1,000</option>
+                        <option value="8">201 – 400</option>
+                        <option value="7">101 – 200</option>
+                        <option value="6">51 – 100</option>
+                        <option value="6">1 – 50</option>
+                    </select>
+                </div>
+                <div class="calc-row">
+                    <label for="f-title">Job Title</label>
+                    <select id="f-title">
+                        <option value="10">Compliance Officer</option>
+                        <option value="9">Director / VP / Chief</option>
+                        <option value="9">Manager</option>
+                        <option value="7">Senior / Coding / Training</option>
+                        <option value="7">Auditor</option>
+                        <option value="4">Quality</option>
+                        <option value="3">Other / Unknown</option>
+                    </select>
+                </div>
+                <div class="calc-row">
+                    <label for="f-subs">Unique Form Submissions</label>
+                    <select id="f-subs">
+                        <option value="10">8+ submissions</option>
+                        <option value="8">5 – 7 submissions</option>
+                        <option value="6">3 – 4 submissions</option>
+                        <option value="4">2 submissions</option>
+                        <option value="2">1 submission</option>
+                    </select>
+                </div>
+                <div class="calc-row">
+                    <label for="f-seen">Time Last Seen</label>
+                    <select id="f-seen">
+                        <option value="10">Active this week</option>
+                        <option value="8">Active this month</option>
+                        <option value="5">30 – 90 days ago</option>
+                        <option value="2">91 – 180 days ago</option>
+                        <option value="0">6+ months cold</option>
+                    </select>
+                </div>
+                <div class="calc-row">
+                    <label for="f-conv">First Conversion</label>
+                    <select id="f-conv">
+                        <option value="10">On-Demand Demo</option>
+                        <option value="8">Live Webinar</option>
+                        <option value="7">Thought-Leadership / White Paper</option>
+                        <option value="5">Newsletter / Blog Subscribe</option>
+                        <option value="4">Content Download (generic)</option>
+                    </select>
+                </div>
+                <div class="calc-row">
+                    <label for="f-source">Lead Source</label>
+                    <select id="f-source">
+                        <option value="10">Organic Search</option>
+                        <option value="9">Capterra / Review Site</option>
+                        <option value="8">Referral</option>
+                        <option value="6">Paid Search</option>
+                        <option value="5">Email Nurture</option>
+                        <option value="4">Direct</option>
+                        <option value="3">Paid Social</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-result">
+                <div>
+                    <div class="label">Computed Tier</div>
+                    <div class="grade" id="res-grade">A+</div>
+                    <div class="score">Composite score: <strong id="res-score">0 / 70</strong></div>
+                </div>
+                <div class="breakdown" id="res-breakdown"></div>
+                <div class="route">
+                    <div class="r-label">Routing Decision</div>
+                    <div class="r-body" id="res-route">Priority queue — same-day outreach by AE.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loop-callout">
+            <div class="badge">
+                <div class="l">Closed</div>
+                <div class="v">Loop</div>
+            </div>
+            <div class="body">
+                <h4>This is where most scoring models fail</h4>
+                <p>Weights are only as good as the historical outcomes that train them. The Healthicity model writes closed-won / closed-lost back to the scoring record so weights can be re-validated quarterly instead of drifting against a 2017 snapshot forever.</p>
+            </div>
+        </div>
+
+        <!-- DECISIONS DRIVEN -->
+        <div class="section-head">
+            <div class="eyebrow">Downstream Decisions</div>
+            <h2>What the Scoring Model Actually Changes</h2>
+            <p>A scoring model is only valuable if someone changes behavior because of it. Three decisions get rewired:</p>
+        </div>
+        <div class="decisions">
+            <div class="decision">
+                <h4>Sales capacity allocation</h4>
+                <p>SDR and AE time is finite. The model stops every MQL from being treated equally. A+/A leads get 80% of the capacity; D/F leads get 0% and go to nurture automation.</p>
+            </div>
+            <div class="decision">
+                <h4>Content investment priorities</h4>
+                <p>First-conversion data shows on-demand demos produced 52% of closed deals and webinars 19%. Content spend shifts toward formats that convert, not formats that generate the most leads.</p>
+            </div>
+            <div class="decision">
+                <h4>Paid-channel spend mix</h4>
+                <p>Organic Search and Capterra produce the largest deals by index. Paid-social leads are over-represented in the D/F tier. Budget re-allocated to source-quality, not source-volume.</p>
+            </div>
+        </div>
+
+        <div class="outcome">
+            <div>
+                <div class="hero-num">2.0<span class="unit">&times;</span></div>
+            </div>
+            <div>
+                <h3>Lifted app-form conversion rate</h3>
+                <p>Combined with 400% YoY growth in social engagement through the surround-the-buyer content strategy the scoring model informed. Measured quarter-over-quarter against the pre-scoring baseline.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>Steve Hill &middot; Healthicity 2016&ndash;2017 &middot; Lead scoring model originally proposed in 2017; source doc available on request.</div>
+            <a href="../Dashboards/healthicity_lead_scoring.html">&larr; View the Healthicity Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        // Letter-grade buckets
+        function scoreToGrade(pct) {
+            if (pct >= 0.95) return { g: 'A+', r: 'Priority queue — same-day outreach by AE. Highest-value lead; treat as strategic opportunity.' };
+            if (pct >= 0.88) return { g: 'A',  r: 'Priority queue — outreach within 24 hours. Standard A-tier AE ownership.' };
+            if (pct >= 0.82) return { g: 'A-', r: 'Priority queue — outreach within 48 hours.' };
+            if (pct >= 0.74) return { g: 'B+', r: 'Standard SDR cadence — outreach within 3 business days.' };
+            if (pct >= 0.66) return { g: 'B',  r: 'Standard SDR cadence — 5-business-day SLA.' };
+            if (pct >= 0.58) return { g: 'B-', r: 'Light-touch SDR cadence — weekly review.' };
+            if (pct >= 0.50) return { g: 'C+', r: 'Marketing nurture — educational track; SDR on signal only.' };
+            if (pct >= 0.42) return { g: 'C',  r: 'Marketing nurture — no sales touch unless engagement lifts.' };
+            if (pct >= 0.34) return { g: 'C-', r: 'Marketing nurture — monthly newsletter.' };
+            if (pct >= 0.22) return { g: 'D',  r: 'Recycle — low-frequency nurture; requeue on new conversion event.' };
+            return { g: 'F',  r: 'Recycle / suppress — no active touch. Review for disqualification.' };
+        }
+
+        const ids = ['f-org','f-emp','f-title','f-subs','f-seen','f-conv','f-source'];
+        const labels = ['Org Type','Employees','Job Title','Form Subs','Last Seen','First Conv.','Lead Source'];
+
+        function recompute() {
+            const vals = ids.map(id => parseInt(document.getElementById(id).value, 10));
+            const total = vals.reduce((a,b) => a+b, 0);
+            const pct = total / 70;
+            const { g, r } = scoreToGrade(pct);
+
+            document.getElementById('res-grade').textContent = g;
+            document.getElementById('res-score').textContent = total + ' / 70';
+            document.getElementById('res-route').textContent = r;
+
+            const brk = document.getElementById('res-breakdown');
+            brk.innerHTML = vals.map((v, i) =>
+                `<div class="brk-row"><span>${labels[i]}</span><span class="v">${v} / 10</span></div>`
+            ).join('');
+        }
+
+        ids.forEach(id => document.getElementById(id).addEventListener('change', recompute));
+        recompute();
+    </script>
+</body>
+</html>

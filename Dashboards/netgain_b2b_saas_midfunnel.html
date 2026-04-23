@@ -4,9 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netgain | Mid-Funnel Performance</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
         :root {
             --ng-orange: #F26A2E;
             --ng-orange-dark: #D9531A;
@@ -79,6 +91,16 @@
     </style>
 </head>
 <body>
+        <div class="p-topbar">
+        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+        <nav class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="index.html" class="active">Dashboards</a>
+            <a href="../Models/index.html">Models</a>
+            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+            <a href="../IHS/plan.html">60/90 Day Plan</a>
+        </nav>
+    </div>
     <div class="topnav">
         <div class="brand">
             <div class="brand-mark">N</div>

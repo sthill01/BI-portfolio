@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steve Hill &mdash; BI / Marketing Analytics Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
+
+        :root {
+            --ink: #0F1B2D;
+            --paper: #F6F4EE;
+            --line: #E4E0D7;
+            --muted: #6E788C;
+            --netgain: #F26A2E;
+            --foxit: #FF5F00;
+            --uta: #0055A4;
+            --squirrel: #FF6B35;
+            --hc-amber: #FFB000;
+            --healthicity: #ff3d4d;
+            --healthicity-cyan: #00BCD4;
+            --intermountain-navy: #0F2A44;
+            --intermountain-gold: #D8A94B;
+            --hl: #FFD77A;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.5; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 40px; }
+
+        .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px; padding-bottom: 60px; border-bottom: 1px solid var(--line); }
+        .hero-text .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 16px; }
+        .hero-text h1 { font-family: 'Source Serif Pro', serif; font-size: 52px; font-weight: 700; letter-spacing: -1.4px; line-height: 1.05; color: var(--ink); margin-bottom: 20px; }
+        .hero-text h1 span.hl { position: relative; white-space: nowrap; }
+        .hero-text h1 span.hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 14px; background: #FFD77A; z-index: -1; }
+        .hero-text p { font-size: 17px; color: var(--muted); margin-bottom: 28px; max-width: 500px; }
+        .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 36px; }
+        .meta-item .m-val { font-family: 'Source Serif Pro', serif; font-size: 32px; font-weight: 700; letter-spacing: -1px; color: var(--ink); }
+        .meta-item .m-lbl { font-size: 11px; color: var(--muted); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 1.2px; }
+
+        .hero-visual { position: relative; height: 420px; }
+        .visual-card { position: absolute; width: 300px; padding: 20px; border-radius: 14px; box-shadow: 0 10px 35px rgba(15,27,45,0.18); transition: transform 0.3s; }
+        .visual-card:hover { transform: translateY(-4px) rotate(0deg) !important; }
+        .visual-card .swatch-row { display: flex; gap: 4px; margin-bottom: 12px; }
+        .visual-card .swatch { width: 10px; height: 10px; border-radius: 50%; }
+        .visual-card .vc-title { font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+        .visual-card .vc-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+        .visual-card .vc-bar { flex: 1; border-radius: 3px; }
+        .vc1 { top: 0; left: 20px; transform: rotate(-4deg); background: #141827; color: white; border: 1px solid #262B3F; }
+        .vc1 .swatch:nth-child(1) { background: var(--foxit); } .vc1 .swatch:nth-child(2) { background: #FF8533; } .vc1 .swatch:nth-child(3) { background: #3DD598; }
+        .vc2 { top: 60px; right: 0; transform: rotate(3deg); background: white; border: 1px solid var(--line); }
+        .vc2 .swatch:nth-child(1) { background: var(--netgain); } .vc2 .swatch:nth-child(2) { background: #0F1B2D; } .vc2 .swatch:nth-child(3) { background: #FFE3D1; }
+        .vc3 { top: 190px; left: 30px; transform: rotate(2deg); background: #323232; color: white; border: 1px solid #ff3d4d; }
+        .vc3 .swatch:nth-child(1) { background: var(--healthicity); } .vc3 .swatch:nth-child(2) { background: #00BCD4; } .vc3 .swatch:nth-child(3) { background: #ff6575; }
+        .vc4 { top: 230px; right: 30px; transform: rotate(-3deg); background: #0B0B0B; border: 1px solid #FFB000; color: #FFB000; }
+        .vc4 .swatch:nth-child(1) { background: var(--hc-amber); } .vc4 .swatch:nth-child(2) { background: #3DD598; } .vc4 .swatch:nth-child(3) { background: #DA291C; }
+
+        .section-title { font-family: 'Source Serif Pro', serif; font-size: 32px; font-weight: 700; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.8px; display: flex; align-items: baseline; gap: 14px; }
+        .section-title a.view-all { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .section-title a.view-all:hover { color: var(--ink); }
+        .section-sub { color: var(--muted); margin-bottom: 36px; font-size: 15px; }
+        .section-block { margin-bottom: 80px; }
+
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+        .dash-card { text-decoration: none; color: inherit; border-radius: 18px; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease; display: flex; flex-direction: column; min-height: 320px; }
+        .dash-card:hover { transform: translateY(-6px); }
+
+        .d-netgain { background: #0F1B2D; color: white; box-shadow: 0 4px 20px rgba(15,27,45,0.15); }
+        .d-netgain:hover { box-shadow: 0 14px 40px rgba(15,27,45,0.35); }
+        .d-netgain .card-header { padding: 24px 28px 18px; border-bottom: 3px solid var(--netgain); display: flex; align-items: center; gap: 12px; }
+        .d-netgain .logo-mark { width: 34px; height: 34px; background: var(--netgain); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; }
+        .d-netgain .co-name { font-weight: 700; font-size: 17px; letter-spacing: -0.3px; }
+        .d-netgain .co-tag { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1.5px; }
+        .d-netgain .card-body { padding: 22px 28px 26px; flex: 1; display: flex; flex-direction: column; }
+        .d-netgain .dash-title { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .d-netgain .dash-desc { font-size: 13.5px; color: rgba(255,255,255,0.7); line-height: 1.55; flex: 1; }
+        .d-netgain .card-footer { padding: 16px 28px; background: rgba(242,106,46,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+        .d-netgain .card-footer .cta { color: var(--netgain); font-weight: 600; }
+
+        .d-foxit { background: #0B0F1A; color: #E7EAF3; border: 1px solid #262B3F; }
+        .d-foxit .card-header { padding: 24px 28px 18px; display: flex; align-items: center; gap: 12px; background: #141827; border-bottom: 1px solid #262B3F; }
+        .d-foxit .logo-mark { width: 34px; height: 34px; background: var(--foxit); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; color: white; font-family: 'Source Serif Pro', serif; }
+        .d-foxit .co-name { font-weight: 700; font-size: 17px; letter-spacing: -0.3px; }
+        .d-foxit .co-tag { font-size: 10px; color: #8089A3; text-transform: uppercase; letter-spacing: 1.5px; font-family: monospace; }
+        .d-foxit .card-body { padding: 22px 28px 26px; flex: 1; display: flex; flex-direction: column; }
+        .d-foxit .dash-title { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .d-foxit .dash-desc { font-size: 13.5px; color: #8089A3; line-height: 1.55; flex: 1; }
+        .d-foxit .card-footer { padding: 16px 28px; background: rgba(255,95,0,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; border-top: 1px solid #262B3F; }
+        .d-foxit .card-footer .cta { color: var(--foxit); font-weight: 600; font-family: monospace; }
+
+        .d-uta { background: white; border: 1px solid var(--line); border-top: 6px solid var(--uta); color: var(--ink); }
+        .d-uta:hover { box-shadow: 0 14px 40px rgba(0,85,164,0.2); }
+        .d-uta .card-header { padding: 24px 28px 18px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); }
+        .d-uta .seal { width: 44px; height: 44px; background: var(--uta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; }
+        .d-uta .co-name { font-weight: 700; font-size: 17px; font-family: 'Source Serif Pro', serif; color: #002A52; }
+        .d-uta .co-tag { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; }
+        .d-uta .card-body { padding: 22px 28px 26px; flex: 1; display: flex; flex-direction: column; }
+        .d-uta .dash-title { font-family: 'Source Serif Pro', serif; font-size: 20px; font-weight: 700; color: #002A52; margin-bottom: 8px; }
+        .d-uta .dash-desc { font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1; }
+        .d-uta .card-footer { padding: 16px 28px; background: #F3F0E6; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+        .d-uta .card-footer .cta { color: var(--uta); font-weight: 600; }
+        .d-uta .card-footer .mark { display: inline-flex; align-items: center; gap: 4px; color: #DA291C; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .d-uta .card-footer .mark::before { content: ""; width: 5px; height: 5px; background: #DA291C; border-radius: 50%; }
+
+        .d-squirrel { background: #FFF5EF; border: 2px solid #1A1A1A; border-radius: 22px; box-shadow: 8px 8px 0 #1A1A1A; color: var(--ink); }
+        .d-squirrel:hover { transform: translate(-2px, -8px); box-shadow: 10px 14px 0 #1A1A1A; }
+        .d-squirrel .card-header { padding: 24px 28px 18px; display: flex; align-items: center; gap: 12px; }
+        .d-squirrel .logo-mark { width: 40px; height: 40px; background: var(--squirrel); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: white; transform: rotate(-6deg); box-shadow: 0 4px 12px rgba(255,107,53,0.25); position: relative; }
+        .d-squirrel .logo-mark::after { content: ""; position: absolute; width: 10px; height: 10px; background: #FFC857; border-radius: 50%; top: -3px; right: -3px; }
+        .d-squirrel .co-name { font-weight: 800; font-size: 17px; letter-spacing: -0.3px; }
+        .d-squirrel .co-tag { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; }
+        .d-squirrel .card-body { padding: 8px 28px 26px; flex: 1; display: flex; flex-direction: column; }
+        .d-squirrel .dash-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .d-squirrel .dash-title em { font-style: normal; color: var(--squirrel); position: relative; }
+        .d-squirrel .dash-title em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 1px; height: 8px; background: #FFC857; z-index: -1; }
+        .d-squirrel .dash-desc { font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1; }
+        .d-squirrel .card-footer { padding: 16px 28px; background: white; border-top: 2px solid #1A1A1A; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; border-radius: 0 0 20px 20px; }
+        .d-squirrel .card-footer .cta { color: var(--squirrel); font-weight: 700; }
+
+        .d-hc { background: #0B0B0B; color: #E8E8E8; border: 1px solid #FFB000; font-family: 'JetBrains Mono', monospace; }
+        .d-hc:hover { box-shadow: 0 14px 40px rgba(255,176,0,0.2); }
+        .d-hc .card-header { padding: 22px 28px 16px; border-bottom: 1px solid rgba(255,176,0,0.25); display: flex; align-items: center; gap: 12px; }
+        .d-hc .hc-mark { width: 34px; height: 34px; background: transparent; border: 1px solid #FFB000; color: #FFB000; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; letter-spacing: -0.5px; }
+        .d-hc .co-name { font-weight: 700; font-size: 15px; color: #FFB000; letter-spacing: 0.5px; }
+        .d-hc .co-tag { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; }
+        .d-hc .card-body { padding: 20px 28px 24px; flex: 1; display: flex; flex-direction: column; }
+        .d-hc .dash-title { font-size: 18px; font-weight: 600; color: white; letter-spacing: -0.2px; margin-bottom: 8px; font-family: 'Inter', sans-serif; }
+        .d-hc .dash-desc { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.55; flex: 1; font-family: 'Inter', sans-serif; }
+        .d-hc .card-footer { padding: 14px 28px; background: rgba(255,176,0,0.05); display: flex; justify-content: space-between; align-items: center; font-size: 11px; border-top: 1px solid rgba(255,176,0,0.15); }
+        .d-hc .card-footer .cta { color: #FFB000; font-weight: 600; }
+        .d-hc .card-footer .chip { background: rgba(61,213,152,0.12); color: #3DD598; padding: 3px 10px; border-radius: 3px; font-weight: 600; }
+
+        .d-healthicity { background: #323232; color: white; border: 1px solid #ff3d4d; }
+        .d-healthicity:hover { box-shadow: 0 14px 40px rgba(255,61,77,0.28); }
+        .d-healthicity .card-header { padding: 24px 28px 18px; border-bottom: 3px solid var(--healthicity); display: flex; align-items: center; gap: 12px; }
+        .d-healthicity .logo-mark { width: 34px; height: 34px; background: var(--healthicity); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; }
+        .d-healthicity .co-name { font-weight: 700; font-size: 17px; letter-spacing: -0.3px; }
+        .d-healthicity .co-tag { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1.5px; }
+        .d-healthicity .card-body { padding: 22px 28px 26px; flex: 1; display: flex; flex-direction: column; }
+        .d-healthicity .dash-title { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .d-healthicity .dash-desc { font-size: 13.5px; color: rgba(255,255,255,0.72); line-height: 1.55; flex: 1; }
+        .d-healthicity .card-footer { padding: 16px 28px; background: rgba(255,61,77,0.14); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+        .d-healthicity .card-footer .cta { color: var(--healthicity); font-weight: 600; }
+
+        .card-footer .metrics-chip { font-size: 11px; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+        .d-uta .card-footer .metrics-chip { background: white; color: var(--muted); border: 1px solid var(--line); }
+        .d-squirrel .card-footer .metrics-chip { background: #FFF5EF; color: var(--ink); border: 1.5px solid #1A1A1A; font-weight: 700; }
+
+        /* Models section */
+        .model-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; }
+        .model-card { text-decoration: none; color: inherit; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; min-height: 220px; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid var(--line); background: white; border-left: 4px solid var(--muted); }
+        .model-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(15,27,45,0.1); }
+        .model-card.m-netgain { border-left-color: var(--netgain); }
+        .model-card.m-foxit { border-left-color: var(--foxit); }
+        .model-card.m-uta { border-left-color: var(--uta); }
+        .model-card.m-squirrel { border-left-color: var(--squirrel); }
+        .model-card.m-healthicity { border-left-color: var(--healthicity); }
+        .model-card.m-hc { border-left-color: var(--hc-amber); }
+        .model-card .m-header { padding: 20px 22px 8px; display: flex; align-items: center; gap: 10px; }
+        .model-card .m-badge { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+        .model-card .m-body { padding: 4px 22px 20px; flex: 1; display: flex; flex-direction: column; }
+        .model-card h4 { font-family: 'Source Serif Pro', serif; font-size: 18px; font-weight: 700; letter-spacing: -0.4px; color: var(--ink); margin-bottom: 6px; line-height: 1.25; }
+        .model-card p { font-size: 13px; color: var(--muted); line-height: 1.5; flex: 1; }
+        .model-card .m-footer { padding: 0 22px 18px; font-size: 12px; color: var(--muted); font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+        .model-card .m-footer .cta { font-weight: 600; color: var(--ink); }
+
+        /* Career pieces section */
+        .career-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+        .career-card { text-decoration: none; color: inherit; border-radius: 16px; overflow: hidden; padding: 34px 34px 30px; min-height: 240px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.25s, box-shadow 0.25s; }
+        .career-card:hover { transform: translateY(-5px); }
+        .cc-accomplish { background: linear-gradient(140deg, #F5DEB3 0%, #FFD77A 100%); color: #0F1B2D; border: 1px solid #E4B86B; }
+        .cc-plan { background: linear-gradient(140deg, var(--intermountain-navy) 0%, #1B3A5D 100%); color: white; border: 1px solid #1B3A5D; }
+        .career-card .cc-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; margin-bottom: 12px; }
+        .career-card h3 { font-family: 'Source Serif Pro', serif; font-size: 28px; font-weight: 700; letter-spacing: -0.6px; line-height: 1.1; margin-bottom: 14px; }
+        .career-card p { font-size: 14px; line-height: 1.55; opacity: 0.85; margin-bottom: 20px; flex: 1; }
+        .career-card .cc-cta { font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+        .cc-plan .cc-eyebrow { color: var(--intermountain-gold); opacity: 1; }
+        .cc-plan .cc-cta { color: var(--intermountain-gold); }
+
+        footer.site-footer { margin-top: 80px; padding-top: 30px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        footer.site-footer a { color: var(--muted); text-decoration: underline; }
+
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; }
+            .hero-text h1 { font-size: 40px; }
+            .hero-visual { height: 360px; }
+            .dash-grid { grid-template-columns: 1fr; }
+            .model-grid { grid-template-columns: 1fr; }
+            .career-grid { grid-template-columns: 1fr; }
+            .meta-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="p-topbar">
+        <a href="index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+        <nav class="p-nav">
+            <a href="index.html" class="active">Portfolio Home</a>
+            <a href="Dashboards/index.html">Dashboards</a>
+            <a href="Models/index.html">Marketing Models</a>
+            <a href="Accomplishments/accomplishments.html">Accomplishments</a>
+            <a href="IHS/plan.html">60/90 Day Plan</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <header class="hero">
+            <div class="hero-text">
+                <div class="eyebrow">Steve Hill &bull; BI &amp; Marketing Analytics Portfolio</div>
+                <h1>Marketing &amp; revenue analytics, built for the <span class="hl">messy middle</span>.</h1>
+                <p>Six dashboards, six marketing models, a career accomplishments dossier, and a 60/90 day plan. Built from real work across B2B SaaS, healthcare compliance, public-sector analytics, DTC growth, and quantitative equity research.</p>
+                <div class="meta-grid">
+                    <div class="meta-item"><div class="m-val">6</div><div class="m-lbl">Dashboards</div></div>
+                    <div class="meta-item"><div class="m-val">6</div><div class="m-lbl">Models</div></div>
+                    <div class="meta-item"><div class="m-val">13+</div><div class="m-lbl">Years RevOps</div></div>
+                    <div class="meta-item"><div class="m-val">$300M+</div><div class="m-lbl">Rev under analysis</div></div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="visual-card vc1">
+                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
+                    <div class="vc-title">Foxit &bull; Dark UI</div>
+                    <div class="vc-bars">
+                        <div class="vc-bar" style="height: 60%; background: #FF5F00;"></div>
+                        <div class="vc-bar" style="height: 85%; background: #FF8533;"></div>
+                        <div class="vc-bar" style="height: 45%; background: #262B3F;"></div>
+                        <div class="vc-bar" style="height: 70%; background: #FF5F00;"></div>
+                        <div class="vc-bar" style="height: 30%; background: #262B3F;"></div>
+                    </div>
+                </div>
+                <div class="visual-card vc2">
+                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
+                    <div class="vc-title">Netgain &bull; SaaS Ops</div>
+                    <div class="vc-bars">
+                        <div class="vc-bar" style="height: 35%; background: #F26A2E;"></div>
+                        <div class="vc-bar" style="height: 50%; background: #F26A2E;"></div>
+                        <div class="vc-bar" style="height: 70%; background: #0F1B2D;"></div>
+                        <div class="vc-bar" style="height: 85%; background: #0F1B2D;"></div>
+                    </div>
+                </div>
+                <div class="visual-card vc3">
+                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
+                    <div class="vc-title">Healthicity &bull; Compliance</div>
+                    <div class="vc-bars">
+                        <div class="vc-bar" style="height: 70%; background: #ff3d4d;"></div>
+                        <div class="vc-bar" style="height: 40%; background: #00BCD4;"></div>
+                        <div class="vc-bar" style="height: 55%; background: #ff3d4d;"></div>
+                        <div class="vc-bar" style="height: 30%; background: #ff6575;"></div>
+                    </div>
+                </div>
+                <div class="visual-card vc4">
+                    <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
+                    <div class="vc-title">Hill Capital &bull; Terminal</div>
+                    <div class="vc-bars">
+                        <div class="vc-bar" style="height: 40%; background: #FFB000;"></div>
+                        <div class="vc-bar" style="height: 65%; background: #FFB000;"></div>
+                        <div class="vc-bar" style="height: 50%; background: #3DD598;"></div>
+                        <div class="vc-bar" style="height: 80%; background: #FFB000;"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARDS SECTION -->
+        <section class="section-block">
+            <div class="section-title">Dashboards <a href="Dashboards/index.html" class="view-all">View all &rarr;</a></div>
+            <div class="section-sub">Six BI dashboards, each in the brand palette and visual language of the company it was built for.</div>
+
+            <div class="dash-grid">
+                <a href="Dashboards/netgain_b2b_saas_midfunnel.html" class="dash-card d-netgain">
+                    <div class="card-header">
+                        <div class="logo-mark">N</div>
+                        <div>
+                            <div class="co-name">Netgain</div>
+                            <div class="co-tag">Revenue Operations</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dash-title">B2B SaaS Mid-Funnel</div>
+                        <div class="dash-desc">MQL &rarr; SQL &rarr; Opp conversion with multi-touch attribution across 6 products. &ldquo;Moments that Matter&rdquo; hero reflects 250% mid-funnel lift delivered through high-velocity testing.</div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="cta">Open dashboard &rarr;</span>
+                        <span class="metrics-chip">+250% lift</span>
+                    </div>
+                </a>
+
+                <a href="Dashboards/foxit_api_client_growth_funnel.html" class="dash-card d-foxit">
+                    <div class="card-header">
+                        <div class="logo-mark">F</div>
+                        <div>
+                            <div class="co-name">Foxit</div>
+                            <div class="co-tag">eSign Analytics</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dash-title">API Client Growth Funnel</div>
+                        <div class="dash-desc">Trial &rarr; Activated &rarr; Paid funnel with MRR waterfall and 12-month cohort retention. Dark dev-ops layout references the lifecycle trigger engine that freed 72 hrs/week.</div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="cta">&gt;_ open dashboard</span>
+                        <span class="metrics-chip">72 hrs/wk saved</span>
+                    </div>
+                </a>
+
+                <a href="Dashboards/uta_fare_revenue_elasticity.html" class="dash-card d-uta">
+                    <div class="card-header">
+                        <div class="seal">UTA</div>
+                        <div>
+                            <div class="co-name">Utah Transit Authority</div>
+                            <div class="co-tag">Market Analysis</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dash-title">Fare Revenue &amp; Elasticity</div>
+                        <div class="dash-desc">Revenue-vs-rider divergence, three-scenario fare projections, and price elasticity by rider segment. Policy-report layout for $300M+ annual fare revenue analysis.</div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="cta">View report &rarr;</span>
+                        <span class="mark">Internal report</span>
+                    </div>
+                </a>
+
+                <a href="Dashboards/website_squirrel_lead_segmentation_cac.html" class="dash-card d-squirrel">
+                    <div class="card-header">
+                        <div class="logo-mark">S</div>
+                        <div>
+                            <div class="co-name">Website Squirrel</div>
+                            <div class="co-tag">Growth Analytics</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dash-title">Lead <em>Segmentation</em> &amp; CAC</div>
+                        <div class="dash-desc">A-D tiered lead scoring with segment CAC, channel-level efficiency, and 180-day retention curves. Driving 60%+ CAC reduction through Python/AWS pipelines.</div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="cta">Open dashboard &rarr;</span>
+                        <span class="metrics-chip">60%+ CAC drop</span>
+                    </div>
+                </a>
+
+                <a href="Dashboards/healthicity_lead_scoring.html" class="dash-card d-healthicity">
+                    <div class="card-header">
+                        <div class="logo-mark">H</div>
+                        <div>
+                            <div class="co-name">Healthicity</div>
+                            <div class="co-tag">Compliance &middot; Lead Scoring</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dash-title">Lead Scoring Framework</div>
+                        <div class="dash-desc">7-dimension HubSpot + Salesforce scoring model (A+&ndash;F) with tier conversion, firmographic heatmap, and first-conversion analysis. Drove 2&times; app-form conversion lift.</div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="cta">Open dashboard &rarr;</span>
+                        <span class="metrics-chip">2&times; conv. lift</span>
+                    </div>
+                </a>
+
+                <a href="Dashboards/hill_capital_quant_portfolio.html" class="dash-card d-hc">
+                    <div class="card-header">
+                        <div class="hc-mark">HC</div>
+                        <div>
+                            <div class="co-name">HILL CAPITAL RESEARCH</div>
+                            <div class="co-tag">quant_equity_book</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dash-title">Quantitative Equity Portfolio</div>
+                        <div class="dash-desc">Multi-strategy book — factor, momentum, mean-reversion, options income. Bloomberg-terminal-styled dashboard with live positions, strategy attribution, and risk exposures.</div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="cta">&gt; open_terminal</span>
+                        <span class="chip">LIVE</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- MODELS SECTION -->
+        <section class="section-block">
+            <div class="section-title">Marketing Models &amp; Data Flows <a href="Models/index.html" class="view-all">View all &rarr;</a></div>
+            <div class="section-sub">The pipelines behind the dashboards &mdash; how data moves from capture to decision, system by system.</div>
+
+            <div class="model-grid">
+                <a href="Models/netgain_marketing_model.html" class="model-card m-netgain">
+                    <div class="m-header"><span class="m-badge">Netgain</span></div>
+                    <div class="m-body">
+                        <h4>Multi-Touch Attribution &amp; Mid-Funnel Model</h4>
+                        <p>5-layer attribution stack across 6 products &mdash; first-touch, last-touch, linear. The pipeline behind the 250% mid-funnel lift.</p>
+                    </div>
+                    <div class="m-footer"><span class="cta">View model &rarr;</span></div>
+                </a>
+
+                <a href="Models/foxit_marketing_model.html" class="model-card m-foxit">
+                    <div class="m-header"><span class="m-badge">Foxit</span></div>
+                    <div class="m-body">
+                        <h4>Lifecycle Trigger Engine &amp; API Funnel</h4>
+                        <p>Trial &rarr; Activated &rarr; Paid trigger architecture. Freed 72 hours/week of manual ops work and powered MRR waterfall reporting.</p>
+                    </div>
+                    <div class="m-footer"><span class="cta">View model &rarr;</span></div>
+                </a>
+
+                <a href="Models/uta_marketing_model.html" class="model-card m-uta">
+                    <div class="m-header"><span class="m-badge">UTA</span></div>
+                    <div class="m-body">
+                        <h4>Fare Elasticity Model &amp; TVM Error-Log Pipeline</h4>
+                        <p>Policy-grade fare revenue modeling plus the TVM error-log pipeline that held a vendor accountable for unreported machine outages.</p>
+                    </div>
+                    <div class="m-footer"><span class="cta">View model &rarr;</span></div>
+                </a>
+
+                <a href="Models/website_squirrel_marketing_model.html" class="model-card m-squirrel">
+                    <div class="m-header"><span class="m-badge">Website Squirrel</span></div>
+                    <div class="m-body">
+                        <h4>Behavioral Segmentation &amp; CAC Model</h4>
+                        <p>Python/AWS pipeline turning raw behavioral events into tiered lead scores and segment CAC. Drove 60%+ CAC reduction.</p>
+                    </div>
+                    <div class="m-footer"><span class="cta">View model &rarr;</span></div>
+                </a>
+
+                <a href="Models/healthicity_marketing_model.html" class="model-card m-healthicity">
+                    <div class="m-header"><span class="m-badge">Healthicity</span></div>
+                    <div class="m-body">
+                        <h4>Lead Scoring Model &amp; Interactive Calculator</h4>
+                        <p>7-dimension HubSpot &rarr; Salesforce scoring with live calculator. Pick inputs, watch score + tier + routing decision update in real time.</p>
+                    </div>
+                    <div class="m-footer"><span class="cta">Try the calculator &rarr;</span></div>
+                </a>
+
+                <a href="#" class="model-card m-hc" style="pointer-events: none; opacity: 0.85;">
+                    <div class="m-header"><span class="m-badge">Hill Capital &middot; coming soon</span></div>
+                    <div class="m-body">
+                        <h4>Quant Data Flow &amp; Strategy Stack</h4>
+                        <p>Market data &rarr; factor models &rarr; strategy engines &rarr; risk overlay &rarr; execution. The pipeline behind the Hill Capital terminal.</p>
+                    </div>
+                    <div class="m-footer"><span class="cta">In progress &rarr;</span></div>
+                </a>
+            </div>
+        </section>
+
+        <!-- CAREER PIECES SECTION -->
+        <section class="section-block">
+            <div class="section-title">Career &amp; Role Artifacts</div>
+            <div class="section-sub">The candidate package &mdash; track record and role-specific planning.</div>
+
+            <div class="career-grid">
+                <a href="Accomplishments/accomplishments.html" class="career-card cc-accomplish">
+                    <div>
+                        <div class="cc-eyebrow">Dossier &middot; 13 Years</div>
+                        <h3>Career Accomplishments</h3>
+                        <p>Role-by-role track record. What I measured, what I built, and the outcome produced. Includes the Healthicity lead-scoring model as a first-class accomplishment.</p>
+                    </div>
+                    <div class="cc-cta">Read the accomplishments &rarr;</div>
+                </a>
+
+                <a href="IHS/plan.html" class="career-card cc-plan">
+                    <div>
+                        <div class="cc-eyebrow">Role Plan &middot; Intermountain Home Services</div>
+                        <h3>60/90 Day Plan</h3>
+                        <p>Marketing Ops Analyst plan: discovery &amp; baseline in days 1-30, first high-value builds in days 31-60, reporting-to-recommendation in days 61-90. Tied to a needs analysis across 8+ brands.</p>
+                    </div>
+                    <div class="cc-cta">Open the plan &rarr;</div>
+                </a>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div>&copy; 2026 Steve Hill &bull; BI / Marketing Analytics &bull; Salt Lake City, UT</div>
+            <div>All dashboards use illustrative data to demonstrate structure and analytical approach.</div>
+        </footer>
+    </div>
+</body>
+</html>

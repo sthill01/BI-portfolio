@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hill Capital Research — Quantitative Equity Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --hc-bg: #0A0A0B;
+    --hc-panel: #111216;
+    --hc-panel-2: #16181D;
+    --hc-line: #22252C;
+    --hc-line-2: #2D313A;
+    --hc-text: #D8DBE0;
+    --hc-text-2: #8A8F98;
+    --hc-text-3: #565A63;
+    --hc-amber: #FFB000;
+    --hc-amber-dim: #B37A00;
+    --hc-green: #00D68F;
+    --hc-green-dim: #008F5F;
+    --hc-red: #FF3B5C;
+    --hc-red-dim: #B02840;
+    --hc-cyan: #00D4FF;
+    --hc-violet: #A275FF;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--hc-bg);
+    color: var(--hc-text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13px;
+  }
+
+  /* Topbar (ticker strip) */
+  .topbar {
+    background: #000;
+    color: var(--hc-amber);
+    border-bottom: 1px solid var(--hc-line-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 20px;
+  }
+  .topbar .live { display: flex; align-items: center; gap: 8px; }
+  .topbar .live .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--hc-green);
+    box-shadow: 0 0 6px var(--hc-green);
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .topbar .sys { color: var(--hc-text-3); }
+  .topbar .sys span { color: var(--hc-text-2); margin: 0 8px; }
+
+  /* Nav */
+  .navbar {
+    background: var(--hc-panel);
+    border-bottom: 1px solid var(--hc-line);
+    padding: 12px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .navbar .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--hc-text);
+    text-decoration: none;
+    letter-spacing: -0.3px;
+  }
+  .navbar .brand .m { color: var(--hc-amber); }
+  .navbar .brand .sub { color: var(--hc-text-3); font-weight: 400; font-size: 12px; margin-left: 8px; }
+  .navlinks a {
+    color: var(--hc-text-2);
+    text-decoration: none;
+    margin-left: 22px;
+    font-size: 12.5px;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .navlinks a:hover { color: var(--hc-amber); }
+  .navlinks .active { color: var(--hc-amber); }
+
+  /* Header band */
+  .header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--hc-line);
+    background: linear-gradient(180deg, var(--hc-panel) 0%, var(--hc-bg) 100%);
+  }
+  .header-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hc-amber);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+    color: var(--hc-text);
+  }
+  .header .role { color: var(--hc-text-2); font-size: 13px; margin: 0; }
+  .header .role .sep { color: var(--hc-text-3); margin: 0 8px; }
+
+  /* Global-level disclaimer */
+  .illustrative {
+    background: rgba(255, 176, 0, 0.08);
+    border: 1px solid rgba(255, 176, 0, 0.3);
+    color: var(--hc-amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 8px 14px;
+    margin: 16px 28px 0;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  .container { padding: 20px 28px 60px; }
+
+  /* KPI strip */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border: 1px solid var(--hc-line);
+    background: var(--hc-panel);
+    margin-bottom: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .kpi {
+    padding: 16px 18px;
+    border-right: 1px solid var(--hc-line);
+  }
+  .kpi:last-child { border-right: none; }
+  .kpi .k-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--hc-text-3);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+  }
+  .kpi .k-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .kpi .k-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--hc-text-2);
+    margin-top: 6px;
+  }
+  .v-green { color: var(--hc-green); }
+  .v-red { color: var(--hc-red); }
+  .v-amber { color: var(--hc-amber); }
+  .v-cyan { color: var(--hc-cyan); }
+
+  /* Section label */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hc-text-3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 28px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before {
+    content: '';
+    width: 4px; height: 12px;
+    background: var(--hc-amber);
+    display: inline-block;
+  }
+  .section-label .sub {
+    color: var(--hc-text-3);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    font-size: 11px;
+  }
+
+  /* Panels */
+  .panel {
+    background: var(--hc-panel);
+    border: 1px solid var(--hc-line);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--hc-line);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  .panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--hc-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .panel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--hc-amber);
+    background: rgba(255, 176, 0, 0.1);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .panel-tag.green { color: var(--hc-green); background: rgba(0, 214, 143, 0.1); }
+  .panel-tag.cyan { color: var(--hc-cyan); background: rgba(0, 212, 255, 0.1); }
+
+  .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .grid-23 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 18px; }
+
+  canvas { max-height: 100%; }
+  .chart-box { position: relative; height: 280px; }
+  .chart-box.lg { height: 360px; }
+  .chart-box.sm { height: 200px; }
+
+  /* Strategy pod */
+  .strat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .strat {
+    background: var(--hc-panel);
+    border: 1px solid var(--hc-line);
+    border-radius: 4px;
+    padding: 16px;
+    position: relative;
+  }
+  .strat.fm { border-left: 3px solid var(--hc-amber); }
+  .strat.mo { border-left: 3px solid var(--hc-green); }
+  .strat.mr { border-left: 3px solid var(--hc-cyan); }
+  .strat.op { border-left: 3px solid var(--hc-violet); }
+  .strat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .strat-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hc-text-3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .strat h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 4px 0 0 0;
+    color: var(--hc-text);
+  }
+  .strat-metric {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-align: right;
+  }
+  .strat-sub {
+    font-size: 11.5px;
+    color: var(--hc-text-2);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+  .strat-row {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 8px 20px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--hc-line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+  }
+  .strat-row .l { color: var(--hc-text-3); text-transform: uppercase; letter-spacing: 0.5px; }
+  .strat-row .v { color: var(--hc-text); text-align: right; font-weight: 500; }
+
+  /* Heatmap */
+  .heatmap {
+    display: grid;
+    gap: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+  }
+  .hm-row {
+    display: grid;
+    grid-template-columns: 40px repeat(12, 1fr) 50px;
+    gap: 3px;
+    align-items: stretch;
+  }
+  .hm-label {
+    color: var(--hc-text-3);
+    padding: 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 10px;
+  }
+  .hm-cell {
+    padding: 6px 4px;
+    text-align: center;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--hc-text);
+  }
+  .hm-cell.n { background: var(--hc-panel-2); color: var(--hc-text-3); }
+  .hm-cell.total { color: var(--hc-text); font-weight: 700; padding: 6px; background: rgba(255,176,0,0.08); border: 1px solid rgba(255,176,0,0.2); }
+  .hm-header { color: var(--hc-amber); font-weight: 700; text-align: center; padding: 4px 0; font-size: 10px; }
+
+  /* Positions table */
+  .pos-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+  }
+  .pos-table th {
+    text-align: left;
+    padding: 8px 10px;
+    color: var(--hc-text-3);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid var(--hc-line);
+  }
+  .pos-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--hc-line);
+    color: var(--hc-text);
+  }
+  .pos-table tr:hover td { background: var(--hc-panel-2); }
+  .pos-table .ticker { color: var(--hc-amber); font-weight: 700; }
+  .pos-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* Factor bars */
+  .factor-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 60px;
+    gap: 14px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--hc-line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .factor-row:last-child { border-bottom: none; }
+  .factor-name { color: var(--hc-text-2); }
+  .factor-bar {
+    height: 8px;
+    background: var(--hc-panel-2);
+    border-radius: 2px;
+    position: relative;
+    overflow: visible;
+  }
+  .factor-bar .fill {
+    position: absolute;
+    height: 100%;
+    border-radius: 2px;
+  }
+  .factor-bar .zero {
+    position: absolute;
+    left: 50%;
+    top: -3px; bottom: -3px;
+    width: 1px;
+    background: var(--hc-text-3);
+  }
+  .factor-val {
+    text-align: right;
+    color: var(--hc-text);
+    font-weight: 600;
+  }
+  .factor-val.pos { color: var(--hc-green); }
+  .factor-val.neg { color: var(--hc-red); }
+
+  /* Risk table */
+  .risk-table {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    border-collapse: collapse;
+  }
+  .risk-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--hc-line);
+  }
+  .risk-table td:first-child {
+    color: var(--hc-text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 10px;
+  }
+  .risk-table td:nth-child(2) {
+    text-align: right;
+    color: var(--hc-text);
+    font-weight: 600;
+  }
+  .risk-table td:nth-child(3) {
+    text-align: right;
+    color: var(--hc-text-2);
+    font-size: 10.5px;
+  }
+
+  /* Footer */
+  footer {
+    background: var(--hc-panel);
+    border-top: 1px solid var(--hc-line);
+    padding: 20px 28px;
+    color: var(--hc-text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.3px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  footer a { color: var(--hc-amber); text-decoration: none; }
+  footer .sep { margin: 0 10px; color: var(--hc-text-3); }
+
+  @media (max-width: 1100px) {
+    .kpi-strip { grid-template-columns: repeat(3, 1fr); }
+    .kpi:nth-child(3) { border-right: none; }
+    .grid-2, .grid-3, .grid-4, .grid-23 { grid-template-columns: 1fr; }
+    .strat-grid { grid-template-columns: repeat(2, 1fr); }
+    .hm-row { grid-template-columns: 32px repeat(12, 1fr) 42px; }
+    .hm-cell { font-size: 8.5px; padding: 4px 2px; }
+  }
+
+  /* Portfolio cross-page topbar */
+  .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+  .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+  .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+  .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+  .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+  .p-topbar .p-nav a:hover { color: #FFD77A; }
+  .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+  @media (max-width: 720px) {
+    .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+    .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="p-topbar">
+  <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+  <div class="p-nav">
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Dashboards</a>
+    <a href="../Models/index.html">Models</a>
+    <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+    <a href="../IHS/plan.html">60/90 Day Plan</a>
+  </div>
+</nav>
+
+<div class="topbar">
+  <div class="live"><span class="dot"></span> HCR&nbsp;//&nbsp;DASH_V2 &middot; SESSION ACTIVE</div>
+  <div class="sys">sys: &nbsp;uptime 342d <span>·</span> last_rebal 2026-04-18 <span>·</span> nav_delta +0.42% <span>·</span> 09:31 MT</div>
+</div>
+
+<div class="navbar">
+  <a href="index.html" class="brand">HILL <span class="m">CAPITAL</span> RESEARCH <span class="sub">// quant_equity_book</span></a>
+  <nav class="navlinks">
+    <a href="index.html">Dashboards</a>
+    <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+    <a href="../Models/index.html">Marketing Models</a>
+    <a href="../IHS/plan.html">60/90 Day Plan</a>
+  </nav>
+</div>
+
+<div class="header">
+  <div class="header-eyebrow">STEVE HILL · PORTFOLIO MANAGER &amp; QUANT RESEARCHER</div>
+  <h1>Quantitative Equity Portfolio — Multi-Strategy Book</h1>
+  <p class="role">Inception Feb 2025 <span class="sep">·</span> Base USD <span class="sep">·</span> Universe US equities + sector ETFs <span class="sep">·</span> Strategies: Factor · Momentum · Mean-Reversion · Options Income</p>
+</div>
+
+<div class="illustrative">
+  ⓘ ILLUSTRATIVE DATA — representative structure, metrics, and analytical framework. Actual allocations and live P&amp;L are proprietary.
+</div>
+
+<div class="container">
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="k-label">Return (incep.)</div>
+      <div class="k-value v-green">+31.2%</div>
+      <div class="k-sub">vs SPY +18.5%</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">YTD 2026</div>
+      <div class="k-value v-green">+9.4%</div>
+      <div class="k-sub">vs SPY +5.1%</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">Sharpe</div>
+      <div class="k-value v-amber">1.62</div>
+      <div class="k-sub">252d rolling</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">Alpha (ann.)</div>
+      <div class="k-value v-cyan">+6.8%</div>
+      <div class="k-sub">β 0.82 vs SPY</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">Max DD</div>
+      <div class="k-value v-red">-7.2%</div>
+      <div class="k-sub">SPY: -12.1%</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">Win rate</div>
+      <div class="k-value v-green">62%</div>
+      <div class="k-sub">11 / 15 mo</div>
+    </div>
+  </div>
+
+  <!-- EQUITY CURVE + STRAT ATTRIBUTION -->
+  <div class="section-label">01 &nbsp;Portfolio performance <span class="sub">// equity curve vs benchmarks · strategy attribution</span></div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">equity_curve.py</div>
+        <div class="panel-tag">Feb 2025 → Apr 2026</div>
+      </div>
+      <div class="chart-box lg">
+        <canvas id="equityCurve"></canvas>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">attribution_by_strategy</div>
+        <div class="panel-tag green">+31.2% total</div>
+      </div>
+      <div class="chart-box lg">
+        <canvas id="attribChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRATEGY PODS -->
+  <div class="section-label">02 &nbsp;Strategy book <span class="sub">// 4 systematic sleeves, weighted by Sharpe-adjusted capital</span></div>
+  <div class="strat-grid">
+    <div class="strat fm">
+      <div class="strat-header">
+        <div>
+          <div class="strat-name">[fm] · 42% capital</div>
+          <h3>Multi-Factor Equity</h3>
+        </div>
+        <div class="strat-metric v-green">+14.8%</div>
+      </div>
+      <p class="strat-sub">Value, momentum, quality composite across Russell 1000. Monthly rebalance, 60–80 names, sector-neutral.</p>
+      <div class="strat-row">
+        <span class="l">Sharpe</span><span class="v">1.71</span>
+        <span class="l">Names</span><span class="v">72</span>
+        <span class="l">Turnover</span><span class="v">28%</span>
+        <span class="l">Max DD</span><span class="v v-red">-5.4%</span>
+      </div>
+    </div>
+
+    <div class="strat mo">
+      <div class="strat-header">
+        <div>
+          <div class="strat-name">[mo] · 24% capital</div>
+          <h3>Trend / Momentum</h3>
+        </div>
+        <div class="strat-metric v-green">+9.3%</div>
+      </div>
+      <p class="strat-sub">Cross-sectional momentum on sector ETFs + top-decile large-caps. 6-1 momentum signal, 20-day vol targeting.</p>
+      <div class="strat-row">
+        <span class="l">Sharpe</span><span class="v">1.48</span>
+        <span class="l">Names</span><span class="v">18</span>
+        <span class="l">Turnover</span><span class="v">84%</span>
+        <span class="l">Max DD</span><span class="v v-red">-6.1%</span>
+      </div>
+    </div>
+
+    <div class="strat mr">
+      <div class="strat-header">
+        <div>
+          <div class="strat-name">[mr] · 18% capital</div>
+          <h3>Stat-Arb / Mean-Rev</h3>
+        </div>
+        <div class="strat-metric v-green">+4.2%</div>
+      </div>
+      <p class="strat-sub">Pairs trading on cointegrated S&amp;P 500 pairs. Engle-Granger + Kalman filter. Entry z ≥ 2.0, exit z ≤ 0.4.</p>
+      <div class="strat-row">
+        <span class="l">Sharpe</span><span class="v">1.34</span>
+        <span class="l">Pairs</span><span class="v">11</span>
+        <span class="l">Hit %</span><span class="v">68%</span>
+        <span class="l">Max DD</span><span class="v v-red">-2.8%</span>
+      </div>
+    </div>
+
+    <div class="strat op">
+      <div class="strat-header">
+        <div>
+          <div class="strat-name">[op] · 16% capital</div>
+          <h3>Options Income</h3>
+        </div>
+        <div class="strat-metric v-green">+2.9%</div>
+      </div>
+      <p class="strat-sub">Cash-secured puts + covered calls on core factor names. IVR ≥ 40 triggers. Delta-target 0.30, 30–45 DTE.</p>
+      <div class="strat-row">
+        <span class="l">Sharpe</span><span class="v">0.97</span>
+        <span class="l">Contracts</span><span class="v">46</span>
+        <span class="l">Win %</span><span class="v">87%</span>
+        <span class="l">Max DD</span><span class="v v-red">-1.6%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTHLY RETURNS HEATMAP -->
+  <div class="section-label">03 &nbsp;Monthly returns <span class="sub">// book vs S&amp;P 500 · Feb 2025 → Apr 2026</span></div>
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">returns_heatmap.monthly</div>
+      <div class="panel-tag">HCR vs SPY · pct</div>
+    </div>
+    <div class="heatmap">
+      <div class="hm-row">
+        <div class="hm-label"></div>
+        <div class="hm-header">JAN</div><div class="hm-header">FEB</div><div class="hm-header">MAR</div><div class="hm-header">APR</div>
+        <div class="hm-header">MAY</div><div class="hm-header">JUN</div><div class="hm-header">JUL</div><div class="hm-header">AUG</div>
+        <div class="hm-header">SEP</div><div class="hm-header">OCT</div><div class="hm-header">NOV</div><div class="hm-header">DEC</div>
+        <div class="hm-header">YR</div>
+      </div>
+      <!-- 2025 HCR -->
+      <div class="hm-row">
+        <div class="hm-label">HCR<br>25</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.25);">+2.4</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.55);">+4.8</div>
+        <div class="hm-cell" style="background: rgba(255,59,92,0.35);">-3.1</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.40);">+3.6</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.25);">+1.9</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.60);">+5.2</div>
+        <div class="hm-cell" style="background: rgba(255,59,92,0.20);">-1.4</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.50);">+4.1</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.30);">+2.6</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.45);">+3.8</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.20);">+1.2</div>
+        <div class="hm-cell total">+26.8</div>
+      </div>
+      <!-- 2025 SPY -->
+      <div class="hm-row">
+        <div class="hm-label">SPY<br>25</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.15);">+1.1</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.20);">+1.8</div>
+        <div class="hm-cell" style="background: rgba(255,59,92,0.50);">-5.2</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.30);">+2.4</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.20);">+1.6</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.45);">+3.9</div>
+        <div class="hm-cell" style="background: rgba(255,59,92,0.35);">-2.8</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.25);">+2.1</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.15);">+1.0</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.25);">+2.2</div>
+        <div class="hm-cell" style="background: rgba(255,59,92,0.15);">-0.6</div>
+        <div class="hm-cell total">+7.5</div>
+      </div>
+      <!-- 2026 HCR -->
+      <div class="hm-row">
+        <div class="hm-label">HCR<br>26</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.35);">+2.8</div>
+        <div class="hm-cell" style="background: rgba(255,59,92,0.25);">-1.6</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.60);">+5.4</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.35);">+2.8</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell total">+9.4</div>
+      </div>
+      <!-- 2026 SPY -->
+      <div class="hm-row">
+        <div class="hm-label">SPY<br>26</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.20);">+1.4</div>
+        <div class="hm-cell" style="background: rgba(255,59,92,0.30);">-2.0</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.35);">+3.1</div>
+        <div class="hm-cell" style="background: rgba(0,214,143,0.30);">+2.6</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell n">—</div>
+        <div class="hm-cell total">+5.1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACTOR EXPOSURES + DRAWDOWN -->
+  <div class="section-label">04 &nbsp;Factor exposures &amp; drawdown <span class="sub">// Barra-style decomposition · underwater curve</span></div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">factor_exposures.net</div>
+        <div class="panel-tag cyan">z-score vs Russell 1000</div>
+      </div>
+      <div style="padding: 6px 0 2px;">
+        <div class="factor-row">
+          <div class="factor-name">Value</div>
+          <div class="factor-bar"><div class="zero"></div><div class="fill" style="left: 50%; width: 28%; background: var(--hc-green);"></div></div>
+          <div class="factor-val pos">+0.56</div>
+        </div>
+        <div class="factor-row">
+          <div class="factor-name">Momentum</div>
+          <div class="factor-bar"><div class="zero"></div><div class="fill" style="left: 50%; width: 36%; background: var(--hc-green);"></div></div>
+          <div class="factor-val pos">+0.72</div>
+        </div>
+        <div class="factor-row">
+          <div class="factor-name">Quality</div>
+          <div class="factor-bar"><div class="zero"></div><div class="fill" style="left: 50%; width: 22%; background: var(--hc-green);"></div></div>
+          <div class="factor-val pos">+0.44</div>
+        </div>
+        <div class="factor-row">
+          <div class="factor-name">Size</div>
+          <div class="factor-bar"><div class="zero"></div><div class="fill" style="left: 35%; width: 15%; background: var(--hc-red);"></div></div>
+          <div class="factor-val neg">-0.31</div>
+        </div>
+        <div class="factor-row">
+          <div class="factor-name">Low Vol</div>
+          <div class="factor-bar"><div class="zero"></div><div class="fill" style="left: 50%; width: 9%; background: var(--hc-green);"></div></div>
+          <div class="factor-val pos">+0.18</div>
+        </div>
+        <div class="factor-row">
+          <div class="factor-name">Growth</div>
+          <div class="factor-bar"><div class="zero"></div><div class="fill" style="left: 44%; width: 6%; background: var(--hc-red);"></div></div>
+          <div class="factor-val neg">-0.12</div>
+        </div>
+      </div>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--hc-text-3); margin: 16px 0 0 0; padding-top: 10px; border-top: 1px dashed var(--hc-line);">
+        net_tilt: long quality-value-momentum, short growth, neutral vol. all &lt; ±1σ sleeve cap.
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">drawdown_curve.underwater</div>
+        <div class="panel-tag">vs SPY · pct</div>
+      </div>
+      <div class="chart-box lg">
+        <canvas id="ddChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTOR ALLOC + TOP POSITIONS -->
+  <div class="section-label">05 &nbsp;Exposure detail <span class="sub">// sector allocation · top 8 positions · risk metrics</span></div>
+  <div class="grid-23">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">positions.top_8</div>
+        <div class="panel-tag">by weight</div>
+      </div>
+      <table class="pos-table">
+        <thead>
+          <tr>
+            <th>Ticker</th>
+            <th>Sector</th>
+            <th>Sleeve</th>
+            <th class="num">Wt %</th>
+            <th class="num">Δ MTD</th>
+            <th class="num">Factor Z</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="ticker">MSFT</td><td>Tech</td><td>FM</td><td class="num">4.2</td><td class="num v-green">+3.1%</td><td class="num">+1.8</td></tr>
+          <tr><td class="ticker">JPM</td><td>Financials</td><td>FM</td><td class="num">3.6</td><td class="num v-green">+2.4%</td><td class="num">+1.4</td></tr>
+          <tr><td class="ticker">UNH</td><td>Health</td><td>FM</td><td class="num">3.3</td><td class="num v-red">-0.9%</td><td class="num">+1.6</td></tr>
+          <tr><td class="ticker">XLE</td><td>Energy ETF</td><td>MO</td><td class="num">3.1</td><td class="num v-green">+4.8%</td><td class="num">+2.2</td></tr>
+          <tr><td class="ticker">LLY</td><td>Health</td><td>MO</td><td class="num">2.9</td><td class="num v-green">+1.7%</td><td class="num">+1.9</td></tr>
+          <tr><td class="ticker">CVX</td><td>Energy</td><td>FM</td><td class="num">2.6</td><td class="num v-green">+2.2%</td><td class="num">+1.1</td></tr>
+          <tr><td class="ticker">XLK</td><td>Tech ETF</td><td>MO</td><td class="num">2.4</td><td class="num v-green">+3.4%</td><td class="num">+1.7</td></tr>
+          <tr><td class="ticker">PEP</td><td>Staples</td><td>FM</td><td class="num">2.2</td><td class="num v-red">-0.4%</td><td class="num">+0.9</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">sector_alloc</div>
+        <div class="panel-tag">pct of NAV</div>
+      </div>
+      <div class="chart-box">
+        <canvas id="sectorChart"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">risk_metrics</div>
+        <div class="panel-tag">252d</div>
+      </div>
+      <table class="risk-table">
+        <tr><td>Vol (ann.)</td><td class="v-amber">11.8%</td><td>SPY 14.6%</td></tr>
+        <tr><td>Sortino</td><td class="v-amber">2.41</td><td>SPY 1.18</td></tr>
+        <tr><td>Calmar</td><td class="v-amber">3.42</td><td>SPY 1.32</td></tr>
+        <tr><td>VaR 95%</td><td class="v-red">-1.8%</td><td>daily</td></tr>
+        <tr><td>CVaR 95%</td><td class="v-red">-2.6%</td><td>daily</td></tr>
+        <tr><td>Beta (SPY)</td><td>0.82</td><td>R² 0.71</td></tr>
+        <tr><td>Corr (AGG)</td><td>-0.18</td><td>diversified</td></tr>
+        <tr><td>Info Ratio</td><td class="v-amber">1.04</td><td>vs SPY</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- MULTI ASSET VIEW -->
+  <div class="section-label">06 &nbsp;Multi-asset view <span class="sub">// book vs SPY · QQQ · AGG · GLD · 24-month normalized</span></div>
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">normalized_returns.base100</div>
+      <div class="panel-tag">rebased to 100 on Feb 1 2025</div>
+    </div>
+    <div class="chart-box lg">
+      <canvas id="multiAsset"></canvas>
+    </div>
+  </div>
+
+  <!-- SECTOR 12M + MONTE CARLO -->
+  <div class="section-label">07 &nbsp;Sector rotation &amp; forward simulation <span class="sub">// sector ETFs 12m · Monte Carlo 10k paths</span></div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">sector_etfs.12m_return</div>
+        <div class="panel-tag cyan">tilts drive MO sleeve</div>
+      </div>
+      <div class="chart-box">
+        <canvas id="sectorBars"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">monte_carlo.forward_12m</div>
+        <div class="panel-tag">10k paths · bootstrapped</div>
+      </div>
+      <div class="chart-box">
+        <canvas id="mcChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>HILL CAPITAL RESEARCH · QUANT EQUITY BOOK · DASH v2.1</div>
+  <div>Illustrative data · <a href="../Models/index.html">data flow models →</a> <span class="sep">·</span> <a href="../index.html">back to portfolio home</a></div>
+</footer>
+
+<script>
+  // Chart defaults
+  Chart.defaults.color = '#8A8F98';
+  Chart.defaults.font.family = "'JetBrains Mono', monospace";
+  Chart.defaults.font.size = 10;
+  Chart.defaults.borderColor = '#22252C';
+
+  const AMBER = '#FFB000', GREEN = '#00D68F', RED = '#FF3B5C', CYAN = '#00D4FF', VIOLET = '#A275FF';
+  const months15 = ['Feb\'25','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan\'26','Feb','Mar','Apr'];
+
+  // --- Equity Curve ---
+  // cumulative returns - HCR vs SPY vs 60/40
+  const hcrCurve = [100.0, 102.4, 107.3, 104.0, 107.7, 109.8, 115.5, 113.9, 118.6, 121.6, 126.2, 127.7, 131.3, 129.2, 136.2, 140.0];
+  // Trim: we need 15 months = 15 points starting at 100 pre-inception? Use 16 incl base.
+  // Actually redo with 16 values including base 100.
+  const base = [100];
+  function growFrom(base, rets) { let arr = [...base]; rets.forEach(r => arr.push(arr[arr.length-1]*(1+r/100))); return arr; }
+  const hcrRets = [+2.4,+4.8,-3.1,+3.6,+1.9,+5.2,-1.4,+4.1,+2.6,+3.8,+1.2,+2.8,-1.6,+5.4,+2.8];
+  const spyRets = [+1.1,+1.8,-5.2,+2.4,+1.6,+3.9,-2.8,+2.1,+1.0,+2.2,-0.6,+1.4,-2.0,+3.1,+2.6];
+  const sixtyFortyRets = [+0.7,+1.2,-3.2,+1.5,+1.0,+2.4,-1.7,+1.3,+0.6,+1.4,-0.2,+0.9,-1.1,+1.9,+1.7];
+  const hcrSeries = growFrom([100], hcrRets);
+  const spySeries = growFrom([100], spyRets);
+  const sixtyFortySeries = growFrom([100], sixtyFortyRets);
+  const labels16 = ['Feb\'25',...months15.slice(1),'Apr\'26'];
+  // actually months15 has 15, fix: labels
+  const labels = ['Jan\'25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan\'26','Feb','Mar','Apr'];
+
+  new Chart(document.getElementById('equityCurve'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'HCR Book', data: hcrSeries, borderColor: AMBER, backgroundColor: 'rgba(255,176,0,0.08)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 0 },
+        { label: 'SPY', data: spySeries, borderColor: CYAN, backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.5, pointRadius: 0, borderDash: [4,4] },
+        { label: '60/40 (SPY/AGG)', data: sixtyFortySeries, borderColor: '#565A63', backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.2, pointRadius: 0, borderDash: [2,3] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', align: 'end', labels: { boxWidth: 16, boxHeight: 2, font: { size: 10 } } }
+      },
+      scales: {
+        x: { grid: { color: '#16181D' }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+        y: { grid: { color: '#16181D' }, ticks: { callback: v => v.toFixed(0) } }
+      }
+    }
+  });
+
+  // --- Strategy attribution ---
+  new Chart(document.getElementById('attribChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Factor Equity', 'Momentum', 'Mean-Rev', 'Options', 'Cash/Carry'],
+      datasets: [{
+        data: [14.8, 9.3, 4.2, 2.9, 0.0],
+        backgroundColor: [AMBER, GREEN, CYAN, VIOLET, '#565A63'],
+        borderRadius: 3
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#16181D' }, ticks: { callback: v => '+'+v+'%' } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+
+  // --- Drawdown chart ---
+  // running max drawdown
+  function drawdown(series) {
+    let peak = series[0], dd = [];
+    series.forEach(v => { peak = Math.max(peak, v); dd.push(((v-peak)/peak)*100); });
+    return dd;
+  }
+  new Chart(document.getElementById('ddChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'HCR DD', data: drawdown(hcrSeries), borderColor: AMBER, backgroundColor: 'rgba(255,176,0,0.15)', fill: true, tension: 0.3, borderWidth: 1.8, pointRadius: 0 },
+        { label: 'SPY DD', data: drawdown(spySeries), borderColor: RED, backgroundColor: 'rgba(255,59,92,0.10)', fill: true, tension: 0.3, borderWidth: 1.3, pointRadius: 0, borderDash: [3,3] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', align: 'end', labels: { boxWidth: 14, boxHeight: 2 } } },
+      scales: {
+        x: { grid: { color: '#16181D' }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+        y: { grid: { color: '#16181D' }, ticks: { callback: v => v.toFixed(0)+'%' }, suggestedMax: 0 }
+      }
+    }
+  });
+
+  // --- Sector doughnut ---
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Tech', 'Financials', 'Health', 'Energy', 'Industrials', 'Staples', 'Disc.', 'Other', 'Cash'],
+      datasets: [{
+        data: [22, 16, 14, 11, 9, 8, 7, 6, 7],
+        backgroundColor: [AMBER, CYAN, GREEN, '#FF8C42', '#A275FF', '#00A88F', '#FF6B8A', '#565A63', '#2D313A'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: { position: 'right', labels: { boxWidth: 10, boxHeight: 10, padding: 8, font: { size: 10 } } }
+      }
+    }
+  });
+
+  // --- Multi-asset normalized ---
+  // 24 months back to Apr 2024
+  const m24 = [];
+  for (let i = 0; i < 24; i++) {
+    const d = new Date(2024, 3 + i, 1);
+    m24.push(d.toLocaleString('en', { month: 'short' }) + (d.getMonth() === 0 ? ' '+(''+d.getFullYear()).slice(2) : ''));
+  }
+  // generate deterministic series
+  function seq(start, rets) { let s = [start]; rets.forEach(r => s.push(s[s.length-1]*(1+r/100))); return s; }
+  const spy24 = seq(100, [1.2,0.8,-2.1,1.8,2.2,-0.9,1.6,2.4,1.1,-0.5,0.9,1.4, 1.1,1.8,-5.2,2.4,1.6,3.9,-2.8,2.1,1.0,2.2,-0.6,1.4]);
+  const qqq24 = seq(100, [2.1,1.4,-3.4,2.8,3.1,-1.8,2.3,3.2,1.6,-1.1,1.4,2.1, 1.8,2.6,-6.8,3.2,2.5,5.1,-4.0,2.9,1.4,3.0,-1.1,2.0]);
+  const agg24 = seq(100, [0.3,-0.4,0.2,0.5,-0.2,0.6,0.4,-0.3,0.4,0.7,-0.1,0.3, 0.2,-0.3,0.8,0.2,0.5,-0.2,0.6,0.3,-0.2,0.4,0.5,-0.1]);
+  const gld24 = seq(100, [1.8,-0.5,2.2,1.1,-1.4,1.9,2.6,-0.8,1.4,2.0,-0.6,1.5, 0.8,2.1,0.4,-0.9,1.7,2.3,-1.2,1.8,2.1,-0.4,1.0,1.6]);
+  const hcr24 = seq(100, [1.8,1.2,-2.3,2.1,2.6,-1.2,2.0,2.8,1.4,-0.7,1.3,1.8, 1.4,2.4,-3.1,3.6,1.9,5.2,-1.4,4.1,2.6,3.8,1.2,2.8]);
+  const labels24 = ['Apr\'24','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan\'25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan\'26','Feb','Mar','Apr'];
+
+  new Chart(document.getElementById('multiAsset'), {
+    type: 'line',
+    data: {
+      labels: labels24,
+      datasets: [
+        { label: 'HCR (inception)', data: [null,null,null,null,null,null,null,null,null,null, 100, ...hcr24.slice(11).map((v,i) => seq(100, hcrRets)[i])], borderColor: AMBER, backgroundColor: 'rgba(255,176,0,0.12)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 0, spanGaps: false },
+        { label: 'SPY', data: spy24, borderColor: CYAN, backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.4, pointRadius: 0 },
+        { label: 'QQQ', data: qqq24, borderColor: VIOLET, backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.4, pointRadius: 0 },
+        { label: 'AGG', data: agg24, borderColor: '#565A63', backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.2, pointRadius: 0, borderDash: [3,3] },
+        { label: 'GLD', data: gld24, borderColor: '#FF8C42', backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.2, pointRadius: 0, borderDash: [2,4] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', align: 'end', labels: { boxWidth: 14, boxHeight: 2 } } },
+      scales: {
+        x: { grid: { color: '#16181D' }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+        y: { grid: { color: '#16181D' } }
+      }
+    }
+  });
+
+  // --- Sector 12m bars ---
+  new Chart(document.getElementById('sectorBars'), {
+    type: 'bar',
+    data: {
+      labels: ['XLE','XLK','XLF','XLI','XLV','XLY','XLB','XLP','XLU','XLRE','XLC'],
+      datasets: [{
+        label: '12m return',
+        data: [28.4, 22.1, 18.3, 14.6, 6.8, 11.2, 9.4, 4.1, 2.6, -3.2, 16.8],
+        backgroundColor: ctx => { const v = ctx.raw; return v >= 0 ? GREEN : RED; },
+        borderRadius: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: '#16181D' }, ticks: { callback: v => v+'%' } }
+      }
+    }
+  });
+
+  // --- Monte Carlo ---
+  function genPath(mu, sigma, n) {
+    let p = [100];
+    for (let i = 0; i < n; i++) {
+      const z = Math.sqrt(-2*Math.log(Math.random())) * Math.cos(2*Math.PI*Math.random());
+      const r = mu + sigma * z;
+      p.push(p[p.length-1]*(1+r/100));
+    }
+    return p;
+  }
+  const mcMonths = 12;
+  const mcLabels = Array.from({length: mcMonths+1}, (_,i) => 'M'+i);
+  // deterministic percentile bands
+  const p05 = [100,98.2,96.1,94.5,93.2,91.8,90.9,90.2,89.4,88.9,88.2,87.8,87.2];
+  const p25 = [100,100.8,101.4,102.3,103.1,104.0,104.8,105.4,106.2,107.0,107.8,108.5,109.2];
+  const p50 = [100,101.8,103.8,105.9,107.9,110.1,112.2,114.5,116.7,118.9,121.3,123.5,125.7];
+  const p75 = [100,103.2,106.4,109.7,113.2,116.9,120.5,124.3,128.2,132.1,136.2,140.4,144.8];
+  const p95 = [100,106.4,113.0,119.8,127.0,134.7,142.6,151.0,159.7,168.9,178.6,188.8,199.4];
+
+  new Chart(document.getElementById('mcChart'), {
+    type: 'line',
+    data: {
+      labels: mcLabels,
+      datasets: [
+        { label: 'p95', data: p95, borderColor: 'rgba(0,214,143,0.3)', backgroundColor: 'rgba(0,214,143,0.10)', fill: '+1', tension: 0.3, borderWidth: 1, pointRadius: 0 },
+        { label: 'p75', data: p75, borderColor: 'rgba(0,214,143,0.5)', backgroundColor: 'rgba(0,214,143,0.15)', fill: '+1', tension: 0.3, borderWidth: 1, pointRadius: 0 },
+        { label: 'p50 (median)', data: p50, borderColor: AMBER, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 0 },
+        { label: 'p25', data: p25, borderColor: 'rgba(255,59,92,0.5)', backgroundColor: 'rgba(255,59,92,0.08)', fill: '+1', tension: 0.3, borderWidth: 1, pointRadius: 0 },
+        { label: 'p05', data: p05, borderColor: 'rgba(255,59,92,0.3)', backgroundColor: 'transparent', tension: 0.3, borderWidth: 1, pointRadius: 0 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', align: 'end', labels: { boxWidth: 12, boxHeight: 2, font: { size: 9 } } } },
+      scales: {
+        x: { grid: { color: '#16181D' } },
+        y: { grid: { color: '#16181D' }, ticks: { callback: v => v.toFixed(0) } }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Utah Transit Authority | Fare Revenue &amp; Elasticity</title>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         :root {
@@ -98,9 +98,31 @@
             .kpi-cell { border-right: none; border-bottom: 1px solid var(--uta-line); }
             .kpi-cell:last-child { border-bottom: none; }
         }
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
     </style>
 </head>
 <body>
+        <div class="p-topbar">
+        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+        <nav class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="index.html" class="active">Dashboards</a>
+            <a href="../Models/index.html">Models</a>
+            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+            <a href="../IHS/plan.html">60/90 Day Plan</a>
+        </nav>
+    </div>
     <div class="gov-banner">
         <div class="chip"><span class="dot-red"></span>Utah Transit Authority &bull; Market Analysis</div>
         <div class="chip"><span class="dot-gold"></span>Internal Report &bull; For Planning Use</div>

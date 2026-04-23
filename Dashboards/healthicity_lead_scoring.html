@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthicity | Lead Scoring Framework</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
+
+        :root {
+            /* Healthicity brand palette (sourced from healthicity.com CSS) */
+            --hc-coral: #ff3d4d;        /* primary brand */
+            --hc-coral-dark: #d71525;   /* darker coral / CTA hover */
+            --hc-coral-light: #ff6575;  /* light coral accents */
+            --hc-coral-soft: #ffe6e8;   /* tinted coral background */
+            --hc-cyan: #00BCD4;         /* secondary brand accent */
+            --hc-cyan-dark: #0097A7;    /* darker cyan */
+            --hc-cyan-soft: #E0F7FA;    /* tinted cyan background */
+            --hc-ink: #323232;          /* primary text (site uses this) */
+            --hc-charcoal: #2f383d;     /* headings / dark surfaces */
+            --hc-muted: #646464;        /* secondary text (site uses this) */
+            --hc-mist: #f8f9fa;         /* page background */
+            --hc-line: #E2E2E2;         /* borders */
+            --hc-good: #2A9D5F;
+            --hc-bad: #d71525;
+            /* Back-compat aliases so existing markup keeps working.
+               On healthicity.com, coral red is the DOMINANT brand — so the
+               prominent "teal" slots from the original design now map to coral,
+               and the secondary "accent" slots map to cyan. */
+            --hc-teal: var(--hc-coral);
+            --hc-teal-dark: var(--hc-coral-dark);
+            --hc-teal-deep: #a60e1b;
+            --hc-teal-soft: var(--hc-coral-soft);
+            --hc-navy: var(--hc-charcoal);
+            --hc-slate: #4a5760;
+            --hc-text: var(--hc-ink);
+            --hc-accent: var(--hc-cyan);
+            --hc-accent-dark: var(--hc-cyan-dark);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--hc-mist); color: var(--hc-text); line-height: 1.5; }
+
+        .topnav { background: var(--hc-navy); color: white; padding: 14px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--hc-teal); }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-mark { width: 34px; height: 34px; background: var(--hc-teal); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 18px; }
+        .brand-name { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+        .brand-tag { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 1px; }
+        .topnav-links { display: flex; gap: 28px; font-size: 13px; color: rgba(255,255,255,0.7); }
+        .topnav-links a { color: inherit; text-decoration: none; }
+        .topnav-links a.active { color: white; font-weight: 600; }
+
+        .wrap { max-width: 1400px; margin: 0 auto; padding: 32px 40px 60px; }
+        .page-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; gap: 20px; flex-wrap: wrap; }
+        .page-head h1 { font-size: 32px; font-weight: 800; color: var(--hc-navy); letter-spacing: -0.8px; line-height: 1.15; }
+        .page-head .sub { color: var(--hc-muted); font-size: 14px; margin-top: 6px; }
+        .breadcrumb { color: var(--hc-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
+        .breadcrumb span { color: var(--hc-teal); font-weight: 600; }
+        .filters { display: flex; gap: 10px; flex-wrap: wrap; }
+        .filters select { padding: 9px 14px; border: 1px solid var(--hc-line); border-radius: 8px; font-size: 13px; background: white; font-family: inherit; color: var(--hc-text); cursor: pointer; }
+        .filters select:focus { outline: none; border-color: var(--hc-teal); }
+
+        .hero-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+        .hero-metric { background: linear-gradient(135deg, var(--hc-navy) 0%, var(--hc-slate) 100%); color: white; padding: 28px; border-radius: 14px; position: relative; overflow: hidden; }
+        .hero-metric::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 180px; height: 180px; border-radius: 50%; background: var(--hc-teal); opacity: 0.18; }
+        .hero-metric .tag { display: inline-block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; background: var(--hc-teal); color: white; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; font-weight: 600; }
+        .hero-metric .label { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+        .hero-metric .value { font-size: 44px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; }
+        .hero-metric .delta { font-size: 13px; color: #ffcad0; margin-top: 10px; font-weight: 500; }
+        .hero-metric .ctx { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.15); }
+
+        .side-metric { background: white; padding: 22px; border-radius: 14px; border: 1px solid var(--hc-line); display: flex; flex-direction: column; justify-content: space-between; }
+        .side-metric .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--hc-muted); font-weight: 600; }
+        .side-metric .value { font-size: 34px; font-weight: 800; color: var(--hc-navy); letter-spacing: -1px; margin: 8px 0 4px; }
+        .side-metric .delta { font-size: 12px; color: var(--hc-muted); }
+        .side-metric .delta.up { color: var(--hc-good); font-weight: 600; }
+        .side-metric .bar { height: 4px; background: var(--hc-line); border-radius: 2px; margin-top: 14px; overflow: hidden; }
+        .side-metric .bar-fill { height: 100%; background: var(--hc-teal); border-radius: 2px; }
+
+        .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
+        .kpi-card { background: white; padding: 20px 22px; border-radius: 12px; border: 1px solid var(--hc-line); }
+        .kpi-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--hc-muted); font-weight: 600; }
+        .kpi-card .value { font-size: 26px; font-weight: 800; color: var(--hc-navy); letter-spacing: -0.8px; margin: 8px 0 2px; }
+        .kpi-card .meta { font-size: 12px; color: var(--hc-muted); }
+        .kpi-card .meta.up { color: var(--hc-good); font-weight: 600; }
+
+        .panel { background: white; padding: 28px; border-radius: 14px; border: 1px solid var(--hc-line); margin-bottom: 18px; }
+        .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+        .panel-title { font-size: 16px; font-weight: 700; color: var(--hc-navy); }
+        .panel-sub { font-size: 12px; color: var(--hc-muted); }
+        .chart-box { height: 320px; position: relative; }
+        .chart-box.tall { height: 380px; }
+        .two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin-bottom: 18px; }
+        .split-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+        @media (max-width: 1100px) {
+            .hero-row, .kpi-strip, .two-col, .split-col { grid-template-columns: 1fr; }
+            .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+        }
+        .foot { font-size: 11px; color: var(--hc-muted); margin-top: 12px; font-style: italic; }
+
+        /* Grade distribution table */
+        .grade-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .grade-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--hc-muted); font-weight: 600; padding: 10px 8px; border-bottom: 2px solid var(--hc-line); }
+        .grade-table td { padding: 12px 8px; border-bottom: 1px solid var(--hc-line); }
+        .grade-table tr:last-child td { border-bottom: none; }
+        .grade-pill { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; color: white; min-width: 42px; text-align: center; font-family: 'JetBrains Mono', monospace; }
+        .gp-ap { background: #a60e1b; }
+        .gp-a { background: #d71525; }
+        .gp-am { background: #ff3d4d; }
+        .gp-bp { background: #ff6575; color: #323232; }
+        .gp-b { background: #ff97a2; color: #323232; }
+        .gp-bm { background: #ffcad0; color: #323232; }
+        .gp-cp { background: #B2EBF2; color: #323232; }
+        .gp-c { background: #4DD0E1; }
+        .gp-cm { background: #00BCD4; }
+        .gp-d { background: #0097A7; }
+        .gp-f { background: #006064; }
+
+        /* Heatmap grid */
+        .hm-wrap { overflow-x: auto; }
+        .hm-table { border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+        .hm-table th, .hm-table td { padding: 8px 10px; text-align: center; border: 1px solid var(--hc-line); }
+        .hm-table th { background: var(--hc-teal-soft); color: var(--hc-teal-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; font-size: 10px; }
+        .hm-table th.row-h { text-align: left; width: 180px; }
+        .hm-table td.row-h { text-align: left; background: var(--hc-teal-soft); color: var(--hc-teal-dark); font-weight: 600; font-size: 11px; }
+        .hm-cell { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: white; font-size: 11px; }
+
+        /* Callout */
+        .callout { background: linear-gradient(135deg, var(--hc-teal) 0%, var(--hc-teal-dark) 100%); color: white; padding: 22px 26px; border-radius: 12px; margin-bottom: 18px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 22px; align-items: center; }
+        .callout .co-title { font-size: 13px; text-transform: uppercase; letter-spacing: 1.3px; opacity: 0.8; font-weight: 600; }
+        .callout .co-head { font-size: 19px; font-weight: 700; margin-top: 6px; line-height: 1.3; }
+        .callout .co-num { font-size: 32px; font-weight: 800; letter-spacing: -1px; }
+        .callout .co-lbl { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+        @media (max-width: 900px) { .callout { grid-template-columns: 1fr; } }
+
+        .dim-row { display: grid; grid-template-columns: 200px 1fr 60px; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--hc-line); align-items: center; }
+        .dim-row:last-child { border-bottom: none; }
+        .dim-name { font-weight: 600; font-size: 13px; color: var(--hc-navy); }
+        .dim-desc { font-size: 11px; color: var(--hc-muted); margin-top: 2px; }
+        .dim-bar-track { height: 8px; background: var(--hc-teal-soft); border-radius: 4px; overflow: hidden; }
+        .dim-bar-fill { height: 100%; background: linear-gradient(90deg, var(--hc-teal) 0%, var(--hc-teal-dark) 100%); border-radius: 4px; }
+        .dim-pts { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; color: var(--hc-teal-dark); text-align: right; }
+
+        .footer-cta { margin-top: 24px; padding: 22px 26px; background: white; border: 1px solid var(--hc-line); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .footer-cta .fc-text { font-size: 13px; color: var(--hc-muted); max-width: 640px; }
+        .footer-cta .fc-text strong { color: var(--hc-navy); }
+        .footer-cta a.cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--hc-teal); color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: 600; transition: background 0.15s; }
+        .footer-cta a.cta-btn:hover { background: var(--hc-teal-dark); }
+    </style>
+</head>
+<body>
+    <div class="p-topbar">
+        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+        <nav class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="index.html" class="active">Dashboards</a>
+            <a href="../Models/index.html">Models</a>
+            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+            <a href="../IHS/plan.html">60/90 Day Plan</a>
+        </nav>
+    </div>
+
+    <div class="topnav">
+        <div class="brand">
+            <div class="brand-mark">H</div>
+            <div>
+                <div class="brand-name">Healthicity</div>
+                <div class="brand-tag">Compliance &middot; Lead Scoring</div>
+            </div>
+        </div>
+        <div class="topnav-links">
+            <a href="#">Overview</a>
+            <a href="#" class="active">Scoring Model</a>
+            <a href="#">Funnel</a>
+            <a href="#">Sources</a>
+            <a href="#">Playbook</a>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="page-head">
+            <div>
+                <div class="breadcrumb">Marketing Ops / <span>Lead Scoring Framework</span></div>
+                <h1>Lead Scoring &mdash; 7-Dimension A+ to F Grade</h1>
+                <div class="sub">HubSpot + Salesforce scoring built on deal-size &times; SQL distribution analysis. Routes A+/A leads to priority sales queues; recycles D/F for nurture.</div>
+            </div>
+            <div class="filters">
+                <select><option>FY 2017</option><option>FY 2016</option></select>
+                <select><option>All Sources</option><option>Organic</option><option>Paid</option><option>Capterra</option></select>
+                <select><option>All Org Types</option><option>Hospital/System</option><option>Physician Group</option><option>Payer</option></select>
+            </div>
+        </div>
+
+        <!-- HERO ROW -->
+        <div class="hero-row">
+            <div class="hero-metric">
+                <span class="tag">FRAMEWORK</span>
+                <div class="label">Grades issued across 7 scoring inputs</div>
+                <div class="value">11 Tiers</div>
+                <div class="delta">A+ &rarr; F &middot; 0-10 pts per dimension &middot; composite score drives routing</div>
+                <div class="ctx">Built in HubSpot, synced to Salesforce. Retroactive scoring on 2016 data validated the weight mix before go-live.</div>
+            </div>
+            <div class="side-metric">
+                <div>
+                    <div class="label">App-form Conversion</div>
+                    <div class="value">2.0&times;</div>
+                    <div class="delta up">vs prior baseline</div>
+                </div>
+                <div class="bar"><div class="bar-fill" style="width: 82%;"></div></div>
+            </div>
+            <div class="side-metric">
+                <div>
+                    <div class="label">Social Engagement Growth</div>
+                    <div class="value">+400%</div>
+                    <div class="delta up">YoY surround-the-buyer</div>
+                </div>
+                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
+            </div>
+        </div>
+
+        <!-- KPI STRIP -->
+        <div class="kpi-strip">
+            <div class="kpi-card">
+                <div class="label">Closed-Deal Avg Form Subs</div>
+                <div class="value">12</div>
+                <div class="meta up">vs 10 for SQLs &middot; engagement signal</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">On-Demand Demo Share of Deals</div>
+                <div class="value">52%</div>
+                <div class="meta">primary first-conversion driver</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Top Deal Sources</div>
+                <div class="value">Org + Capterra</div>
+                <div class="meta">larger deal size vs paid social/direct</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Scoring Dimensions Weighted</div>
+                <div class="value">7</div>
+                <div class="meta">firmographic &middot; behavioral &middot; source</div>
+            </div>
+        </div>
+
+        <!-- CALLOUT: THE BUSINESS PROBLEM -->
+        <div class="callout">
+            <div>
+                <div class="co-title">The Problem This Solved</div>
+                <div class="co-head">Sales was working every MQL equally &mdash; flattening the difference between a Hospital Compliance Director and a self-employed consultant.</div>
+            </div>
+            <div>
+                <div class="co-num">A+</div>
+                <div class="co-lbl">routed to priority queue &middot; same-day call</div>
+            </div>
+            <div>
+                <div class="co-num">D / F</div>
+                <div class="co-lbl">recycled to nurture &middot; no sales touch</div>
+            </div>
+        </div>
+
+        <!-- GRADE DISTRIBUTION + TIER CONVERSION -->
+        <div class="two-col">
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-title">Grade Distribution of Scored Leads</div>
+                        <div class="panel-sub">Composite score &rarr; letter grade (A+ through F)</div>
+                    </div>
+                </div>
+                <div class="chart-box"><canvas id="gradeDistChart"></canvas></div>
+                <div class="foot">Illustrative distribution based on 2017 model logic. Actual shape: most leads cluster in the B/C range; A+/A is the short head that drives outsized pipeline.</div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-title">SQL &rarr; Deal by Tier</div>
+                        <div class="panel-sub">The payoff of scoring: where sales time should go</div>
+                    </div>
+                </div>
+                <div class="chart-box"><canvas id="tierConvChart"></canvas></div>
+                <div class="foot">A+/A leads close at multiples of the rate of C/D leads &mdash; justifies the tier routing and nurture recycle.</div>
+            </div>
+        </div>
+
+        <!-- SCORING DIMENSIONS -->
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <div class="panel-title">The 7 Scoring Dimensions</div>
+                    <div class="panel-sub">Each worth up to 10 points &middot; composite score maps to grade tier</div>
+                </div>
+            </div>
+
+            <div class="dim-row">
+                <div>
+                    <div class="dim-name">Organization Type</div>
+                    <div class="dim-desc">Hospital/Health System = A+/10, Physician Group = A-/8, Payer = B+/7, Consultant/LTC = B/6</div>
+                </div>
+                <div class="dim-bar-track"><div class="dim-bar-fill" style="width: 100%;"></div></div>
+                <div class="dim-pts">10 pts</div>
+            </div>
+            <div class="dim-row">
+                <div>
+                    <div class="dim-name">Employee Count</div>
+                    <div class="dim-desc">1000+ = A+/10, 401-1000 = A/10, 201-400 = B+/8, down to 1-50 = B-/6</div>
+                </div>
+                <div class="dim-bar-track"><div class="dim-bar-fill" style="width: 100%;"></div></div>
+                <div class="dim-pts">10 pts</div>
+            </div>
+            <div class="dim-row">
+                <div>
+                    <div class="dim-name">Job Title</div>
+                    <div class="dim-desc">Compliance Officer = A+/10, Dir/VP/Chief = A+/9, Manager = B+/9, Auditor = B/7, Quality = C-/4</div>
+                </div>
+                <div class="dim-bar-track"><div class="dim-bar-fill" style="width: 100%;"></div></div>
+                <div class="dim-pts">10 pts</div>
+            </div>
+            <div class="dim-row">
+                <div>
+                    <div class="dim-name">Unique Form Submissions</div>
+                    <div class="dim-desc">&ge;8 subs = 10 &middot; Closed deals avg 12 form subs vs 10 for SQLs</div>
+                </div>
+                <div class="dim-bar-track"><div class="dim-bar-fill" style="width: 100%;"></div></div>
+                <div class="dim-pts">10 pts</div>
+            </div>
+            <div class="dim-row">
+                <div>
+                    <div class="dim-name">Time Last Seen</div>
+                    <div class="dim-desc">Active this week = 10 &middot; decays to 0 as lead goes cold</div>
+                </div>
+                <div class="dim-bar-track"><div class="dim-bar-fill" style="width: 100%;"></div></div>
+                <div class="dim-pts">10 pts</div>
+            </div>
+            <div class="dim-row">
+                <div>
+                    <div class="dim-name">First Conversion</div>
+                    <div class="dim-desc">On-demand demo = highest &middot; webinar &middot; TL download &middot; blog subscribe</div>
+                </div>
+                <div class="dim-bar-track"><div class="dim-bar-fill" style="width: 100%;"></div></div>
+                <div class="dim-pts">10 pts</div>
+            </div>
+            <div class="dim-row">
+                <div>
+                    <div class="dim-name">Lead Source</div>
+                    <div class="dim-desc">Organic Search / Capterra = higher deal size &middot; Direct / Paid Social lower</div>
+                </div>
+                <div class="dim-bar-track"><div class="dim-bar-fill" style="width: 100%;"></div></div>
+                <div class="dim-pts">10 pts</div>
+            </div>
+
+            <div class="foot" style="margin-top: 16px;">Total possible composite: 70 points. Letter grade buckets assigned on percentile thresholds calibrated against the historical closed-deal population.</div>
+        </div>
+
+        <!-- FIRST CONVERSION + DEAL SIZE BY SOURCE -->
+        <div class="split-col">
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-title">First Conversion &rarr; Share of Closed Deals</div>
+                        <div class="panel-sub">Argues for continued investment in on-demand demo &amp; webinar</div>
+                    </div>
+                </div>
+                <div class="chart-box"><canvas id="firstConvChart"></canvas></div>
+                <div class="foot">On-demand demos are both the largest share and the highest-intent first touch &mdash; the scoring model gives them max points.</div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-title">Avg Deal Size by Lead Source</div>
+                        <div class="panel-sub">Organic and Capterra produce the largest accounts</div>
+                    </div>
+                </div>
+                <div class="chart-box"><canvas id="sourceDealChart"></canvas></div>
+                <div class="foot">Source scoring (max 10 pts) is weighted toward Organic Search and Capterra listings based on this historical distribution.</div>
+            </div>
+        </div>
+
+        <!-- ORG TYPE x JOB TITLE HEATMAP -->
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <div class="panel-title">Composite Grade &mdash; Org Type &times; Job Title</div>
+                    <div class="panel-sub">How the two firmographic inputs combine before engagement scoring is layered on</div>
+                </div>
+            </div>
+            <div class="hm-wrap">
+                <table class="hm-table">
+                    <thead>
+                        <tr>
+                            <th class="row-h">Org Type &darr; / Title &rarr;</th>
+                            <th>Compliance Ofc.</th>
+                            <th>Dir/VP/Chief</th>
+                            <th>Manager</th>
+                            <th>Senior/Coding</th>
+                            <th>Auditor</th>
+                            <th>Quality</th>
+                            <th>Consultant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-h">Hospital / Health System</td>
+                            <td class="hm-cell" style="background:#a60e1b;">A+</td>
+                            <td class="hm-cell" style="background:#d71525;">A+</td>
+                            <td class="hm-cell" style="background:#ff3d4d;">A</td>
+                            <td class="hm-cell" style="background:#ff6575;color:#323232;">B+</td>
+                            <td class="hm-cell" style="background:#ff6575;color:#323232;">B+</td>
+                            <td class="hm-cell" style="background:#ff97a2;color:#323232;">B</td>
+                            <td class="hm-cell" style="background:#ffcad0;color:#323232;">B-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-h">Physician Group</td>
+                            <td class="hm-cell" style="background:#d71525;">A+</td>
+                            <td class="hm-cell" style="background:#ff3d4d;">A</td>
+                            <td class="hm-cell" style="background:#ff6575;color:#323232;">B+</td>
+                            <td class="hm-cell" style="background:#ff97a2;color:#323232;">B</td>
+                            <td class="hm-cell" style="background:#ff97a2;color:#323232;">B</td>
+                            <td class="hm-cell" style="background:#ffcad0;color:#323232;">B-</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                        </tr>
+                        <tr>
+                            <td class="row-h">Payer</td>
+                            <td class="hm-cell" style="background:#ff3d4d;">A</td>
+                            <td class="hm-cell" style="background:#ff6575;color:#323232;">B+</td>
+                            <td class="hm-cell" style="background:#ff97a2;color:#323232;">B</td>
+                            <td class="hm-cell" style="background:#ffcad0;color:#323232;">B-</td>
+                            <td class="hm-cell" style="background:#ffcad0;color:#323232;">B-</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                        </tr>
+                        <tr>
+                            <td class="row-h">LTC / SNF / Post-Acute</td>
+                            <td class="hm-cell" style="background:#ff6575;color:#323232;">B+</td>
+                            <td class="hm-cell" style="background:#ff97a2;color:#323232;">B</td>
+                            <td class="hm-cell" style="background:#ffcad0;color:#323232;">B-</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                            <td class="hm-cell" style="background:#4DD0E1;">C</td>
+                            <td class="hm-cell" style="background:#4DD0E1;">C</td>
+                        </tr>
+                        <tr>
+                            <td class="row-h">Private Practice</td>
+                            <td class="hm-cell" style="background:#ff97a2;color:#323232;">B</td>
+                            <td class="hm-cell" style="background:#ff97a2;color:#323232;">B</td>
+                            <td class="hm-cell" style="background:#ffcad0;color:#323232;">B-</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                            <td class="hm-cell" style="background:#4DD0E1;">C</td>
+                            <td class="hm-cell" style="background:#00BCD4;">C-</td>
+                            <td class="hm-cell" style="background:#0097A7;">D</td>
+                        </tr>
+                        <tr>
+                            <td class="row-h">Consultant / Self-Employed</td>
+                            <td class="hm-cell" style="background:#ffcad0;color:#323232;">B-</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                            <td class="hm-cell" style="background:#B2EBF2;color:#323232;">C+</td>
+                            <td class="hm-cell" style="background:#4DD0E1;">C</td>
+                            <td class="hm-cell" style="background:#4DD0E1;">C</td>
+                            <td class="hm-cell" style="background:#00BCD4;">C-</td>
+                            <td class="hm-cell" style="background:#0097A7;">D</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="foot" style="margin-top: 14px;">Heatmap shows the baseline firmographic grade before employee count, engagement, first-conversion, lead source, and recency scoring are folded in.</div>
+        </div>
+
+        <!-- CTA FOOTER -->
+        <div class="footer-cta">
+            <div class="fc-text">
+                <strong>Want to see the full data flow?</strong> The companion page walks through HubSpot &rarr; enrichment &rarr; Salesforce routing &rarr; closed-loop feedback, and includes a live scoring calculator you can play with.
+            </div>
+            <a href="../Models/healthicity_marketing_model.html" class="cta-btn">Open the Marketing Model &amp; Calculator &rarr;</a>
+        </div>
+    </div>
+
+    <script>
+        const hcTeal = '#ff3d4d';
+        const hcTealDark = '#d71525';
+        const hcTealDeep = '#a60e1b';
+        const hcTealLight = '#ff6575';
+        const hcNavy = '#323232';
+        const hcMist = '#F5F8FA';
+        const hcAccent = '#00BCD4';
+        const hcAccentDark = '#0097A7';
+        const hcLine = '#DDE5EC';
+        const hcMuted = '#6B7A8C';
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = hcMuted;
+
+        // Grade distribution
+        new Chart(document.getElementById('gradeDistChart'), {
+            type: 'bar',
+            data: {
+                labels: ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D', 'F'],
+                datasets: [{
+                    label: '% of scored leads',
+                    data: [3.2, 5.8, 7.1, 11.4, 14.8, 13.9, 12.1, 10.2, 8.4, 7.8, 5.3],
+                    backgroundColor: ['#a60e1b','#d71525','#ff3d4d','#ff6575','#ff97a2','#ffcad0','#B2EBF2','#4DD0E1','#00BCD4','#0097A7','#006064'],
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y.toFixed(1) + '%' } } },
+                scales: {
+                    y: { grid: { color: hcLine }, ticks: { callback: v => v + '%' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Tier conversion rate
+        new Chart(document.getElementById('tierConvChart'), {
+            type: 'bar',
+            data: {
+                labels: ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D/F'],
+                datasets: [{
+                    label: 'SQL → Deal rate',
+                    data: [38, 29, 19, 12, 7, 4, 1.5],
+                    backgroundColor: hcTeal,
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.x + '% close rate' } } },
+                scales: {
+                    x: { grid: { color: hcLine }, ticks: { callback: v => v + '%' } },
+                    y: { grid: { display: false } }
+                }
+            }
+        });
+
+        // First conversion donut
+        new Chart(document.getElementById('firstConvChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['On-Demand Demo (52%)', 'Webinar (19%)', 'TL / White Paper (18%)', 'Blog Subscribe (6%)', 'Other (5%)'],
+                datasets: [{
+                    data: [52, 19, 18, 6, 5],
+                    backgroundColor: [hcTealDark, hcTeal, hcTealLight, hcAccent, '#CCD4DC'],
+                    borderColor: '#fff', borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '58%',
+                plugins: { legend: { position: 'right', labels: { boxWidth: 12, padding: 12, font: { size: 11 } } } }
+            }
+        });
+
+        // Avg deal size by source
+        new Chart(document.getElementById('sourceDealChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Organic Search', 'Capterra', 'Referral', 'Paid Search', 'Email Nurture', 'Direct', 'Paid Social'],
+                datasets: [{
+                    label: 'Indexed avg deal size',
+                    data: [100, 94, 81, 72, 66, 58, 51],
+                    backgroundColor: [hcTealDeep, hcTealDark, hcTeal, hcTealLight, '#ff97a2', '#ffcad0', '#DDE5EC'],
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => 'Index: ' + ctx.parsed.y + ' (100 = Organic Search)' } } },
+                scales: {
+                    y: { grid: { color: hcLine } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

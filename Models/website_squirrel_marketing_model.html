@@ -411,24 +411,50 @@
     .outcome-band { grid-template-columns: 1fr; }
     .hero h1 { font-size: 32px; }
   }
-</style>
+
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
+
+    </style>
 </head>
 <body>
 
-<div class="topbar">
-  <a href="../dashboards/index.html" class="brand" style="color:#fff;text-decoration:none;">Steve Hill <span class="acorn">🌰</span> Portfolio</a>
+
+    <nav class="p-topbar">
+    <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+    <div class="p-nav">
+        <a href="../index.html">Home</a>
+        <a href="../Dashboards/index.html">Dashboards</a>
+        <a href="../Models/index.html" class="active">Models</a>
+        <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+        <a href="../IHS/plan.html">60/90 Day Plan</a>
+    </div>
+</nav>
+
+    <div class="topbar">
+  <a href="../Dashboards/index.html" class="brand" style="color:#fff;text-decoration:none;">Steve Hill <span class="acorn">🌰</span> Portfolio</a>
   <nav class="topnav">
-    <a href="../dashboards/index.html">Dashboards</a>
-    <a href="../accomplishments.html">Accomplishments</a>
+    <a href="../Dashboards/index.html">Dashboards</a>
+    <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
     <a href="index.html" class="active">Marketing Models</a>
-    <a href="../plan.html">60/90 Day Plan</a>
+    <a href="../IHS/plan.html">60/90 Day Plan</a>
   </nav>
 </div>
 
 <div class="container">
 
   <div class="breadcrumb">
-    <a href="../dashboards/index.html">Portfolio</a> › <a href="index.html">Marketing Models</a> › Website Squirrel
+    <a href="../Dashboards/index.html">Portfolio</a> › <a href="index.html">Marketing Models</a> › Website Squirrel
   </div>
 
   <section class="hero">
@@ -754,7 +780,7 @@
 </div>
 
 <footer>
-  Website Squirrel · Predictive scoring engine · <a href="../dashboards/website_squirrel_lead_segmentation_cac.html">View dashboard</a> · <a href="index.html">← Back to marketing models</a>
+  Website Squirrel · Predictive scoring engine · <a href="../Dashboards/website_squirrel_lead_segmentation_cac.html">View dashboard</a> · <a href="index.html">← Back to marketing models</a>
 </footer>
 
 </body>

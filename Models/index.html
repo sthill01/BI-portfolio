@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Models &amp; Data Flows &mdash; Steve Hill</title>
+    <title>Steve Hill &mdash; Marketing Models &amp; Data Flows</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
+        /* Portfolio cross-page topbar */
+        .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
+        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .p-topbar .p-nav a:hover { color: #FFD77A; }
+        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
+            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
+        }
+
         :root {
             --ink: #0F1B2D;
             --paper: #F6F4EE;
@@ -17,258 +30,151 @@
             --uta-dark: #002A52;
             --squirrel: #FF6B35;
             --squirrel-y: #FFC857;
+            --healthicity: #ff3d4d;
+            --hc-amber: #FFB000;
             --hl: #FFD77A;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.55; }
-        .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 40px 80px; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
-        .brand { font-family: 'Source Serif Pro', serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
-        .brand span { color: var(--muted); font-weight: 400; }
-        .nav-links { display: flex; gap: 26px; font-size: 14px; }
-        .nav-links a { color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.15s; }
-        .nav-links a:hover { color: var(--ink); }
-        .nav-links a.active { color: var(--ink); font-weight: 600; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 56px 40px 80px; }
 
-        .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 14px; }
-        .hero { padding-bottom: 50px; border-bottom: 1px solid var(--line); margin-bottom: 56px; }
-        .hero h1 { font-family: 'Source Serif Pro', serif; font-size: 50px; font-weight: 700; letter-spacing: -1.3px; line-height: 1.1; margin-bottom: 18px; max-width: 860px; }
-        .hero h1 .hl { position: relative; white-space: nowrap; }
-        .hero h1 .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 13px; background: var(--hl); z-index: -1; }
-        .hero p { font-size: 17px; color: var(--muted); max-width: 740px; }
+        /* Page head */
+        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; }
+        .crumb a { text-decoration: none; color: var(--muted); }
+        .crumb a:hover { color: var(--ink); }
+        .crumb span { color: var(--ink); font-weight: 600; }
 
-        /* The canonical stack */
-        .stack-header { text-align: center; margin-bottom: 40px; }
-        .stack-header h2 { font-family: 'Source Serif Pro', serif; font-size: 28px; font-weight: 700; letter-spacing: -0.6px; color: var(--ink); margin-bottom: 6px; }
-        .stack-header p { color: var(--muted); font-size: 14px; }
-        .canonical-stack { background: white; border: 1px solid var(--line); border-radius: 20px; padding: 40px 28px; margin-bottom: 80px; }
-        .stack-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: stretch; }
-        .stack-col { text-align: center; position: relative; }
-        .stack-col::after { content: "→"; position: absolute; top: 50%; right: -10px; transform: translateY(-50%); color: var(--muted); font-size: 18px; z-index: 1; }
-        .stack-col:last-child::after { display: none; }
-        .stack-icon { width: 48px; height: 48px; margin: 0 auto 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: white; }
-        .stack-col:nth-child(1) .stack-icon { background: #6E788C; }
-        .stack-col:nth-child(2) .stack-icon { background: var(--foxit); }
-        .stack-col:nth-child(3) .stack-icon { background: var(--netgain); }
-        .stack-col:nth-child(4) .stack-icon { background: var(--uta); }
-        .stack-col:nth-child(5) .stack-icon { background: var(--squirrel); }
-        .stack-col h4 { font-family: 'Source Serif Pro', serif; font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--ink); }
-        .stack-col p { font-size: 12px; color: var(--muted); line-height: 1.4; padding: 0 8px; }
+        .head-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: end; padding-bottom: 30px; border-bottom: 1px solid var(--line); margin-bottom: 44px; }
+        .head-row h1 { font-family: 'Source Serif Pro', serif; font-size: 50px; font-weight: 700; letter-spacing: -1.4px; line-height: 1.05; color: var(--ink); }
+        .head-row h1 .hl { position: relative; white-space: nowrap; }
+        .head-row h1 .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 12px; background: var(--hl); z-index: -1; }
+        .head-row .intro { font-size: 15px; color: var(--muted); line-height: 1.65; }
+        .head-row .intro strong { color: var(--ink); font-weight: 600; }
 
-        /* Models grid */
-        .section-head { margin-bottom: 30px; }
-        .section-head h2 { font-family: 'Source Serif Pro', serif; font-size: 32px; font-weight: 700; letter-spacing: -0.8px; }
-        .section-head p { color: var(--muted); font-size: 15px; max-width: 680px; margin-top: 6px; }
+        /* Shared stack */
+        .stack-note { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 22px 26px; margin-bottom: 44px; display: grid; grid-template-columns: 1fr 2.4fr; gap: 28px; align-items: center; }
+        .stack-note .lbl { font-family: 'Source Serif Pro', serif; font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.4px; line-height: 1.2; }
+        .stack-note .lbl .sub { font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1.6px; margin-top: 4px; display: block; }
+        .stack-list { font-size: 13px; color: var(--muted); line-height: 1.7; }
+        .stack-list strong { color: var(--ink); font-weight: 600; }
 
-        .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
-        .model-card { text-decoration: none; color: inherit; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; min-height: 330px; transition: transform 0.25s, box-shadow 0.25s; }
-        .model-card:hover { transform: translateY(-5px); }
+        /* Model card grid */
+        .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+        .model-card { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; border-left: 4px solid var(--ink); display: flex; flex-direction: column; gap: 10px; }
+        .model-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(15,27,45,0.08); }
+        .model-card.m-netgain { border-left-color: var(--netgain); }
+        .model-card.m-foxit { border-left-color: var(--foxit); }
+        .model-card.m-uta { border-left-color: var(--uta); }
+        .model-card.m-squirrel { border-left-color: var(--squirrel); }
+        .model-card.m-healthicity { border-left-color: var(--healthicity); }
+        .model-card.m-hc { border-left-color: var(--hc-amber); }
+        .m-header { display: flex; justify-content: space-between; align-items: center; }
+        .m-badge { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+        .m-arrow { color: var(--muted); font-size: 15px; transition: transform 0.2s; }
+        .model-card:hover .m-arrow { transform: translateX(4px); color: var(--ink); }
+        .model-card h3 { font-family: 'Source Serif Pro', serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+        .model-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+        .m-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+        .m-tag { font-size: 10.5px; color: var(--muted); padding: 3px 9px; background: var(--paper); border-radius: 20px; font-weight: 500; }
+        .m-coming { font-size: 10.5px; color: #B06A00; background: #FFF3E0; padding: 3px 9px; border-radius: 20px; font-weight: 700; letter-spacing: 0.6px; }
 
-        /* Netgain model card */
-        .mc-ng { background: #0F1B2D; color: white; border: 1px solid #0F1B2D; }
-        .mc-ng:hover { box-shadow: 0 14px 40px rgba(15,27,45,0.35); }
-        .mc-ng .m-header { padding: 28px 30px 20px; border-bottom: 3px solid var(--netgain); display: flex; align-items: center; gap: 14px; }
-        .mc-ng .tag { width: 38px; height: 38px; background: var(--netgain); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }
-        .mc-ng .co { font-weight: 700; font-size: 16px; }
-        .mc-ng .sub { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: rgba(255,255,255,0.6); }
-        .mc-ng .m-body { padding: 22px 30px 28px; flex: 1; display: flex; flex-direction: column; }
-        .mc-ng h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 8px; }
-        .mc-ng .desc { font-size: 13.5px; color: rgba(255,255,255,0.7); line-height: 1.55; flex: 1; }
-        .mc-ng .footer { padding: 16px 30px; background: rgba(242,106,46,0.12); display: flex; justify-content: space-between; font-size: 12px; }
-        .mc-ng .footer .cta { color: var(--netgain); font-weight: 700; }
-        .mc-ng .footer .chip { background: rgba(255,255,255,0.1); padding: 3px 10px; border-radius: 99px; font-weight: 600; }
-
-        /* Foxit model card */
-        .mc-fx { background: #0B0F1A; color: #E7EAF3; border: 1px solid #1F2436; }
-        .mc-fx .m-header { padding: 28px 30px 20px; display: flex; align-items: center; gap: 14px; background: #141827; border-bottom: 1px solid #1F2436; }
-        .mc-fx .tag { width: 38px; height: 38px; background: var(--foxit); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; font-family: 'Source Serif Pro', serif; color: white; }
-        .mc-fx .co { font-weight: 700; font-size: 16px; font-family: 'Source Serif Pro', serif; }
-        .mc-fx .sub { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: #8089A3; font-family: 'JetBrains Mono', monospace; }
-        .mc-fx .m-body { padding: 22px 30px 28px; flex: 1; display: flex; flex-direction: column; }
-        .mc-fx h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: white; }
-        .mc-fx .desc { font-size: 13.5px; color: #8089A3; line-height: 1.55; flex: 1; }
-        .mc-fx .footer { padding: 16px 30px; background: rgba(255,95,0,0.08); border-top: 1px solid #1F2436; display: flex; justify-content: space-between; font-size: 12px; }
-        .mc-fx .footer .cta { color: var(--foxit); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
-        .mc-fx .footer .chip { background: #141827; border: 1px solid #1F2436; color: #8089A3; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
-
-        /* UTA model card */
-        .mc-uta { background: white; border: 1px solid var(--line); border-top: 6px solid var(--uta); color: var(--ink); }
-        .mc-uta:hover { box-shadow: 0 14px 40px rgba(0,85,164,0.2); }
-        .mc-uta .m-header { padding: 28px 30px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 16px; }
-        .mc-uta .seal { width: 44px; height: 44px; background: var(--uta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; }
-        .mc-uta .co { font-family: 'Source Serif Pro', serif; font-weight: 700; font-size: 16px; color: var(--uta-dark); }
-        .mc-uta .sub { font-size: 10px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--muted); }
-        .mc-uta .m-body { padding: 22px 30px 28px; flex: 1; display: flex; flex-direction: column; }
-        .mc-uta h3 { font-family: 'Source Serif Pro', serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--uta-dark); }
-        .mc-uta .desc { font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1; }
-        .mc-uta .footer { padding: 16px 30px; background: #F3F0E6; display: flex; justify-content: space-between; font-size: 12px; }
-        .mc-uta .footer .cta { color: var(--uta); font-weight: 700; }
-        .mc-uta .footer .chip { color: #DA291C; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 0; }
-
-        /* Squirrel model card */
-        .mc-ws { background: #FFF5EF; border: 2px solid #1A1A1A; border-radius: 22px; box-shadow: 6px 6px 0 #1A1A1A; color: var(--ink); }
-        .mc-ws:hover { box-shadow: 9px 12px 0 #1A1A1A; transform: translate(-2px, -6px); }
-        .mc-ws .m-header { padding: 28px 30px 20px; display: flex; align-items: center; gap: 14px; }
-        .mc-ws .tag { width: 44px; height: 44px; background: var(--squirrel); border-radius: 14px; transform: rotate(-6deg); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: white; position: relative; box-shadow: 0 4px 12px rgba(255,107,53,0.28); }
-        .mc-ws .tag::after { content: ""; position: absolute; width: 10px; height: 10px; background: var(--squirrel-y); border-radius: 50%; top: -3px; right: -3px; }
-        .mc-ws .co { font-weight: 800; font-size: 16px; }
-        .mc-ws .sub { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; color: var(--muted); }
-        .mc-ws .m-body { padding: 8px 30px 26px; flex: 1; display: flex; flex-direction: column; }
-        .mc-ws h3 { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 8px; }
-        .mc-ws h3 em { font-style: normal; color: var(--squirrel); position: relative; }
-        .mc-ws h3 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 1px; height: 7px; background: var(--squirrel-y); z-index: -1; }
-        .mc-ws .desc { font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1; }
-        .mc-ws .footer { padding: 16px 30px; background: white; border-top: 2px solid #1A1A1A; border-radius: 0 0 20px 20px; display: flex; justify-content: space-between; font-size: 12px; }
-        .mc-ws .footer .cta { color: var(--squirrel); font-weight: 800; }
-        .mc-ws .footer .chip { background: #FFF5EF; border: 1.5px solid #1A1A1A; padding: 3px 10px; border-radius: 99px; font-weight: 700; font-size: 11px; }
-
-        footer.page { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-        footer.page a { color: var(--muted); text-decoration: underline; }
+        .foot-note { margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .foot-note a { color: var(--ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--ink); }
 
         @media (max-width: 900px) {
-            .hero h1 { font-size: 36px; }
+            .head-row { grid-template-columns: 1fr; gap: 22px; }
+            .head-row h1 { font-size: 38px; }
+            .stack-note { grid-template-columns: 1fr; }
             .model-grid { grid-template-columns: 1fr; }
-            .stack-row { grid-template-columns: 1fr 1fr; }
-            .stack-col::after { display: none; }
-            .top-nav { flex-direction: column; gap: 16px; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
+    <nav class="p-topbar">
+        <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="../Models/index.html" class="active">Models</a>
+            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
+            <a href="../IHS/plan.html">60/90 Day Plan</a>
+        </div>
+    </nav>
+
     <div class="wrap">
-        <nav class="top-nav">
-            <a href="../dashboards/index.html" class="brand">Steve Hill <span>&middot; Portfolio</span></a>
-            <div class="nav-links">
-                <a href="../dashboards/index.html">Dashboards</a>
-                <a href="../accomplishments.html">Accomplishments</a>
-                <a href="index.html" class="active">Marketing Models</a>
-                <a href="../plan.html">60/90 Day Plan</a>
-            </div>
-        </nav>
+        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <span>Models &amp; Data Flows</span></div>
 
-        <section class="hero">
-            <div class="eyebrow">Marketing Models &bull; Data &amp; Decision Flows</div>
-            <h1>Every dashboard has a <span class="hl">model underneath</span> &mdash; these show the flow.</h1>
-            <p>The companion to the dashboard portfolio. Each page below traces how raw data becomes a measured outcome: what systems feed it, how it's transformed, what analytical layer sits on top, and what decisions the output drives. Same stories, rendered as data architecture.</p>
-        </section>
-
-        <div class="stack-header">
-            <h2>The canonical marketing-analytics stack</h2>
-            <p>Every engagement uses the same five-stage spine. Each page below adapts it to a specific company, data model, and decision loop.</p>
-        </div>
-        <div class="canonical-stack">
-            <div class="stack-row">
-                <div class="stack-col">
-                    <div class="stack-icon">1</div>
-                    <h4>Sources</h4>
-                    <p>Ad platforms, CRM, product events, billing, behavioral tracking, offline data</p>
-                </div>
-                <div class="stack-col">
-                    <div class="stack-icon">2</div>
-                    <h4>Ingest</h4>
-                    <p>Python / SQL pipelines, API connectors, reconciliation &amp; validation, warehouse land</p>
-                </div>
-                <div class="stack-col">
-                    <div class="stack-icon">3</div>
-                    <h4>Model</h4>
-                    <p>Attribution, scoring, cohorts, elasticity, regression, forecasting</p>
-                </div>
-                <div class="stack-col">
-                    <div class="stack-icon">4</div>
-                    <h4>Surface</h4>
-                    <p>Power BI / Tableau dashboards, exec KPI cadences, cohort heatmaps</p>
-                </div>
-                <div class="stack-col">
-                    <div class="stack-icon">5</div>
-                    <h4>Decide</h4>
-                    <p>Budget reallocation, trigger scaling, policy choices, nurture tuning</p>
-                </div>
+        <div class="head-row">
+            <h1>The <span class="hl">models</span> behind the dashboards.</h1>
+            <div class="intro">
+                A dashboard without a data model is just a pretty chart. These pages show the
+                <strong>capture &rarr; enrich &rarr; score &rarr; route &rarr; feedback</strong> pipeline for each
+                deliverable &mdash; how raw clicks become qualified opportunities, and how the feedback loop
+                gets closed. Interactive scoring calculators where it makes sense.
             </div>
         </div>
 
-        <div class="section-head">
-            <h2>Four models, four decision loops.</h2>
-            <p>Pick a company to see the full pipeline &mdash; sources, transformations, analytical layer, dashboards, and the decisions the output enabled.</p>
+        <div class="stack-note">
+            <div class="lbl">The canonical stack<span class="sub">Reused across all models</span></div>
+            <div class="stack-list">
+                <strong>Capture:</strong> HubSpot, GA4, ad platforms, product events &nbsp;•&nbsp;
+                <strong>Enrich:</strong> Clearbit / ZoomInfo / internal joins &nbsp;•&nbsp;
+                <strong>Score:</strong> rules + model (HubSpot or Python) &nbsp;•&nbsp;
+                <strong>Route:</strong> Salesforce / HubSpot workflows &nbsp;•&nbsp;
+                <strong>Feedback:</strong> closed-won + disqual outcomes piped back to scoring.
+            </div>
         </div>
 
         <div class="model-grid">
-            <a href="netgain_marketing_model.html" class="model-card mc-ng">
-                <div class="m-header">
-                    <div class="tag">N</div>
-                    <div>
-                        <div class="co">Netgain Solutions</div>
-                        <div class="sub">B2B SaaS Multi-Touch</div>
-                    </div>
-                </div>
-                <div class="m-body">
-                    <h3>Multi-Touch Attribution + NSM Isolation</h3>
-                    <div class="desc">Six products &times; thirty touchpoints &times; 18-month cycles. Dollar-weighted scoring on every event, cohort analysis to isolate the "Moments that Matter," high-velocity tests to drive more leads through them faster.</div>
-                </div>
-                <div class="footer">
-                    <span class="cta">Open flow &rarr;</span>
-                    <span class="chip">+250% mid-funnel</span>
-                </div>
+
+            <a href="netgain_marketing_model.html" class="model-card m-netgain">
+                <div class="m-header"><span class="m-badge">Netgain</span><span class="m-arrow">&rarr;</span></div>
+                <h3>NetSuite/Sage buyer journey model</h3>
+                <p>ICP filter on firmographics (ERP in use, company size), then velocity scoring across webinar &rarr; demo &rarr; procurement. Writes lead grades back to HubSpot.</p>
+                <div class="m-tags"><span class="m-tag">HubSpot</span><span class="m-tag">Salesforce</span><span class="m-tag">ICP</span></div>
             </a>
 
-            <a href="foxit_marketing_model.html" class="model-card mc-fx">
-                <div class="m-header">
-                    <div class="tag">F</div>
-                    <div>
-                        <div class="co">Foxit eSign</div>
-                        <div class="sub">/* lifecycle engine */</div>
-                    </div>
-                </div>
-                <div class="m-body">
-                    <h3>In-App Events &rarr; Lifecycle Trigger Engine</h3>
-                    <div class="desc">In-app event capture across 4 products, cohort segmentation by frequency + duration + feature mix, unified product/billing/support/marketing layer. Lifecycle triggers scaled via high-velocity tests.</div>
-                </div>
-                <div class="footer">
-                    <span class="cta">&gt; open flow</span>
-                    <span class="chip">3&times; ROI Q1</span>
-                </div>
+            <a href="foxit_marketing_model.html" class="model-card m-foxit">
+                <div class="m-header"><span class="m-badge">Foxit</span><span class="m-arrow">&rarr;</span></div>
+                <h3>Developer-platform activation model</h3>
+                <p>Event-driven scoring on the API itself &mdash; first call, first paid endpoint, 7-day retention, SDK language cohort. Product-led signal, routed to AE only after activation threshold.</p>
+                <div class="m-tags"><span class="m-tag">PLG</span><span class="m-tag">Event data</span><span class="m-tag">API</span></div>
             </a>
 
-            <a href="uta_marketing_model.html" class="model-card mc-uta">
-                <div class="m-header">
-                    <div class="seal">UTA</div>
-                    <div>
-                        <div class="co">Utah Transit Authority</div>
-                        <div class="sub">Fare Elasticity Forecast</div>
-                    </div>
-                </div>
-                <div class="m-body">
-                    <h3>Elasticity + ARIMAX + Scenario Modeling</h3>
-                    <div class="desc">18 months of ridership + exogenous drivers (gas, employment, weather). Log-log elasticity regressions by route and segment, ARIMAX forecast with confidence intervals, three-scenario policy simulation.</div>
-                </div>
-                <div class="footer">
-                    <span class="cta">View flow &rarr;</span>
-                    <span class="chip">Internal report</span>
-                </div>
+            <a href="uta_marketing_model.html" class="model-card m-uta">
+                <div class="m-header"><span class="m-badge">UTA</span><span class="m-arrow">&rarr;</span></div>
+                <h3>Fare revenue &amp; TVM uptime model</h3>
+                <p>Route-level demand model with TVM (ticket vending machine) uptime as a revenue-leakage input. Designed around holding the TVM vendor accountable via error-log attribution.</p>
+                <div class="m-tags"><span class="m-tag">Public sector</span><span class="m-tag">Vendor SLA</span><span class="m-tag">Elasticity</span></div>
             </a>
 
-            <a href="website_squirrel_marketing_model.html" class="model-card mc-ws">
-                <div class="m-header">
-                    <div class="tag">S</div>
-                    <div>
-                        <div class="co">Website Squirrel</div>
-                        <div class="sub">Lead &amp; Churn Scoring</div>
-                    </div>
-                </div>
-                <div class="m-body">
-                    <h3>Logistic Regression &mdash; Conversion &amp; <em>Churn</em></h3>
-                    <div class="desc">Python/AWS pipelines feed dual logistic-regression models: one scores conversion probability, the other scores churn risk. HubSpot API write-back automates nurture routing and 60-day pre-renewal win-backs.</div>
-                </div>
-                <div class="footer">
-                    <span class="cta">Open flow &rarr;</span>
-                    <span class="chip">&minus;60% CAC</span>
-                </div>
+            <a href="website_squirrel_marketing_model.html" class="model-card m-squirrel">
+                <div class="m-header"><span class="m-badge">Website Squirrel</span><span class="m-arrow">&rarr;</span></div>
+                <h3>Small-biz CAC / LTV model</h3>
+                <p>Channel-level cost-per-lead with payback curves by service tier. Built for a small marketing team that needs to defend spend decisions on one page.</p>
+                <div class="m-tags"><span class="m-tag">CAC</span><span class="m-tag">Payback</span><span class="m-tag">SMB</span></div>
             </a>
+
+            <a href="healthicity_marketing_model.html" class="model-card m-healthicity">
+                <div class="m-header"><span class="m-badge">Healthicity</span><span class="m-arrow">&rarr;</span></div>
+                <h3>Lead scoring model + interactive calculator</h3>
+                <p>7-dimension A+ through F scoring model modeled on the Healthicity lead-scoring proposal. Includes a live calculator &mdash; change a dropdown, watch the grade and route update.</p>
+                <div class="m-tags"><span class="m-tag">HubSpot</span><span class="m-tag">Interactive</span><span class="m-tag">Healthcare</span></div>
+            </a>
+
+            <a href="#" class="model-card m-hc" style="pointer-events: none; opacity: 0.85;">
+                <div class="m-header"><span class="m-badge">Hill Capital</span><span class="m-coming">Coming soon</span></div>
+                <h3>Quant equity portfolio construction model</h3>
+                <p>Factor-based portfolio construction with a backtest &rarr; paper &rarr; live progression. Risk model and rebalance logic documented as a data flow. Pairs with the Hill Capital terminal dashboard.</p>
+                <div class="m-tags"><span class="m-tag">Quant</span><span class="m-tag">Python</span><span class="m-tag">Backtest</span></div>
+            </a>
+
         </div>
 
-        <footer class="page">
-            <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
-            <div>All diagrams reflect the architecture and analytical approach; data values are illustrative.</div>
-        </footer>
+        <div class="foot-note">
+            <div>Want the visual output? &nbsp;<a href="../Dashboards/index.html">See the Dashboards section &rarr;</a></div>
+            <div>&larr; <a href="../index.html">Back to portfolio home</a></div>
+        </div>
     </div>
 </body>
 </html>
