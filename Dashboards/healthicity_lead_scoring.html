@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +6,13 @@
     <title>Healthicity | Lead Scoring Framework</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+        <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         /* Portfolio cross-page topbar */
         .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -37,7 +38,7 @@
             --hc-good: #2A9D5F;
             --hc-bad: #d71525;
             /* Back-compat aliases so existing markup keeps working.
-               On healthicity.com, coral red is the DOMINANT brand — so the
+               On healthicity.com, coral red is the DOMINANT brand â€” so the
                prominent "teal" slots from the original design now map to coral,
                and the secondary "accent" slots map to cyan. */
             --hc-teal: var(--hc-coral);
@@ -161,16 +162,24 @@
     </style>
 </head>
 <body>
-    <div class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
-        <nav class="p-nav">
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
             <a href="../index.html">Home</a>
-            <a href="index.html" class="active">Dashboards</a>
-            <a href="../Models/index.html">Models</a>
-            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
-        </nav>
-    </div>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html" aria-current="page">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
 
     <div class="topnav">
         <div class="brand">
@@ -531,7 +540,7 @@
             data: {
                 labels: ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D/F'],
                 datasets: [{
-                    label: 'SQL → Deal rate',
+                    label: 'SQL â†’ Deal rate',
                     data: [38, 29, 19, 12, 7, 4, 1.5],
                     backgroundColor: hcTeal,
                     borderRadius: 6,
@@ -591,3 +600,12 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

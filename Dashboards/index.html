@@ -1,16 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Six branded BI dashboards covering funnel analytics, activation, fare revenue, lead segmentation, compliance scoring, and quantitative portfolio reporting.">
+    <meta name="theme-color" content="#0F1B2D">
+    <meta property="og:title" content="Steve Hill - Portfolio Dashboards">
+    <meta property="og:description" content="Branded dashboard work spanning SaaS, developer tools, public transit, healthcare, small-business growth, and quantitative research.">
+    <meta property="og:type" content="website">
     <title>Steve Hill &mdash; Dashboards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         /* Portfolio cross-page topbar */
         .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -78,15 +86,15 @@
         .d-netgain .card-footer .cta { color: var(--netgain); font-weight: 600; }
         .d-netgain .card-footer .chip { background: #FFE3D1; color: var(--netgain); padding: 3px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 600; }
 
-        /* Foxit card - bold, dark (developer tools) */
-        .d-foxit { background: #141827; color: white; border: 1px solid #262B3F; }
-        .d-foxit .card-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        /* Foxit card - light blue brand */
+        .d-foxit { background: #F2FAFF; color: #163042; border: 1px solid #C7DEEE; }
+        .d-foxit .card-header { background: #E3F1FB; border-bottom: 1px solid #C7DEEE; }
         .d-foxit .logo-mark { background: var(--foxit); }
-        .d-foxit .co-tag { color: rgba(255,255,255,0.55); }
-        .d-foxit .dash-desc { color: rgba(255,255,255,0.65); }
-        .d-foxit .card-footer { background: rgba(255,95,0,0.08); color: rgba(255,255,255,0.7); }
+        .d-foxit .co-tag { color: #4E6880; }
+        .d-foxit .dash-desc { color: #4E6880; }
+        .d-foxit .card-footer { background: rgba(43,140,190,0.08); color: #4E6880; }
         .d-foxit .card-footer .cta { color: var(--foxit); font-weight: 600; }
-        .d-foxit .card-footer .chip { background: rgba(61,213,152,0.15); color: #5FD69E; padding: 3px 10px; border-radius: 3px; font-size: 10.5px; font-weight: 600; }
+        .d-foxit .card-footer .chip { background: rgba(56,161,105,0.14); color: #2D7A54; padding: 3px 10px; border-radius: 3px; font-size: 10.5px; font-weight: 600; }
 
         /* UTA card - government/civic (clean, authoritative) */
         .d-uta { background: #FAFAF7; border: 1px solid var(--line); border-top: 5px solid var(--uta); }
@@ -145,16 +153,25 @@
             .dash-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/theme-coastal-growth.css">
 </head>
 <body>
-    <nav class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
         <div class="p-nav">
             <a href="../index.html">Home</a>
-            <a href="../Dashboards/index.html" class="active">Dashboards</a>
-            <a href="../Models/index.html">Models</a>
-            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html" aria-current="page">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
         </div>
     </nav>
 
@@ -173,7 +190,7 @@
         <div class="stat-strip">
             <div class="stat-tile"><div class="k">6</div><div class="l">Branded Dashboards</div></div>
             <div class="stat-tile"><div class="k">18+</div><div class="l">KPIs Tracked</div></div>
-            <div class="stat-tile"><div class="k">$300M+</div><div class="l">Revenue Analyzed</div></div>
+            <div class="stat-tile"><div class="k">$90M+</div><div class="l">Revenue Analyzed</div></div>
             <div class="stat-tile"><div class="k">13+ yrs</div><div class="l">Across Industries</div></div>
         </div>
 
@@ -189,7 +206,7 @@
                 </div>
                 <div class="card-body">
                     <div class="dash-title">Mid-Funnel Velocity Dashboard</div>
-                    <div class="dash-desc">MQL→SQL→Opp→Closed-Won funnel with stage velocity, channel attribution, and deal-size cohorts. Targeted at NetSuite/Sage Intacct buyers.</div>
+                    <div class="dash-desc">MQLâ†’SQLâ†’Oppâ†’Closed-Won funnel with stage velocity, channel attribution, and deal-size cohorts. Targeted at NetSuite/Sage Intacct buyers.</div>
                 </div>
                 <div class="card-footer">
                     <span class="cta">Open dashboard &rarr;</span>
@@ -207,7 +224,7 @@
                 </div>
                 <div class="card-body">
                     <div class="dash-title">API Client Growth &amp; Activation Funnel</div>
-                    <div class="dash-desc">Dev-sign-up → first API call → paid conversion, split by SDK language. Retention cohorts and feature-adoption signal for a bottoms-up dev motion.</div>
+                    <div class="dash-desc">Dev-sign-up â†’ first API call â†’ paid conversion, split by SDK language. Retention cohorts and feature-adoption signal for a bottoms-up dev motion.</div>
                 </div>
                 <div class="card-footer">
                     <span class="cta">Open dashboard &rarr;</span>
@@ -224,8 +241,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="dash-title">Fare Revenue &amp; Price Elasticity</div>
-                    <div class="dash-desc">Route-level fare revenue, ridership volume, and elasticity bands with TVM (ticket vending machine) uptime overlay &mdash; the vendor-accountability story, visualized.</div>
+                    <div class="dash-title">TVM Failure Sequences &amp; Service Recovery</div>
+                    <div class="dash-desc">Customer-visible failure paths, vendor-alert coverage, and recoverable leakage across a 250+ ticketing machine fleet &mdash; the vendor-accountability story, visualized.</div>
                 </div>
                 <div class="card-footer">
                     <span class="cta">Open dashboard &rarr;</span>
@@ -290,9 +307,18 @@
         </div>
 
         <div class="foot-note">
-            <div>Looking for the data-flow models that power these dashboards? &nbsp;<a href="../Models/index.html">See the Models section &rarr;</a></div>
+            <div>Need the business story behind these visuals? &nbsp;<a href="../CaseStudies/index.html">See the Case Studies section &rarr;</a></div>
             <div>&larr; <a href="../index.html">Back to portfolio home</a></div>
         </div>
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

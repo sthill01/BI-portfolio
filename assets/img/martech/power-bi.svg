@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" role="img" aria-labelledby="title">
+  <title>Power BI</title>
+  <rect width="180" height="56" rx="16" fill="#FFFFFF"/>
+  <path d="M21 37a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v5H21v-5Zm13-8a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v13H34V29Zm13-10a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v23H47V19Zm13 6a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v17H60V25Z" fill="#F2C811"/>
+  <text x="88" y="24" fill="#163042" font-family="Arial, sans-serif" font-size="15" font-weight="700">Power BI</text>
+  <text x="88" y="39" fill="#5F7280" font-family="Arial, sans-serif" font-size="10" font-weight="600">Executive scorecard</text>
+</svg>

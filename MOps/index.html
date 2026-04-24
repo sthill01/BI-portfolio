@@ -1,0 +1,809 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How Steve Hill works: core principles, values, funnel thinking, attribution, integrations, and growth decision support for marketing leaders.">
+    <title>Steve Hill &mdash; How I Work</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/portfolio-base.css">
+    <style>
+        :root {
+            --ink: #163042;
+            --paper: #F4FBFA;
+            --surface: #FFFFFF;
+            --line: #DCE9E8;
+            --muted: #4E6471;
+            --sky: #2B8CBE;
+            --mint: #38A169;
+            --gold: #FFB84D;
+            --soft: #E6F5FA;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        html, body { margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top right, rgba(255,255,255,0.82), transparent 28%), var(--paper); color: var(--ink); line-height: 1.6; }
+        .p-topbar { background: #163042; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', serif; font-size: 15px; font-weight: 700; color: #fff; text-decoration: none; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.68); font-weight: 400; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 22px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.72); text-decoration: none; }
+        .p-topbar .p-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 56px 40px 80px; }
+        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 18px; }
+        .crumb a { color: var(--sky); text-decoration: none; }
+        .page-layout { display: grid; grid-template-columns: 238px minmax(0, 1fr); gap: 24px; align-items: start; }
+        .content-column { min-width: 0; }
+        .toc { position: sticky; top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px; box-shadow: 0 14px 30px rgba(22,48,66,0.06); }
+        .toc .toc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 10px; }
+        .toc nav { display: grid; gap: 6px; }
+        .toc a { display: block; padding: 9px 10px; border-radius: 12px; border: 1px solid transparent; color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none; }
+        .toc a:hover { color: var(--ink); border-color: var(--line); background: #F9FCFC; }
+        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; margin-bottom: 30px; }
+        .hero-card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 34px; box-shadow: 0 18px 36px rgba(22,48,66,0.08); }
+        .hero-card .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 12px; }
+        .hero-card h1 { margin: 0 0 14px; font-family: 'Source Serif Pro', serif; font-size: 48px; letter-spacing: -1.2px; line-height: 1.04; }
+        .hero-card p { margin: 0; color: var(--muted); font-size: 15px; max-width: 60ch; }
+        .hero-panel h2 { margin: 0 0 12px; font-family: 'Source Serif Pro', serif; font-size: 25px; }
+        .hero-panel ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+        .hero-panel li + li { margin-top: 8px; }
+        .section { margin-bottom: 32px; }
+        .section-head { margin-bottom: 16px; }
+        .section-head .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 8px; }
+        .section-head h2 { margin: 0 0 8px; font-family: 'Source Serif Pro', serif; font-size: 31px; letter-spacing: -0.7px; }
+        .section-head p { margin: 0; color: var(--muted); font-size: 14px; max-width: 64ch; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+        .card h3 { margin: 0 0 8px; font-size: 18px; color: var(--ink); }
+        .card p, .card li { color: var(--muted); font-size: 13.5px; }
+        .card ul { margin: 0; padding-left: 18px; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+        .metric { background: linear-gradient(135deg, #FFFFFF, #F8FCFB); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+        .metric .k { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 6px; }
+        .metric .v { font-family: 'Source Serif Pro', serif; font-size: 30px; line-height: 1; }
+        .metric .sub { margin-top: 6px; color: var(--muted); font-size: 12px; }
+        .mini-board { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+        .mini-board-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin-bottom: 14px; }
+        .mini-board-head h3 { margin: 0; font-size: 18px; color: var(--ink); }
+        .mini-board-head p { margin: 0; color: var(--muted); font-size: 12.5px; max-width: 48ch; }
+        .mini-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+        .mini-card { background: linear-gradient(135deg, #FFFFFF, #F8FCFB); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+        .mini-card .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 5px; }
+        .mini-card .value { font-family: 'Source Serif Pro', serif; font-size: 24px; line-height: 1.05; color: var(--ink); }
+        .mini-card .note { margin-top: 6px; color: var(--muted); font-size: 11.5px; }
+        .attr-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+        .attr-table th { background: #EDF7FA; color: var(--ink); text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; padding: 12px 14px; }
+        .attr-table td { padding: 14px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); vertical-align: top; }
+        .lifecycle { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+        .stage { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 14px; min-height: 118px; }
+        .stage .phase { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sky); margin-bottom: 8px; }
+        .stage h3 { margin: 0 0 6px; font-size: 17px; }
+        .stage p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+        .stage-metrics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .stage-metrics span { display: inline-flex; align-items: center; padding: 5px 8px; border-radius: 999px; background: #EDF7FA; color: var(--ink); font-size: 10.5px; font-weight: 600; }
+        .stack-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; }
+        .stack-card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+        .stack-card .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 8px; }
+        .stack-card h3 { margin: 0 0 10px; font-family: 'Source Serif Pro', serif; font-size: 26px; letter-spacing: -0.4px; }
+        .stack-card p { margin: 0; color: var(--muted); font-size: 13.5px; }
+        .stack-lanes { display: grid; gap: 12px; margin-top: 16px; }
+        .stack-lane { display: grid; grid-template-columns: 112px 1fr 190px; gap: 12px; align-items: center; padding: 14px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(135deg, #FFFFFF, #F8FCFB); }
+        .lane-step { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sky); }
+        .lane-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+        .lane-metric { font-size: 12px; color: var(--muted); }
+        .logo-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+        .tool-badge, .tool-text { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border-radius: 999px; border: 1px solid var(--line); background: #F9FCFC; color: var(--ink); font-size: 11px; font-weight: 700; }
+        .tool-badge img { width: 16px; height: 16px; object-fit: contain; }
+        .bridge { background: linear-gradient(135deg, #FFFFFF, #FFF8EA); border: 1px solid var(--line); border-radius: 22px; padding: 24px; }
+        .bridge h3 { margin: 0 0 8px; font-family: 'Source Serif Pro', serif; font-size: 25px; }
+        .bridge p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+        .section, .bridge { scroll-margin-top: 88px; }
+        .hero-lead {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #FFFFFF 0%, #EEF8F7 100%);
+        }
+        .hero-lead::after {
+            content: "";
+            position: absolute;
+            right: -56px;
+            bottom: -64px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(43,140,190,0.16), rgba(43,140,190,0));
+        }
+        .hero-panel {
+            background: linear-gradient(160deg, #163042 0%, #1F4F68 100%);
+            color: #FFFFFF;
+        }
+        .hero-panel h2,
+        .hero-panel ul,
+        .hero-panel li {
+            color: rgba(255,255,255,0.88);
+        }
+        .hero-panel li::marker {
+            color: var(--gold);
+        }
+        .hero-tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(43,140,190,0.1);
+            color: var(--ink);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .toc {
+            background: linear-gradient(180deg, #FFFFFF 0%, #F8FCFB 100%);
+        }
+        .manifesto-section,
+        .metrics-section,
+        .impact-section,
+        .lifecycle-section,
+        .stack-section,
+        .attribution-section,
+        .build-section {
+            padding: 30px;
+            border-radius: 30px;
+        }
+        .manifesto-section {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F6FBFB 100%);
+            border: 1px solid var(--line);
+            box-shadow: 0 18px 36px rgba(22,48,66,0.06);
+        }
+        .manifesto-section .grid {
+            grid-template-columns: repeat(2, 1fr);
+            counter-reset: principle;
+        }
+        .manifesto-section .card {
+            position: relative;
+            overflow: hidden;
+            padding: 24px 22px 22px 58px;
+            border: none;
+            background: #FFFFFF;
+            box-shadow: inset 0 0 0 1px rgba(220,233,232,0.82);
+        }
+        .manifesto-section .card::before {
+            counter-increment: principle;
+            content: "0" counter(principle);
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            color: var(--sky);
+            font-family: 'Source Serif Pro', serif;
+            font-size: 28px;
+            line-height: 1;
+        }
+        .manifesto-section .card::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 4px;
+            background: var(--sky);
+        }
+        .manifesto-section .card:nth-child(3n+2)::after {
+            background: var(--gold);
+        }
+        .manifesto-section .card:nth-child(3n)::after {
+            background: var(--mint);
+        }
+        .manifesto-section .mini-board {
+            border: none;
+            background: linear-gradient(135deg, #163042 0%, #214A63 100%);
+        }
+        .manifesto-section .mini-board-head h3,
+        .manifesto-section .mini-card .value {
+            color: #FFFFFF;
+        }
+        .manifesto-section .mini-board-head p,
+        .manifesto-section .mini-card .label,
+        .manifesto-section .mini-card .note {
+            color: rgba(255,255,255,0.72);
+        }
+        .manifesto-section .mini-card {
+            border-color: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.08);
+        }
+        .metrics-section {
+            background: linear-gradient(145deg, #163042 0%, #21556F 100%);
+            box-shadow: 0 22px 42px rgba(22,48,66,0.18);
+        }
+        .metrics-section .section-head .eyebrow {
+            color: rgba(255,255,255,0.72);
+        }
+        .metrics-section .section-head h2,
+        .metrics-section .metric .v {
+            color: #FFFFFF;
+        }
+        .metrics-section .section-head p,
+        .metrics-section .metric .k,
+        .metrics-section .metric .sub {
+            color: rgba(255,255,255,0.76);
+        }
+        .metrics-section .metrics {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+        .metrics-section .metric {
+            border-color: rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(8px);
+        }
+        .metrics-section .metric:first-child {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(255,184,77,0.24), rgba(255,255,255,0.08));
+        }
+        .metrics-section .mini-board {
+            background: #FFFFFF;
+            border-color: rgba(255,255,255,0.2);
+        }
+        .impact-section {
+            background: linear-gradient(135deg, #FFF8EC 0%, #FFFFFF 100%);
+            border: 1px solid #F0DEBF;
+        }
+        .impact-section .grid {
+            gap: 0;
+            align-items: stretch;
+        }
+        .impact-section .card {
+            border: none;
+            border-right: 1px solid var(--line);
+            border-radius: 0;
+            background: transparent;
+            padding: 8px 20px 8px 0;
+        }
+        .impact-section .card:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+        .impact-section .card h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 24px;
+            letter-spacing: -0.4px;
+        }
+        .impact-section .mini-board {
+            background: #FFFDF8;
+            border-style: dashed;
+        }
+        .lifecycle-section {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .lifecycle-section .section-head {
+            padding: 0 4px;
+        }
+        .lifecycle-section .lifecycle {
+            position: relative;
+        }
+        .lifecycle-section .lifecycle::before {
+            content: "";
+            position: absolute;
+            left: 4%;
+            right: 4%;
+            top: 34px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(43,140,190,0.35), rgba(56,161,105,0.35));
+        }
+        .lifecycle-section .stage {
+            position: relative;
+            min-height: 142px;
+            padding-top: 24px;
+            box-shadow: 0 10px 24px rgba(22,48,66,0.05);
+        }
+        .lifecycle-section .stage::before {
+            content: "";
+            position: absolute;
+            top: -9px;
+            left: 18px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--sky);
+            box-shadow: 0 0 0 6px rgba(43,140,190,0.12);
+        }
+        .lifecycle-section .stage:nth-child(2n) {
+            transform: translateY(20px);
+            background: #F9FCFC;
+        }
+        .lifecycle-section .stage:nth-child(3n) .phase {
+            color: var(--mint);
+        }
+        .lifecycle-section .stage:nth-child(3n+2) .phase {
+            color: var(--gold);
+        }
+        .stack-section {
+            background: radial-gradient(circle at top left, rgba(43,140,190,0.09), transparent 34%), #FFFFFF;
+            border: 1px solid var(--line);
+        }
+        .stack-section .stack-card {
+            border-radius: 24px;
+            background: #FBFDFC;
+        }
+        .stack-section .stack-card:first-child {
+            border-left: 4px solid var(--sky);
+        }
+        .stack-section .stack-card:last-child {
+            border-left: 4px solid var(--mint);
+        }
+        .stack-section .stack-lane:nth-child(2n) {
+            background: #FFFFFF;
+        }
+        .attribution-section {
+            background: linear-gradient(135deg, #FFFDF8 0%, #FFFFFF 100%);
+            border: 1px solid #E9DDCD;
+        }
+        .attribution-section .attr-table {
+            border-color: #E9DDCD;
+        }
+        .attribution-section .attr-table th {
+            background: #163042;
+            color: #FFFFFF;
+        }
+        .attribution-section .attr-table tr:nth-child(3) {
+            background: #EEF8FB;
+        }
+        .attribution-section .attr-table tr:nth-child(3) td:first-child strong {
+            color: var(--sky);
+        }
+        .attribution-section .mini-board {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F1F8FB 100%);
+        }
+        .build-section {
+            background: linear-gradient(135deg, #EEF8F7 0%, #FFFFFF 100%);
+            border: 1px solid var(--line);
+        }
+        .build-section .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .build-section .card {
+            position: relative;
+            padding-left: 52px;
+        }
+        .build-section .card::before {
+            content: "";
+            position: absolute;
+            top: 22px;
+            left: 18px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--mint);
+        }
+        .build-section .card::after {
+            content: "";
+            position: absolute;
+            top: 28px;
+            left: 24px;
+            width: 8px;
+            height: 4px;
+            border-left: 2px solid #FFFFFF;
+            border-bottom: 2px solid #FFFFFF;
+            transform: rotate(-45deg);
+        }
+        .build-section .mini-board {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFF8EA 100%);
+        }
+        .bridge {
+            box-shadow: 0 16px 32px rgba(22,48,66,0.08);
+        }
+        @media (max-width: 1040px) { .page-layout { grid-template-columns: 1fr; } .toc { position: relative; top: auto; } }
+        @media (max-width: 960px) { .hero, .grid, .metrics, .lifecycle, .mini-grid, .stack-grid { grid-template-columns: 1fr; } .mini-board-head { flex-direction: column; align-items: flex-start; } .stack-lane { grid-template-columns: 1fr; } .manifesto-section .grid, .build-section .grid { grid-template-columns: 1fr; } .impact-section .card { border-right: none; border-bottom: 1px solid var(--line); padding: 0 0 18px; margin-bottom: 18px; } .impact-section .card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; } .metrics-section .metrics { grid-template-columns: 1fr; } .metrics-section .metric:first-child { grid-column: auto; } .lifecycle-section .lifecycle::before { display: none; } .lifecycle-section .stage:nth-child(2n) { transform: none; } }
+        @media (max-width: 720px) { .p-topbar { flex-direction: column; gap: 10px; align-items: flex-start; padding: 12px 20px; } .wrap { padding: 44px 20px 72px; } .hero-card h1 { font-size: 38px; } }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../MOps/index.html" aria-current="page">How I Work</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
+    <main id="main-content" class="wrap">
+        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <span>How I Work</span></div>
+
+        <section class="hero">
+            <div class="hero-card hero-lead">
+                <div class="eyebrow">How I Work</div>
+                <h1>How I work: the core principles, values, and operating approach I bring to the role.</h1>
+                <p>This page is the short version of how I work. I start with the business question, build a measurement layer the team can trust, keep the reporting readable, and stay close to the operational handoffs so leaders can make decisions quickly.</p>
+                <div class="hero-tag-row" aria-label="Working themes">
+                    <span class="hero-tag">Readable reporting</span>
+                    <span class="hero-tag">Trusted measurement</span>
+                    <span class="hero-tag">Operational handoffs</span>
+                    <span class="hero-tag">Testing mindset</span>
+                </div>
+            </div>
+            <aside class="hero-card hero-panel">
+                <h2>Core approach</h2>
+                <ul>
+                    <li>Start with the business question, not the dashboard.</li>
+                    <li>Use plain-language reporting that a marketing executive will actually read.</li>
+                    <li>Stay close to booking, service, and follow-up handoffs.</li>
+                    <li>Use attribution and analytics as decision tools, not theater.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <div class="page-layout">
+            <aside class="toc" aria-label="On this page">
+                <div class="toc-label">On This Page</div>
+                <nav>
+                    <a href="#core-principles">Core Principles</a>
+                    <a href="#north-star-metrics">North Star Metrics</a>
+                    <a href="#revenue-impact-kpis">Revenue Impact KPIs</a>
+                    <a href="#customer-life-cycle-map">Customer Life Cycle Map</a>
+                    <a href="#canonical-stack">Canonical Stack</a>
+                    <a href="#attribution">Attribution</a>
+                    <a href="#what-i-build">What I Know How To Build</a>
+                    <a href="#supporting-pages">Supporting Pages</a>
+                </nav>
+            </aside>
+            <div class="content-column">
+
+        <section class="section manifesto-section" id="core-principles">
+            <div class="section-head">
+                <div class="eyebrow">Core Principles</div>
+                <h2>The core principles and values I bring into the work.</h2>
+                <p>These are the habits that shape the way I build scorecards, diagnose funnel issues, communicate with stakeholders, and decide what the next deliverable should be.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>Lead with the business question</h3>
+                    <p>I try to start with what leadership needs to decide, then work backward into the data and reporting layer. That keeps the output practical instead of overbuilt.</p>
+                </article>
+                <article class="card">
+                    <h3>Keep the reporting readable</h3>
+                    <p>I prefer scorecards and views that a marketing executive can scan quickly. If a team cannot explain what changed and what to do next, the reporting is too heavy.</p>
+                </article>
+                <article class="card">
+                    <h3>Make the handoffs visible</h3>
+                    <p>I do not like stopping at leads. The real story usually lives in the handoffs between marketing, intake, booking, service delivery, and follow-up.</p>
+                </article>
+                <article class="card">
+                    <h3>Stay honest about data confidence</h3>
+                    <p>I would rather show where attribution or revenue mapping is incomplete than overstate certainty. Trust in the measurement layer matters more than polish.</p>
+                </article>
+                <article class="card">
+                    <h3>Build for testing, not just monitoring</h3>
+                    <p>The goal is not only to report what happened. It is to create a system the team can use to test faster, rule out weak ideas, and scale the better ones.</p>
+                </article>
+                <article class="card">
+                    <h3>Translate across teams</h3>
+                    <p>I try to make the same data useful to marketers, leadership, operations, and support teams. That usually means simpler language and clearer definitions.</p>
+                </article>
+            </div>
+            <div class="mini-board">
+                <div class="mini-board-head">
+                    <h3>How that shows up in practice</h3>
+                    <p>The common thread is practical decision support: clear metrics, plain-language framing, honest caveats, and a shorter path from reporting to action.</p>
+                </div>
+                <div class="mini-grid">
+                    <div class="mini-card"><div class="label">Reporting style</div><div class="value">Readable first</div><div class="note">One glance should show what changed and what to do next</div></div>
+                    <div class="mini-card"><div class="label">Decision rhythm</div><div class="value">Weekly</div><div class="note">Scale, fix, or test instead of passive dashboard review</div></div>
+                    <div class="mini-card"><div class="label">Data posture</div><div class="value">Trustworthy</div><div class="note">Cleaner definitions before more complicated analysis</div></div>
+                    <div class="mini-card"><div class="label">Stakeholder style</div><div class="value">Plain language</div><div class="note">Executive-friendly without hiding the mechanics</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section metrics-section" id="north-star-metrics">
+            <div class="section-head">
+                <div class="eyebrow">North Star Metrics</div>
+                <h2>The metrics I would expect a performance-minded marketing leader to scan first.</h2>
+                <p>These are the numbers that tend to create the fastest alignment between media performance, funnel economics, and operational throughput.</p>
+            </div>
+            <div class="metrics">
+                <div class="metric"><div class="k">Media efficiency</div><div class="v">ROAS</div><div class="sub">Useful only if offline conversion handoff is trustworthy.</div></div>
+                <div class="metric"><div class="k">Lead economics</div><div class="v">Cost / lead</div><div class="sub">Shows what it costs to create qualified demand at the top of the funnel.</div></div>
+                <div class="metric"><div class="k">Booking economics</div><div class="v">Cost / booked customer</div><div class="sub">The cleaner view of what acquisition really costs when the goal is a booked job.</div></div>
+                <div class="metric"><div class="k">Demand pressure</div><div class="v">Calls / day</div><div class="sub">A clean upstream read on whether demand generation is actually landing.</div></div>
+                <div class="metric"><div class="k">Operating North Star</div><div class="v">Services booked / day</div><div class="sub">The most direct bridge between marketing and revenue operations.</div></div>
+            </div>
+            <div class="mini-board">
+                <div class="mini-board-head">
+                    <h3>Example growth baseline scorecard</h3>
+                    <p>A simple weekly view should let a marketing executive see demand volume, cost per funnel goal, booking output, and media efficiency in one glance.</p>
+                </div>
+                <div class="mini-grid">
+                    <div class="mini-card"><div class="label">Spend</div><div class="value">$22.4K</div><div class="note">Media cost for the week</div></div>
+                    <div class="mini-card"><div class="label">Cost / lead</div><div class="value">$86</div><div class="note">Top-of-funnel efficiency by qualified inquiry</div></div>
+                    <div class="mini-card"><div class="label">Calls / day</div><div class="value">41</div><div class="note">Early read on demand pressure</div></div>
+                    <div class="mini-card"><div class="label">Cost / booked customer</div><div class="value">$214</div><div class="note">What it costs to turn demand into a real booking</div></div>
+                    <div class="mini-card"><div class="label">Services booked / day</div><div class="value">17</div><div class="note">The clearest operating output</div></div>
+                    <div class="mini-card"><div class="label">ROAS</div><div class="value">4.2x</div><div class="note">Readable only with closed-loop revenue mapping</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section impact-section" id="revenue-impact-kpis">
+            <div class="section-head">
+                <div class="eyebrow">Revenue Impact KPIs</div>
+                <h2>The proof points that show the work is driving revenue, not just reporting.</h2>
+                <p>Marketing executives usually need a second layer beyond dashboard activity: metrics that connect operations to revenue creation, cost discipline, and speed through the funnel.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>Pipeline contribution</h3>
+                    <p>In a sales-led motion, this shows how much qualified pipeline is sourced or influenced by marketing. In a service business, the closest equivalent is booked revenue contribution from marketing-sourced demand.</p>
+                </article>
+                <article class="card">
+                    <h3>CAC efficiency</h3>
+                    <p>This is the capital-efficiency view: whether customer acquisition cost is improving while quality and downstream conversion still hold up.</p>
+                </article>
+                <article class="card">
+                    <h3>Funnel conversion velocity</h3>
+                    <p>This shows how quickly prospects move from first engagement to qualified conversion, booking, or closed revenue. Faster movement usually means the operating system is reducing friction.</p>
+                </article>
+            </div>
+            <div class="mini-board">
+                <div class="mini-board-head">
+                    <h3>Example executive KPI view</h3>
+                    <p>This is the kind of summary a CMO or CFO can use to see whether marketing operations is functioning as a growth engine.</p>
+                </div>
+                <div class="mini-grid">
+                    <div class="mini-card"><div class="label">Pipeline contribution</div><div class="value">46%</div><div class="note">Share of qualified pipeline influenced by marketing programs</div></div>
+                    <div class="mini-card"><div class="label">Booked revenue contribution</div><div class="value">$1.8M</div><div class="note">Service-business equivalent of pipeline impact</div></div>
+                    <div class="mini-card"><div class="label">CAC efficiency</div><div class="value">-12%</div><div class="note">Acquisition cost down while quality holds</div></div>
+                    <div class="mini-card"><div class="label">CAC ratio</div><div class="value">3.7:1</div><div class="note">Revenue returned for each unit of acquisition cost</div></div>
+                    <div class="mini-card"><div class="label">Conversion velocity</div><div class="value">5.2 days</div><div class="note">Average time from first touch to booked customer</div></div>
+                    <div class="mini-card"><div class="label">Velocity trend</div><div class="value">+18%</div><div class="note">Funnel moves faster after workflow and routing fixes</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section lifecycle-section" id="customer-life-cycle-map">
+            <div class="section-head">
+                <div class="eyebrow">Customer Life Cycle Map</div>
+                <h2>The funnel needs to connect marketing to the real customer journey.</h2>
+                <p>Measurement becomes useful when it spans the handoffs between marketing, lead intake, booking, delivery, follow-up, and referral instead of stopping at the form fill. Each stage should also have a clear cost-to-goal metric so budget decisions stay grounded in funnel reality.</p>
+            </div>
+            <div class="lifecycle">
+                <article class="stage"><span class="phase">Stage 1</span><h3>First Touch</h3><p>Channel, campaign, and offer start the demand path.</p><div class="stage-metrics"><span>Spend</span><span>CTR</span><span>Landing CVR</span></div></article>
+                <article class="stage"><span class="phase">Stage 2</span><h3>Call / Form</h3><p>Lead quality and speed-to-response begin to matter.</p><div class="stage-metrics"><span>Calls / day</span><span>Form rate</span><span>Cost / lead</span></div></article>
+                <article class="stage"><span class="phase">Stage 3</span><h3>Booked Job</h3><p>This is where many source-quality assumptions get confirmed or challenged.</p><div class="stage-metrics"><span>Book rate</span><span>Show rate</span><span>Cost / booked customer</span></div></article>
+                <article class="stage"><span class="phase">Stage 4</span><h3>Completed Service</h3><p>The revenue event needs to connect back to the original source.</p><div class="stage-metrics"><span>Revenue</span><span>ROAS</span><span>Completion rate</span></div></article>
+                <article class="stage"><span class="phase">Stage 5</span><h3>Repeat Customer</h3><p>Lifecycle value grows when follow-up is consistent and visible.</p><div class="stage-metrics"><span>Repeat rate</span><span>Time to return</span><span>LTV</span></div></article>
+                <article class="stage"><span class="phase">Stage 6</span><h3>Referral / NPS</h3><p>The strongest quality signal is a customer who returns and refers.</p><div class="stage-metrics"><span>Referral rate</span><span>NPS</span><span>Review rate</span></div></article>
+            </div>
+            <div class="mini-board">
+                <div class="mini-board-head">
+                    <h3>Example lifecycle scorecard</h3>
+                    <p>A lifecycle view helps show whether a weak result comes from poor media, expensive lead generation, weak intake, or leakage later in the customer journey.</p>
+                </div>
+                <div class="mini-grid">
+                    <div class="mini-card"><div class="label">Lead to call</div><div class="value">38%</div><div class="note">Traffic that becomes a real inquiry</div></div>
+                    <div class="mini-card"><div class="label">Cost / lead</div><div class="value">$86</div><div class="note">What it takes to create a qualified inquiry</div></div>
+                    <div class="mini-card"><div class="label">Call to book</div><div class="value">44%</div><div class="note">Intake and scheduling strength</div></div>
+                    <div class="mini-card"><div class="label">Cost / booked customer</div><div class="value">$214</div><div class="note">The cost of reaching the real conversion goal</div></div>
+                    <div class="mini-card"><div class="label">Book to complete</div><div class="value">82%</div><div class="note">Operational follow-through</div></div>
+                    <div class="mini-card"><div class="label">Repeat or refer</div><div class="value">19%</div><div class="note">Downstream quality signal</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section stack-section" id="canonical-stack">
+            <div class="section-head">
+                <div class="eyebrow">Canonical Stack</div>
+                <h2>The systems and handoffs the scorecards depend on.</h2>
+                <p>A useful operating stack follows the same customer life cycle as the funnel: attract demand, capture intent, route it fast, connect bookings to revenue, and feed those results back into reporting and testing.</p>
+            </div>
+            <div class="stack-grid">
+                <article class="stack-card">
+                    <div class="eyebrow">Stage-Aligned Stack</div>
+                    <h3>One operating view from first touch to referral.</h3>
+                    <p>The stack does not need to be complicated. It needs to keep the customer journey, the operational handoff, and the scorecard aligned.</p>
+                    <div class="stack-lanes">
+                        <div class="stack-lane">
+                            <div class="lane-step">Attract</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/google-ads.svg" alt="Google Ads logo">Google Ads</span>
+                                <span class="tool-text">Meta</span>
+                            </div>
+                            <div class="lane-metric">Spend, CTR, cost / lead</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Measure</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/ga4.svg" alt="GA4 logo">GA4</span>
+                                <span class="tool-text">GTM</span>
+                                <span class="tool-badge"><img src="../assets/img/martech/callrail.svg" alt="CallRail logo">CallRail</span>
+                            </div>
+                            <div class="lane-metric">UTMs, touch weights, call attribution</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Route</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/hubspot.svg" alt="HubSpot logo">HubSpot</span>
+                                <span class="tool-text">Forms</span>
+                                <span class="tool-text">Email</span>
+                            </div>
+                            <div class="lane-metric">Response time, lead status, source quality</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Book</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/servicetitan.svg" alt="ServiceTitan logo">ServiceTitan</span>
+                                <span class="tool-text">Scheduler</span>
+                            </div>
+                            <div class="lane-metric">Cost / booked customer, book rate, completion</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Report</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/power-bi.svg" alt="Power BI logo">Power BI</span>
+                                <span class="tool-badge"><img src="../assets/img/martech/podium.svg" alt="Podium logo">Podium</span>
+                            </div>
+                            <div class="lane-metric">ROAS, repeat rate, NPS, referral rate</div>
+                        </div>
+                    </div>
+                    <div class="logo-strip">
+                        <span class="tool-badge"><img src="../assets/img/martech/google-ads.svg" alt="Google Ads logo">Google Ads</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/ga4.svg" alt="GA4 logo">GA4</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/callrail.svg" alt="CallRail logo">CallRail</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/hubspot.svg" alt="HubSpot logo">HubSpot</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/servicetitan.svg" alt="ServiceTitan logo">ServiceTitan</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/power-bi.svg" alt="Power BI logo">Power BI</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/podium.svg" alt="Podium logo">Podium</span>
+                    </div>
+                </article>
+                <article class="stack-card">
+                    <div class="eyebrow">Example Stack Scorecard</div>
+                    <h3>What a healthy operating layer should show.</h3>
+                    <p>The stack itself should be measurable. If tagging, routing, booking sync, and reporting freshness are weak, the funnel scorecards will be weak too.</p>
+                    <div class="mini-board" style="margin-top:16px;">
+                        <div class="mini-grid">
+                            <div class="mini-card"><div class="label">Tracking coverage</div><div class="value">94%</div><div class="note">Pages and campaigns tagged correctly</div></div>
+                            <div class="mini-card"><div class="label">Call attribution</div><div class="value">89%</div><div class="note">Calls matched to channel and campaign</div></div>
+                            <div class="mini-card"><div class="label">Booking sync</div><div class="value">91%</div><div class="note">Booked jobs tied back to source data</div></div>
+                            <div class="mini-card"><div class="label">Dashboard freshness</div><div class="value">Daily</div><div class="note">Decision view refreshed on a useful rhythm</div></div>
+                            <div class="mini-card"><div class="label">Taxonomy adoption</div><div class="value">100%</div><div class="note">Shared naming across campaigns and sources</div></div>
+                            <div class="mini-card"><div class="label">Test velocity</div><div class="value">3 / month</div><div class="note">Enough clean data to run and judge tests</div></div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section attribution-section" id="attribution">
+            <div class="section-head">
+                <div class="eyebrow">Attribution</div>
+                <h2>Attribution should help decisions, not just sound sophisticated.</h2>
+                <p>Attribution is useful when it clarifies which sources are driving booked work, where tracking breaks before revenue is recognized, and how multiple touches should be weighted so each meaningful campaign interaction gets a fair share of value.</p>
+            </div>
+            <table class="attr-table">
+                <thead>
+                    <tr>
+                        <th>Approach</th>
+                        <th>What it helps with</th>
+                        <th>Where it breaks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>First-touch</strong></td>
+                        <td>Good for understanding what started demand.</td>
+                        <td>Overstates channels that introduce the lead but do not help close it.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Last-touch</strong></td>
+                        <td>Useful when leadership wants a quick read on what appears to be converting.</td>
+                        <td>Can over-credit branded search and direct traffic if offline conversion data is weak.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Weighted multi-touch</strong></td>
+                        <td>Assigns partial value across the major touches so the campaigns that introduce, assist, and close demand each receive proportional credit.</td>
+                        <td>Still depends on clean UTMs, call tracking, and booked-job handoff, or the weights become guesswork.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operational reality check</strong></td>
+                        <td>Compare attribution with call-center speed, booking rate, and downstream completion.</td>
+                        <td>If that comparison is missing, ROAS and CAC can look more certain than they really are.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mini-board">
+                <div class="mini-board-head">
+                    <h3>Example attribution view</h3>
+                    <p>A practical attribution board compares weighted touch value with booked-job reality so budget decisions do not lean on first-click or last-click thinking alone.</p>
+                </div>
+                <div class="mini-grid">
+                    <div class="mini-card"><div class="label">Intro touch weight</div><div class="value">25%</div><div class="note">Value assigned to the campaign that started demand</div></div>
+                    <div class="mini-card"><div class="label">Assist touch weight</div><div class="value">35%</div><div class="note">Credit for the campaign that moved the prospect closer</div></div>
+                    <div class="mini-card"><div class="label">Close touch weight</div><div class="value">40%</div><div class="note">Value assigned to the campaign that drove the booking</div></div>
+                    <div class="mini-card"><div class="label">Campaign value</div><div class="value">$31K</div><div class="note">Weighted revenue assigned back to the journey</div></div>
+                    <div class="mini-card"><div class="label">Offline match rate</div><div class="value">87%</div><div class="note">How much booked revenue is tied back to source</div></div>
+                    <div class="mini-card"><div class="label">Action signal</div><div class="value">Scale search</div><div class="note">When weighted value and booked outcomes agree</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section build-section" id="what-i-build">
+            <div class="section-head">
+                <div class="eyebrow">What I Know How To Build</div>
+                <h2>The repeated capabilities behind the portfolio.</h2>
+                <p>These are the kinds of operating deliverables that keep showing up across the strongest work in the portfolio.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>Tracking and taxonomy cleanup</h3>
+                    <p>UTMs, campaign names, stage definitions, and source mapping that make cross-brand or cross-channel reporting trustworthy enough to use.</p>
+                </article>
+                <article class="card">
+                    <h3>Closed-loop reporting</h3>
+                    <p>Bringing spend, leads, calls, booked jobs, and revenue into one decision surface that helps a CMO know what to scale, fix, or test.</p>
+                </article>
+                <article class="card">
+                    <h3>Lead and source quality visibility</h3>
+                    <p>Scoring and segmentation that make acquisition reporting more useful than raw volume by itself.</p>
+                </article>
+                <article class="card">
+                    <h3>Attribution that stays practical</h3>
+                    <p>Enough attribution to guide decisions, plus the discipline to point out where the tracking still is not complete.</p>
+                </article>
+                <article class="card">
+                    <h3>Call-center and booking leakage diagnosis</h3>
+                    <p>Showing where a channel looks weak because the downstream handoff is weak, not because the media itself is failing.</p>
+                </article>
+                <article class="card">
+                    <h3>Growth testing support</h3>
+                    <p>Once the measurement layer is stable, build the weekly rhythm that helps the team stop weak ideas fast and scale what is working.</p>
+                </article>
+            </div>
+            <div class="mini-board">
+                <div class="mini-board-head">
+                    <h3>Example operating deliverables</h3>
+                    <p>The goal is not more dashboards. It is a short list of tools the team can actually use to make better weekly decisions.</p>
+                </div>
+                <div class="mini-grid">
+                    <div class="mini-card"><div class="label">Friday brief</div><div class="value">Scale / Fix / Test</div><div class="note">Simple actions tied to ROAS and booked-job rate</div></div>
+                    <div class="mini-card"><div class="label">Source-quality board</div><div class="value">Lead to revenue</div><div class="note">Which channels create real downstream value</div></div>
+                    <div class="mini-card"><div class="label">Leakage view</div><div class="value">Call to book gap</div><div class="note">Shows where the handoff is failing</div></div>
+                    <div class="mini-card"><div class="label">Test tracker</div><div class="value">Win / Lose / Learn</div><div class="note">Keeps experiments tied to measurable outcomes</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bridge" id="supporting-pages">
+            <h3>Best supporting pages</h3>
+                    <p>If you want to see these fundamentals in action, the strongest next reads are the Marketing AI page, the 120 Day Plan IHS, and the examples where the measurement layer drove real decisions.</p>
+            <div class="action-row">
+                <a class="action-link" href="../MarketingAI/index.html">Open Marketing AI</a>
+                <a class="action-link secondary" href="../IHS/plan.html">Open 120 Day Plan IHS</a>
+                <a class="action-link secondary" href="../CaseStudies/index.html">Open Examples</a>
+            </div>
+        </section>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
+

@@ -1,16 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Healthicity &mdash; Lead Scoring Model &amp; Data Flow</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         /* Portfolio cross-page topbar */
         .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -35,7 +36,7 @@
             --hc-ink: #E8ECF3;
             --hc-slate: #8A94A8;
             --hc-line: rgba(255,255,255,0.08);
-            /* Back-compat aliases — teal slot = coral (primary), accent slot = cyan */
+            /* Back-compat aliases â€” teal slot = coral (primary), accent slot = cyan */
             --hc-teal: var(--hc-coral);
             --hc-teal-dark: var(--hc-coral-dark);
             --hc-teal-deep: var(--hc-coral-deep);
@@ -150,16 +151,24 @@
     </style>
 </head>
 <body>
-    <div class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
-        <nav class="p-nav">
-            <a href="../index.html">Portfolio Home</a>
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
             <a href="../Dashboards/index.html">Dashboards</a>
-            <a href="index.html" class="active">Marketing Models</a>
-            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
-        </nav>
-    </div>
+            <a href="../Models/index.html" aria-current="page">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
 
     <div class="wrap">
         <nav class="top-nav">
@@ -213,7 +222,7 @@
 
                 <!-- 1. Capture -->
                 <rect x="10" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#ff3d4d" stroke-width="1.5"/>
-                <text x="100" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">① CAPTURE</text>
+                <text x="100" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">â‘  CAPTURE</text>
                 <text x="100" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">HubSpot Forms</text>
                 <text x="100" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Demo requests</text>
                 <text x="100" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Webinar / TL d/l</text>
@@ -221,7 +230,7 @@
 
                 <!-- 2. Enrichment -->
                 <rect x="220" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#ff3d4d" stroke-width="1.5"/>
-                <text x="310" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">② ENRICH</text>
+                <text x="310" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">â‘¡ ENRICH</text>
                 <text x="310" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">Firmographic Data</text>
                 <text x="310" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Org type, size</text>
                 <text x="310" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Title standardization</text>
@@ -229,20 +238,20 @@
 
                 <!-- 3. Scoring -->
                 <rect x="430" y="60" width="180" height="200" rx="10" fill="url(#tealGrad)" stroke="#ff3d4d" stroke-width="1.5"/>
-                <text x="520" y="88" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter" opacity="0.85">③ SCORE</text>
+                <text x="520" y="88" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter" opacity="0.85">â‘¢ SCORE</text>
                 <text x="520" y="112" fill="white" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter">7-Dim Model</text>
                 <line x1="450" y1="124" x2="590" y2="124" stroke="white" opacity="0.3" stroke-width="1"/>
-                <text x="520" y="142" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Org Type · 0-10</text>
-                <text x="520" y="158" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Employees · 0-10</text>
-                <text x="520" y="174" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Job Title · 0-10</text>
-                <text x="520" y="190" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Form Subs · 0-10</text>
-                <text x="520" y="206" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Last Seen · 0-10</text>
-                <text x="520" y="222" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">1st Conv. · 0-10</text>
-                <text x="520" y="238" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Source · 0-10</text>
+                <text x="520" y="142" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Org Type Â· 0-10</text>
+                <text x="520" y="158" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Employees Â· 0-10</text>
+                <text x="520" y="174" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Job Title Â· 0-10</text>
+                <text x="520" y="190" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Form Subs Â· 0-10</text>
+                <text x="520" y="206" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Last Seen Â· 0-10</text>
+                <text x="520" y="222" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">1st Conv. Â· 0-10</text>
+                <text x="520" y="238" fill="white" font-size="10.5" text-anchor="middle" font-family="Inter">Source Â· 0-10</text>
 
                 <!-- 4. Route -->
                 <rect x="640" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#ff3d4d" stroke-width="1.5"/>
-                <text x="730" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">④ ROUTE</text>
+                <text x="730" y="128" fill="#ff3d4d" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">â‘£ ROUTE</text>
                 <text x="730" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">Salesforce</text>
                 <text x="730" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">A+/A &rarr; priority queue</text>
                 <text x="730" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">B &rarr; standard cadence</text>
@@ -250,7 +259,7 @@
 
                 <!-- 5. Feedback -->
                 <rect x="850" y="100" width="180" height="120" rx="10" fill="#2a323a" stroke="#00BCD4" stroke-width="1.5"/>
-                <text x="940" y="128" fill="#00BCD4" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">⑤ FEEDBACK</text>
+                <text x="940" y="128" fill="#00BCD4" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter">â‘¤ FEEDBACK</text>
                 <text x="940" y="152" fill="white" font-size="13" font-weight="700" text-anchor="middle" font-family="Inter">Closed-Loop</text>
                 <text x="940" y="172" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Closed-won writes back</text>
                 <text x="940" y="186" fill="#8A94A8" font-size="10.5" text-anchor="middle" font-family="Inter">Re-calibrate weights</text>
@@ -275,8 +284,8 @@
                 <div class="tag">CAPTURE</div>
                 <h4>HubSpot Forms</h4>
                 <ul>
-                    <li><strong>On-demand demo</strong> — highest intent</li>
-                    <li><strong>Webinar reg.</strong> — live + on-demand</li>
+                    <li><strong>On-demand demo</strong> â€” highest intent</li>
+                    <li><strong>Webinar reg.</strong> â€” live + on-demand</li>
                     <li>TL / white paper download</li>
                     <li>Blog / newsletter subscribe</li>
                 </ul>
@@ -352,11 +361,11 @@
                     <label for="f-emp">Employee Count</label>
                     <select id="f-emp">
                         <option value="10">1,000+</option>
-                        <option value="10">401 – 1,000</option>
-                        <option value="8">201 – 400</option>
-                        <option value="7">101 – 200</option>
-                        <option value="6">51 – 100</option>
-                        <option value="6">1 – 50</option>
+                        <option value="10">401 â€“ 1,000</option>
+                        <option value="8">201 â€“ 400</option>
+                        <option value="7">101 â€“ 200</option>
+                        <option value="6">51 â€“ 100</option>
+                        <option value="6">1 â€“ 50</option>
                     </select>
                 </div>
                 <div class="calc-row">
@@ -375,8 +384,8 @@
                     <label for="f-subs">Unique Form Submissions</label>
                     <select id="f-subs">
                         <option value="10">8+ submissions</option>
-                        <option value="8">5 – 7 submissions</option>
-                        <option value="6">3 – 4 submissions</option>
+                        <option value="8">5 â€“ 7 submissions</option>
+                        <option value="6">3 â€“ 4 submissions</option>
                         <option value="4">2 submissions</option>
                         <option value="2">1 submission</option>
                     </select>
@@ -386,8 +395,8 @@
                     <select id="f-seen">
                         <option value="10">Active this week</option>
                         <option value="8">Active this month</option>
-                        <option value="5">30 – 90 days ago</option>
-                        <option value="2">91 – 180 days ago</option>
+                        <option value="5">30 â€“ 90 days ago</option>
+                        <option value="2">91 â€“ 180 days ago</option>
                         <option value="0">6+ months cold</option>
                     </select>
                 </div>
@@ -424,7 +433,7 @@
                 <div class="breakdown" id="res-breakdown"></div>
                 <div class="route">
                     <div class="r-label">Routing Decision</div>
-                    <div class="r-body" id="res-route">Priority queue — same-day outreach by AE.</div>
+                    <div class="r-body" id="res-route">Priority queue â€” same-day outreach by AE.</div>
                 </div>
             </div>
         </div>
@@ -480,17 +489,17 @@
     <script>
         // Letter-grade buckets
         function scoreToGrade(pct) {
-            if (pct >= 0.95) return { g: 'A+', r: 'Priority queue — same-day outreach by AE. Highest-value lead; treat as strategic opportunity.' };
-            if (pct >= 0.88) return { g: 'A',  r: 'Priority queue — outreach within 24 hours. Standard A-tier AE ownership.' };
-            if (pct >= 0.82) return { g: 'A-', r: 'Priority queue — outreach within 48 hours.' };
-            if (pct >= 0.74) return { g: 'B+', r: 'Standard SDR cadence — outreach within 3 business days.' };
-            if (pct >= 0.66) return { g: 'B',  r: 'Standard SDR cadence — 5-business-day SLA.' };
-            if (pct >= 0.58) return { g: 'B-', r: 'Light-touch SDR cadence — weekly review.' };
-            if (pct >= 0.50) return { g: 'C+', r: 'Marketing nurture — educational track; SDR on signal only.' };
-            if (pct >= 0.42) return { g: 'C',  r: 'Marketing nurture — no sales touch unless engagement lifts.' };
-            if (pct >= 0.34) return { g: 'C-', r: 'Marketing nurture — monthly newsletter.' };
-            if (pct >= 0.22) return { g: 'D',  r: 'Recycle — low-frequency nurture; requeue on new conversion event.' };
-            return { g: 'F',  r: 'Recycle / suppress — no active touch. Review for disqualification.' };
+            if (pct >= 0.95) return { g: 'A+', r: 'Priority queue â€” same-day outreach by AE. Highest-value lead; treat as strategic opportunity.' };
+            if (pct >= 0.88) return { g: 'A',  r: 'Priority queue â€” outreach within 24 hours. Standard A-tier AE ownership.' };
+            if (pct >= 0.82) return { g: 'A-', r: 'Priority queue â€” outreach within 48 hours.' };
+            if (pct >= 0.74) return { g: 'B+', r: 'Standard SDR cadence â€” outreach within 3 business days.' };
+            if (pct >= 0.66) return { g: 'B',  r: 'Standard SDR cadence â€” 5-business-day SLA.' };
+            if (pct >= 0.58) return { g: 'B-', r: 'Light-touch SDR cadence â€” weekly review.' };
+            if (pct >= 0.50) return { g: 'C+', r: 'Marketing nurture â€” educational track; SDR on signal only.' };
+            if (pct >= 0.42) return { g: 'C',  r: 'Marketing nurture â€” no sales touch unless engagement lifts.' };
+            if (pct >= 0.34) return { g: 'C-', r: 'Marketing nurture â€” monthly newsletter.' };
+            if (pct >= 0.22) return { g: 'D',  r: 'Recycle â€” low-frequency nurture; requeue on new conversion event.' };
+            return { g: 'F',  r: 'Recycle / suppress â€” no active touch. Review for disqualification.' };
         }
 
         const ids = ['f-org','f-emp','f-title','f-subs','f-seen','f-conv','f-source'];
@@ -517,3 +526,12 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

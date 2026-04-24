@@ -1,180 +1,631 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steve Hill &mdash; Marketing Models &amp; Data Flows</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <meta name="description" content="Marketing models from Steve Hill covering lifecycle marketing, lead quality, attribution, funnel measurement, and CRM-to-reporting workflows.">
+    <title>Steve Hill &mdash; Marketing Models</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
-        /* Portfolio cross-page topbar */
-        .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
-        .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
-        .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
-        .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
-        .p-topbar .p-nav a:hover { color: #FFD77A; }
-        .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
-        @media (max-width: 720px) {
-            .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
-            .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
-        }
-
         :root {
-            --ink: #0F1B2D;
-            --paper: #F6F4EE;
-            --line: #E4E0D7;
-            --muted: #6E788C;
+            --ink: #163042;
+            --paper: #F4FBFA;
+            --surface: #FFFFFF;
+            --line: #DCE9E8;
+            --muted: #4E6471;
+            --sky: #2B8CBE;
+            --gold: #FFB84D;
             --netgain: #F26A2E;
             --foxit: #FF5F00;
-            --uta: #0055A4;
-            --uta-dark: #002A52;
             --squirrel: #FF6B35;
-            --squirrel-y: #FFC857;
-            --healthicity: #ff3d4d;
-            --hc-amber: #FFB000;
-            --hl: #FFD77A;
+            --healthicity: #FF3D4D;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.55; }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.75), transparent 28%), var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        .p-topbar { background: #163042; color: #FFFFFF; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', serif; font-size: 15px; font-weight: 700; color: #FFFFFF; text-decoration: none; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.68); font-weight: 400; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 22px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.72); text-decoration: none; font-weight: 500; }
+        .p-topbar .p-nav a:hover,
+        .p-topbar .p-nav a[aria-current="page"] { color: #FFFFFF; }
+
         .wrap { max-width: 1180px; margin: 0 auto; padding: 56px 40px 80px; }
+        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 18px; }
+        .crumb a { color: var(--sky); text-decoration: none; }
+        .page-layout {
+            display: grid;
+            grid-template-columns: 238px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+        .content-column { min-width: 0; }
+        .toc {
+            position: sticky;
+            top: 24px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 14px 30px rgba(22, 48, 66, 0.06);
+        }
+        .toc .toc-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--sky);
+            margin-bottom: 10px;
+        }
+        .toc nav { display: grid; gap: 6px; }
+        .toc a {
+            display: block;
+            padding: 9px 10px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            color: var(--ink);
+            border-color: var(--line);
+            background: #F9FCFC;
+        }
 
-        /* Page head */
-        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; }
-        .crumb a { text-decoration: none; color: var(--muted); }
-        .crumb a:hover { color: var(--ink); }
-        .crumb span { color: var(--ink); font-weight: 600; }
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 30px;
+            margin-bottom: 34px;
+            align-items: stretch;
+        }
+        .hero-copy,
+        .hero-panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 34px;
+            box-shadow: 0 18px 36px rgba(22, 48, 66, 0.08);
+        }
+        .hero-copy .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--sky);
+            margin-bottom: 12px;
+        }
+        .hero-copy h1 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1.2px;
+            line-height: 1.05;
+            margin: 0 0 14px;
+        }
+        .hero-copy p { margin: 0; font-size: 15px; color: var(--muted); max-width: 60ch; }
+        .hero-panel h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 24px;
+            margin: 0 0 10px;
+            color: var(--ink);
+        }
+        .hero-panel ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+        .hero-panel li + li { margin-top: 8px; }
 
-        .head-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: end; padding-bottom: 30px; border-bottom: 1px solid var(--line); margin-bottom: 44px; }
-        .head-row h1 { font-family: 'Source Serif Pro', serif; font-size: 50px; font-weight: 700; letter-spacing: -1.4px; line-height: 1.05; color: var(--ink); }
-        .head-row h1 .hl { position: relative; white-space: nowrap; }
-        .head-row h1 .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 12px; background: var(--hl); z-index: -1; }
-        .head-row .intro { font-size: 15px; color: var(--muted); line-height: 1.65; }
-        .head-row .intro strong { color: var(--ink); font-weight: 600; }
+        .section { margin-bottom: 34px; }
+        .section-head { margin-bottom: 18px; }
+        .section-head .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--sky);
+            margin-bottom: 8px;
+        }
+        .section-head h2 {
+            margin: 0 0 8px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 31px;
+            letter-spacing: -0.7px;
+        }
+        .section-head p { margin: 0; font-size: 14px; color: var(--muted); max-width: 62ch; }
 
-        /* Shared stack */
-        .stack-note { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 22px 26px; margin-bottom: 44px; display: grid; grid-template-columns: 1fr 2.4fr; gap: 28px; align-items: center; }
-        .stack-note .lbl { font-family: 'Source Serif Pro', serif; font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.4px; line-height: 1.2; }
-        .stack-note .lbl .sub { font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1.6px; margin-top: 4px; display: block; }
-        .stack-list { font-size: 13px; color: var(--muted); line-height: 1.7; }
-        .stack-list strong { color: var(--ink); font-weight: 600; }
+        .principles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .principle {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px;
+        }
+        .principle h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            color: var(--ink);
+        }
+        .principle p { margin: 0; color: var(--muted); font-size: 13.5px; }
 
-        /* Model card grid */
-        .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-        .model-card { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; border-left: 4px solid var(--ink); display: flex; flex-direction: column; gap: 10px; }
-        .model-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(15,27,45,0.08); }
-        .model-card.m-netgain { border-left-color: var(--netgain); }
-        .model-card.m-foxit { border-left-color: var(--foxit); }
-        .model-card.m-uta { border-left-color: var(--uta); }
-        .model-card.m-squirrel { border-left-color: var(--squirrel); }
-        .model-card.m-healthicity { border-left-color: var(--healthicity); }
-        .model-card.m-hc { border-left-color: var(--hc-amber); }
-        .m-header { display: flex; justify-content: space-between; align-items: center; }
-        .m-badge { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
-        .m-arrow { color: var(--muted); font-size: 15px; transition: transform 0.2s; }
-        .model-card:hover .m-arrow { transform: translateX(4px); color: var(--ink); }
-        .model-card h3 { font-family: 'Source Serif Pro', serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
-        .model-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
-        .m-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-        .m-tag { font-size: 10.5px; color: var(--muted); padding: 3px 9px; background: var(--paper); border-radius: 20px; font-weight: 500; }
-        .m-coming { font-size: 10.5px; color: #B06A00; background: #FFF3E0; padding: 3px 9px; border-radius: 20px; font-weight: 700; letter-spacing: 0.6px; }
+        .lifecycle {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+        .stage {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 16px 14px;
+            min-height: 150px;
+        }
+        .stage .phase {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--sky);
+            margin-bottom: 8px;
+        }
+        .stage h3 { margin: 0 0 6px; font-size: 17px; }
+        .stage p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+        .stage-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+        .stage-metrics span {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 8px;
+            border-radius: 999px;
+            background: #EDF7FA;
+            color: var(--ink);
+            font-size: 10.5px;
+            font-weight: 600;
+        }
 
-        .foot-note { margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-        .foot-note a { color: var(--ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--ink); }
+        .stack-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+        }
+        .stack-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 14px 28px rgba(22, 48, 66, 0.06);
+        }
+        .stack-card .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--sky);
+            margin-bottom: 8px;
+        }
+        .stack-card h3 {
+            margin: 0 0 10px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 26px;
+            letter-spacing: -0.4px;
+        }
+        .stack-card p { margin: 0; color: var(--muted); font-size: 13.5px; }
+        .stack-lanes {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .stack-lane {
+            display: grid;
+            grid-template-columns: 112px 1fr 190px;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #FFFFFF, #F8FCFB);
+        }
+        .lane-step {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--sky);
+        }
+        .lane-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .lane-metric { font-size: 12px; color: var(--muted); }
+        .logo-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .tool-badge,
+        .tool-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: #F9FCFC;
+            color: var(--ink);
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .tool-badge img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
 
-        @media (max-width: 900px) {
-            .head-row { grid-template-columns: 1fr; gap: 22px; }
-            .head-row h1 { font-size: 38px; }
-            .stack-note { grid-template-columns: 1fr; }
-            .model-grid { grid-template-columns: 1fr; }
+        .mini-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .mini-card {
+            background: linear-gradient(135deg, #FFFFFF, #F8FCFB);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 14px;
+        }
+        .mini-card .label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+        .mini-card .value {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 24px;
+            line-height: 1.05;
+            color: var(--ink);
+        }
+        .mini-card .note { margin-top: 6px; color: var(--muted); font-size: 11.5px; }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+        .model-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-left: 5px solid var(--card-accent);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 14px 28px rgba(22, 48, 66, 0.06);
+        }
+        .model-card:hover { transform: translateY(-2px); }
+        .model-card .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--card-accent);
+            margin-bottom: 8px;
+        }
+        .model-card h3 {
+            margin: 0 0 8px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 28px;
+            letter-spacing: -0.6px;
+            line-height: 1.08;
+        }
+        .model-card p { margin: 0; color: var(--muted); font-size: 14px; }
+        .model-card .meta {
+            margin-top: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .model-card .pill {
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: #F9FCFC;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .bridge {
+            background: linear-gradient(135deg, #FFFFFF, #FFF5E8);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 24px;
+        }
+        .bridge h3 {
+            margin: 0 0 8px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 25px;
+        }
+        .bridge p { margin: 0 0 16px; color: var(--muted); font-size: 14px; max-width: 60ch; }
+        .section, .bridge { scroll-margin-top: 88px; }
+
+        @media (max-width: 960px) {
+            .hero,
+            .principles,
+            .model-grid,
+            .lifecycle,
+            .stack-grid,
+            .page-layout { grid-template-columns: 1fr; }
+            .toc { position: relative; top: auto; }
+            .stack-lane { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; align-items: flex-start; padding: 12px 20px; }
+            .wrap { padding: 44px 20px 72px; }
+            .hero-copy h1 { font-size: 38px; }
         }
     </style>
 </head>
 <body>
-    <nav class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
         <div class="p-nav">
             <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
             <a href="../Dashboards/index.html">Dashboards</a>
-            <a href="../Models/index.html" class="active">Models</a>
-            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
+            <a href="../Models/index.html" aria-current="page">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
         </div>
     </nav>
 
-    <div class="wrap">
-        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <span>Models &amp; Data Flows</span></div>
+    <main id="main-content" class="wrap">
+        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <span>Marketing Models</span></div>
 
-        <div class="head-row">
-            <h1>The <span class="hl">models</span> behind the dashboards.</h1>
-            <div class="intro">
-                A dashboard without a data model is just a pretty chart. These pages show the
-                <strong>capture &rarr; enrich &rarr; score &rarr; route &rarr; feedback</strong> pipeline for each
-                deliverable &mdash; how raw clicks become qualified opportunities, and how the feedback loop
-                gets closed. Interactive scoring calculators where it makes sense.
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow">Marketing Systems</div>
+                <h1>The operating logic behind the dashboards.</h1>
+                <p>These pages are meant to answer a simple question: what had to be true in the system for the reporting to matter? The emphasis is on the customer life cycle map, attribution logic, lead quality, routing, and the handoff between marketing signals and downstream business outcomes.</p>
+            </div>
+            <aside class="hero-panel">
+                <h2>What these pages show</h2>
+                <ul>
+                    <li>Where data is captured and where it gets messy.</li>
+                    <li>How the customer life cycle map connects to real decisions.</li>
+                    <li>Which metrics are useful enough to steer spend, follow-up, or testing.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <div class="page-layout">
+            <aside class="toc" aria-label="On this page">
+                <div class="toc-label">On This Page</div>
+                <nav>
+                    <a href="#core-principles">Core Principles</a>
+                    <a href="#customer-life-cycle-map">Customer Life Cycle Map</a>
+                    <a href="#canonical-stack">Canonical Stack</a>
+                    <a href="#marketing-models">Marketing Models</a>
+                    <a href="#related-work">Related Work</a>
+                </nav>
+            </aside>
+            <div class="content-column">
+
+        <section class="section" id="core-principles">
+            <div class="section-head">
+                <div class="eyebrow">Core Principles</div>
+                <h2>How I think about marketing operations models.</h2>
+                <p>The goal is not to make the diagram look advanced. The goal is to make the funnel easier to trust and easier to act on.</p>
+            </div>
+            <div class="principles">
+                <article class="principle">
+                    <h3>Stage clarity first</h3>
+                    <p>Before attribution gets complicated, the team needs agreement on what counts as an inquiry, an engaged lead, a conversion move, and a completed revenue event.</p>
+                </article>
+                <article class="principle">
+                    <h3>Handoffs matter</h3>
+                    <p>Most reporting problems are really handoff problems between marketing, sales, service, and finance systems. That is where the model has to stay honest.</p>
+                </article>
+                <article class="principle">
+                    <h3>Decision over decoration</h3>
+                    <p>If a model does not help with budget, routing, testing, or follow-up decisions, it is probably too complicated for the job it is supposed to do.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="customer-life-cycle-map">
+            <div class="section-head">
+                <div class="eyebrow">Customer Life Cycle Map</div>
+                <h2>The lifecycle the models are built around.</h2>
+                <p>A model becomes useful when it follows the customer all the way from first touch through booking, revenue, repeat behavior, and referral instead of ending at the lead.</p>
+            </div>
+            <div class="lifecycle">
+                <article class="stage"><span class="phase">Stage 1</span><h3>First Touch</h3><p>Channel, campaign, and offer begin the demand path.</p><div class="stage-metrics"><span>Spend</span><span>CTR</span><span>Cost / lead</span></div></article>
+                <article class="stage"><span class="phase">Stage 2</span><h3>Lead Capture</h3><p>Forms, calls, and response speed start shaping lead quality.</p><div class="stage-metrics"><span>Calls</span><span>Form rate</span><span>Response SLA</span></div></article>
+                <article class="stage"><span class="phase">Stage 3</span><h3>Qualified Lead</h3><p>The system decides whether the lead is real, usable, and worth follow-up.</p><div class="stage-metrics"><span>Lead quality</span><span>Routing</span><span>Cost / lead</span></div></article>
+                <article class="stage"><span class="phase">Stage 4</span><h3>Booked Customer</h3><p>This is where source quality gets confirmed or challenged by the actual conversion goal.</p><div class="stage-metrics"><span>Book rate</span><span>Cost / booked</span><span>ROAS</span></div></article>
+                <article class="stage"><span class="phase">Stage 5</span><h3>Completed Revenue</h3><p>The revenue event has to connect back to the earlier touches and source data.</p><div class="stage-metrics"><span>Revenue</span><span>Completion</span><span>Margin</span></div></article>
+                <article class="stage"><span class="phase">Stage 6</span><h3>Repeat / Referral</h3><p>The best long-term signal is a customer who comes back and brings another customer with them.</p><div class="stage-metrics"><span>Repeat rate</span><span>NPS</span><span>Referral rate</span></div></article>
+            </div>
+        </section>
+
+        <section class="section" id="canonical-stack">
+            <div class="section-head">
+                <div class="eyebrow">Canonical Stack</div>
+                <h2>The stage-based stack behind the models.</h2>
+                <p>The most useful model pages make the operating stack visible too: where demand is created, where source tracking happens, where routing occurs, where bookings land, and where reporting closes the loop.</p>
+            </div>
+            <div class="stack-grid">
+                <article class="stack-card">
+                    <div class="eyebrow">Lifecycle-Aligned Stack</div>
+                    <h3>One stack that follows the customer journey.</h3>
+                    <p>The point of the stack is not just tool coverage. It is making sure every stage of the customer life cycle has a clear system owner and a usable decision metric.</p>
+                    <div class="stack-lanes">
+                        <div class="stack-lane">
+                            <div class="lane-step">Attract</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/google-ads.svg" alt="Google Ads logo">Google Ads</span>
+                                <span class="tool-text">Meta</span>
+                            </div>
+                            <div class="lane-metric">Spend, CTR, cost / lead</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Measure</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/ga4.svg" alt="GA4 logo">GA4</span>
+                                <span class="tool-text">GTM</span>
+                                <span class="tool-badge"><img src="../assets/img/martech/callrail.svg" alt="CallRail logo">CallRail</span>
+                            </div>
+                            <div class="lane-metric">UTMs, source logic, attribution weights</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Route</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/hubspot.svg" alt="HubSpot logo">HubSpot</span>
+                                <span class="tool-text">Forms</span>
+                                <span class="tool-text">Email</span>
+                            </div>
+                            <div class="lane-metric">Lead status, response time, quality</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Book</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/servicetitan.svg" alt="ServiceTitan logo">ServiceTitan</span>
+                                <span class="tool-text">Scheduler</span>
+                            </div>
+                            <div class="lane-metric">Book rate, cost / booked customer, completion</div>
+                        </div>
+                        <div class="stack-lane">
+                            <div class="lane-step">Report</div>
+                            <div class="lane-tools">
+                                <span class="tool-badge"><img src="../assets/img/martech/power-bi.svg" alt="Power BI logo">Power BI</span>
+                                <span class="tool-badge"><img src="../assets/img/martech/podium.svg" alt="Podium logo">Podium</span>
+                            </div>
+                            <div class="lane-metric">ROAS, repeat rate, NPS, referral rate</div>
+                        </div>
+                    </div>
+                    <div class="logo-strip">
+                        <span class="tool-badge"><img src="../assets/img/martech/google-ads.svg" alt="Google Ads logo">Google Ads</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/ga4.svg" alt="GA4 logo">GA4</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/callrail.svg" alt="CallRail logo">CallRail</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/hubspot.svg" alt="HubSpot logo">HubSpot</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/servicetitan.svg" alt="ServiceTitan logo">ServiceTitan</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/power-bi.svg" alt="Power BI logo">Power BI</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/podium.svg" alt="Podium logo">Podium</span>
+                    </div>
+                </article>
+                <article class="stack-card">
+                    <div class="eyebrow">Stack Health View</div>
+                    <h3>The systems should be measurable too.</h3>
+                    <p>If tagging, source mapping, booking sync, or reporting freshness are weak, the model will look smarter than the operating layer really is.</p>
+                    <div class="mini-grid">
+                        <div class="mini-card"><div class="label">Tracking coverage</div><div class="value">94%</div><div class="note">Pages and campaigns tagged correctly</div></div>
+                        <div class="mini-card"><div class="label">Call attribution</div><div class="value">89%</div><div class="note">Calls matched to channel and campaign</div></div>
+                        <div class="mini-card"><div class="label">Booking sync</div><div class="value">91%</div><div class="note">Bookings tied back to source data</div></div>
+                        <div class="mini-card"><div class="label">Dashboard freshness</div><div class="value">Daily</div><div class="note">Decision layer refreshed on a useful rhythm</div></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="marketing-models">
+            <div class="section-head">
+                <div class="eyebrow">Marketing Models</div>
+                <h2>Marketing-focused systems from the portfolio.</h2>
+            </div>
+            <div class="model-grid">
+                <a class="model-card" href="foxit_marketing_model.html" style="--card-accent:#FF5F00;">
+                    <div class="eyebrow">Foxit</div>
+                    <h3>Lifecycle Trigger Engine</h3>
+                    <p>How product, billing, support, and marketing signals were brought into one lifecycle reporting layer.</p>
+                    <div class="meta">
+                        <span class="pill">Activation</span>
+                        <span class="pill">Expansion</span>
+                        <span class="pill">Retention</span>
+                    </div>
+                </a>
+                <a class="model-card" href="website_squirrel_marketing_model.html" style="--card-accent:#FF6B35;">
+                    <div class="eyebrow">Website Squirrel</div>
+                    <h3>Lead Quality &amp; CAC Model</h3>
+                    <p>A simpler view of segmentation, routing, and channel efficiency built around lead quality instead of lead volume.</p>
+                    <div class="meta">
+                        <span class="pill">CAC</span>
+                        <span class="pill">Lead Quality</span>
+                        <span class="pill">Routing</span>
+                    </div>
+                </a>
+                <a class="model-card" href="netgain_marketing_model.html" style="--card-accent:#F26A2E;">
+                    <div class="eyebrow">Netgain</div>
+                    <h3>Attribution &amp; Mid-Funnel Model</h3>
+                    <p>How stage definitions and attribution views were used to focus testing on the highest-leverage part of the funnel.</p>
+                    <div class="meta">
+                        <span class="pill">Attribution</span>
+                        <span class="pill">Mid-Funnel</span>
+                        <span class="pill">Testing</span>
+                    </div>
+                </a>
+                <a class="model-card" href="healthicity_marketing_model.html" style="--card-accent:#FF3D4D;">
+                    <div class="eyebrow">Healthicity</div>
+                    <h3>Lead Scoring Calculator</h3>
+                    <p>An interactive scoring model showing how firmographic and behavioral signals can inform prioritization.</p>
+                    <div class="meta">
+                        <span class="pill">Scoring</span>
+                        <span class="pill">Prioritization</span>
+                        <span class="pill">Calculator</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section bridge" id="related-work">
+            <h3>Looking for the BI and investment-side work?</h3>
+            <p>The UTA machine-failure analysis and the Hill Capital research work now live under a separate `BI Models` section so the marketing-model pages stay focused on lifecycle, attribution, and growth systems work.</p>
+            <div class="action-row">
+                <a class="action-link" href="../BIModels/index.html">Open BI Models</a>
+                <a class="action-link secondary" href="../MOps/index.html">Open How I Work</a>
+            </div>
+        </section>
             </div>
         </div>
-
-        <div class="stack-note">
-            <div class="lbl">The canonical stack<span class="sub">Reused across all models</span></div>
-            <div class="stack-list">
-                <strong>Capture:</strong> HubSpot, GA4, ad platforms, product events &nbsp;•&nbsp;
-                <strong>Enrich:</strong> Clearbit / ZoomInfo / internal joins &nbsp;•&nbsp;
-                <strong>Score:</strong> rules + model (HubSpot or Python) &nbsp;•&nbsp;
-                <strong>Route:</strong> Salesforce / HubSpot workflows &nbsp;•&nbsp;
-                <strong>Feedback:</strong> closed-won + disqual outcomes piped back to scoring.
-            </div>
-        </div>
-
-        <div class="model-grid">
-
-            <a href="netgain_marketing_model.html" class="model-card m-netgain">
-                <div class="m-header"><span class="m-badge">Netgain</span><span class="m-arrow">&rarr;</span></div>
-                <h3>NetSuite/Sage buyer journey model</h3>
-                <p>ICP filter on firmographics (ERP in use, company size), then velocity scoring across webinar &rarr; demo &rarr; procurement. Writes lead grades back to HubSpot.</p>
-                <div class="m-tags"><span class="m-tag">HubSpot</span><span class="m-tag">Salesforce</span><span class="m-tag">ICP</span></div>
-            </a>
-
-            <a href="foxit_marketing_model.html" class="model-card m-foxit">
-                <div class="m-header"><span class="m-badge">Foxit</span><span class="m-arrow">&rarr;</span></div>
-                <h3>Developer-platform activation model</h3>
-                <p>Event-driven scoring on the API itself &mdash; first call, first paid endpoint, 7-day retention, SDK language cohort. Product-led signal, routed to AE only after activation threshold.</p>
-                <div class="m-tags"><span class="m-tag">PLG</span><span class="m-tag">Event data</span><span class="m-tag">API</span></div>
-            </a>
-
-            <a href="uta_marketing_model.html" class="model-card m-uta">
-                <div class="m-header"><span class="m-badge">UTA</span><span class="m-arrow">&rarr;</span></div>
-                <h3>Fare revenue &amp; TVM uptime model</h3>
-                <p>Route-level demand model with TVM (ticket vending machine) uptime as a revenue-leakage input. Designed around holding the TVM vendor accountable via error-log attribution.</p>
-                <div class="m-tags"><span class="m-tag">Public sector</span><span class="m-tag">Vendor SLA</span><span class="m-tag">Elasticity</span></div>
-            </a>
-
-            <a href="website_squirrel_marketing_model.html" class="model-card m-squirrel">
-                <div class="m-header"><span class="m-badge">Website Squirrel</span><span class="m-arrow">&rarr;</span></div>
-                <h3>Small-biz CAC / LTV model</h3>
-                <p>Channel-level cost-per-lead with payback curves by service tier. Built for a small marketing team that needs to defend spend decisions on one page.</p>
-                <div class="m-tags"><span class="m-tag">CAC</span><span class="m-tag">Payback</span><span class="m-tag">SMB</span></div>
-            </a>
-
-            <a href="healthicity_marketing_model.html" class="model-card m-healthicity">
-                <div class="m-header"><span class="m-badge">Healthicity</span><span class="m-arrow">&rarr;</span></div>
-                <h3>Lead scoring model + interactive calculator</h3>
-                <p>7-dimension A+ through F scoring model modeled on the Healthicity lead-scoring proposal. Includes a live calculator &mdash; change a dropdown, watch the grade and route update.</p>
-                <div class="m-tags"><span class="m-tag">HubSpot</span><span class="m-tag">Interactive</span><span class="m-tag">Healthcare</span></div>
-            </a>
-
-            <a href="#" class="model-card m-hc" style="pointer-events: none; opacity: 0.85;">
-                <div class="m-header"><span class="m-badge">Hill Capital</span><span class="m-coming">Coming soon</span></div>
-                <h3>Quant equity portfolio construction model</h3>
-                <p>Factor-based portfolio construction with a backtest &rarr; paper &rarr; live progression. Risk model and rebalance logic documented as a data flow. Pairs with the Hill Capital terminal dashboard.</p>
-                <div class="m-tags"><span class="m-tag">Quant</span><span class="m-tag">Python</span><span class="m-tag">Backtest</span></div>
-            </a>
-
-        </div>
-
-        <div class="foot-note">
-            <div>Want the visual output? &nbsp;<a href="../Dashboards/index.html">See the Dashboards section &rarr;</a></div>
-            <div>&larr; <a href="../index.html">Back to portfolio home</a></div>
-        </div>
-    </div>
+    </main>
 </body>
 </html>
+
+
+
+
+
+

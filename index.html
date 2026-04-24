@@ -1,16 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Career portfolio of Steve Hill featuring BI dashboards, marketing models, quantified accomplishments, and role planning across SaaS, healthcare, public-sector analytics, and quantitative research.">
+    <meta name="theme-color" content="#0F1B2D">
+    <meta property="og:title" content="Steve Hill - BI / Marketing Analytics Portfolio">
+    <meta property="og:description" content="Dashboards, marketing models, quantified accomplishments, and role planning built from real analytics work.">
+    <meta property="og:type" content="website">
     <title>Steve Hill &mdash; BI / Marketing Analytics Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/portfolio-base.css">
     <style>
         /* Portfolio cross-page topbar */
         .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -33,6 +41,7 @@
             --healthicity-cyan: #00BCD4;
             --intermountain-navy: #0F2A44;
             --intermountain-gold: #D8A94B;
+            --ai: #2B8CBE;
             --hl: #FFD77A;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,8 +67,8 @@
         .visual-card .vc-title { font-weight: 700; font-size: 13px; margin-bottom: 10px; }
         .visual-card .vc-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
         .visual-card .vc-bar { flex: 1; border-radius: 3px; }
-        .vc1 { top: 0; left: 20px; transform: rotate(-4deg); background: #141827; color: white; border: 1px solid #262B3F; }
-        .vc1 .swatch:nth-child(1) { background: var(--foxit); } .vc1 .swatch:nth-child(2) { background: #FF8533; } .vc1 .swatch:nth-child(3) { background: #3DD598; }
+        .vc1 { top: 0; left: 20px; transform: rotate(-4deg); background: #F2FAFF; color: #163042; border: 1px solid #C7DEEE; }
+        .vc1 .swatch:nth-child(1) { background: var(--foxit); } .vc1 .swatch:nth-child(2) { background: #2B8CBE; } .vc1 .swatch:nth-child(3) { background: #38A169; }
         .vc2 { top: 60px; right: 0; transform: rotate(3deg); background: white; border: 1px solid var(--line); }
         .vc2 .swatch:nth-child(1) { background: var(--netgain); } .vc2 .swatch:nth-child(2) { background: #0F1B2D; } .vc2 .swatch:nth-child(3) { background: #FFE3D1; }
         .vc3 { top: 190px; left: 30px; transform: rotate(2deg); background: #323232; color: white; border: 1px solid #ff3d4d; }
@@ -89,15 +98,15 @@
         .d-netgain .card-footer { padding: 16px 28px; background: rgba(242,106,46,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
         .d-netgain .card-footer .cta { color: var(--netgain); font-weight: 600; }
 
-        .d-foxit { background: #0B0F1A; color: #E7EAF3; border: 1px solid #262B3F; }
-        .d-foxit .card-header { padding: 24px 28px 18px; display: flex; align-items: center; gap: 12px; background: #141827; border-bottom: 1px solid #262B3F; }
+        .d-foxit { background: #F2FAFF; color: #163042; border: 1px solid #C7DEEE; }
+        .d-foxit .card-header { padding: 24px 28px 18px; display: flex; align-items: center; gap: 12px; background: #E3F1FB; border-bottom: 1px solid #C7DEEE; }
         .d-foxit .logo-mark { width: 34px; height: 34px; background: var(--foxit); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; color: white; font-family: 'Source Serif Pro', serif; }
         .d-foxit .co-name { font-weight: 700; font-size: 17px; letter-spacing: -0.3px; }
-        .d-foxit .co-tag { font-size: 10px; color: #8089A3; text-transform: uppercase; letter-spacing: 1.5px; font-family: monospace; }
+        .d-foxit .co-tag { font-size: 10px; color: #4E6880; text-transform: uppercase; letter-spacing: 1.5px; font-family: monospace; }
         .d-foxit .card-body { padding: 22px 28px 26px; flex: 1; display: flex; flex-direction: column; }
         .d-foxit .dash-title { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
-        .d-foxit .dash-desc { font-size: 13.5px; color: #8089A3; line-height: 1.55; flex: 1; }
-        .d-foxit .card-footer { padding: 16px 28px; background: rgba(255,95,0,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; border-top: 1px solid #262B3F; }
+        .d-foxit .dash-desc { font-size: 13.5px; color: #4E6880; line-height: 1.55; flex: 1; }
+        .d-foxit .card-footer { padding: 16px 28px; background: rgba(43,140,190,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; border-top: 1px solid #C7DEEE; }
         .d-foxit .card-footer .cta { color: var(--foxit); font-weight: 600; font-family: monospace; }
 
         .d-uta { background: white; border: 1px solid var(--line); border-top: 6px solid var(--uta); color: var(--ink); }
@@ -168,6 +177,7 @@
         .model-card.m-squirrel { border-left-color: var(--squirrel); }
         .model-card.m-healthicity { border-left-color: var(--healthicity); }
         .model-card.m-hc { border-left-color: var(--hc-amber); }
+        .model-card.m-ai { border-left-color: var(--ai); }
         .model-card .m-header { padding: 20px 22px 8px; display: flex; align-items: center; gap: 10px; }
         .model-card .m-badge { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
         .model-card .m-body { padding: 4px 22px 20px; flex: 1; display: flex; flex-direction: column; }
@@ -189,6 +199,31 @@
         .cc-plan .cc-eyebrow { color: var(--intermountain-gold); opacity: 1; }
         .cc-plan .cc-cta { color: var(--intermountain-gold); }
 
+        .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+        .case-card { position: relative; overflow: hidden; text-decoration: none; color: inherit; border-radius: 18px; padding: 28px 30px; min-height: 250px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.25s ease, box-shadow 0.25s ease; border: 1px solid var(--line); background: white; }
+        .case-card:hover { transform: translateY(-5px); }
+        .case-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--case-accent); }
+        .case-card .cs-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.8px; color: var(--case-accent); }
+        .case-card h3 { font-family: 'Source Serif Pro', serif; font-size: 27px; font-weight: 700; letter-spacing: -0.6px; line-height: 1.08; }
+        .case-card p { font-size: 14px; line-height: 1.55; color: inherit; opacity: 0.82; }
+        .case-card .cs-metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+        .case-card .cs-pill { padding: 5px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px solid currentColor; opacity: 0.9; }
+        .case-card .cs-cta { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--case-accent); }
+
+        .c-foxit { --case-accent: var(--foxit); background: linear-gradient(140deg, #F2FAFF 0%, #E3F1FB 100%); color: #163042; border-color: #C7DEEE; }
+        .c-foxit .cs-pill { border-color: rgba(31,79,104,0.14); background: rgba(255,255,255,0.74); }
+        .c-foxit .cs-cta { color: var(--foxit); }
+
+        .c-squirrel { --case-accent: var(--squirrel); background: #FFF5EF; border: 2px solid #1A1A1A; box-shadow: 6px 6px 0 #1A1A1A; color: var(--ink); }
+        .c-squirrel:hover { box-shadow: 8px 10px 0 #1A1A1A; transform: translate(-2px, -6px); }
+        .c-squirrel .cs-pill { border-color: #1A1A1A; background: white; }
+
+        .c-netgain { --case-accent: var(--netgain); background: linear-gradient(140deg, #FFF8F4 0%, #FFFFFF 100%); color: var(--ink); border-color: #F1DDD2; }
+        .c-netgain .cs-pill { border-color: #F3CDBA; background: #FFF1E8; }
+
+        .c-uta { --case-accent: var(--uta); background: linear-gradient(140deg, #FFFFFF 0%, #F6F8FB 100%); color: #10233C; border-color: #D7E1EE; }
+        .c-uta .cs-pill { border-color: #D7E1EE; background: #FFFFFF; }
+
         footer.site-footer { margin-top: 80px; padding-top: 30px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
         footer.site-footer a { color: var(--muted); text-decoration: underline; }
 
@@ -197,42 +232,60 @@
             .hero-text h1 { font-size: 40px; }
             .hero-visual { height: 360px; }
             .dash-grid { grid-template-columns: 1fr; }
+            .case-grid { grid-template-columns: 1fr; }
             .model-grid { grid-template-columns: 1fr; }
             .career-grid { grid-template-columns: 1fr; }
             .meta-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/theme-coastal-growth.css">
 </head>
 <body>
-    <div class="p-topbar">
-        <a href="index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
-        <nav class="p-nav">
-            <a href="index.html" class="active">Portfolio Home</a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="index.html" aria-current="page">Home</a>
+            <a href="MOps/index.html">How I Work</a>
             <a href="Dashboards/index.html">Dashboards</a>
             <a href="Models/index.html">Marketing Models</a>
-            <a href="Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="IHS/plan.html">60/90 Day Plan</a>
-        </nav>
-    </div>
+            <a href="BIModels/index.html">BI Models</a>
+            <a href="MarketingAI/index.html">Marketing AI</a>
+            <a href="Blog/index.html">Blog</a>
+            <a href="CaseStudies/index.html">Examples</a>
+            <a href="Accomplishments/accomplishments.html">Resume</a>
+            <a href="IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
 
-    <div class="container">
+    <main id="main-content" class="container">
         <header class="hero">
             <div class="hero-text">
                 <div class="eyebrow">Steve Hill &bull; BI &amp; Marketing Analytics Portfolio</div>
                 <h1>Marketing &amp; revenue analytics, built for the <span class="hl">messy middle</span>.</h1>
-                <p>Six dashboards, six marketing models, a career accomplishments dossier, and a 60/90 day plan. Built from real work across B2B SaaS, healthcare compliance, public-sector analytics, DTC growth, and quantitative equity research.</p>
+                <p>Dashboards, marketing models, BI models, examples, a focused resume, and an interview-ready 120-day plan built from real work across SaaS, local-services acquisition, healthcare, public-sector analysis, and quantitative research.</p>
+                <div class="action-row">
+                    <a class="action-link" href="Accomplishments/accomplishments.html">Start with resume</a>
+                    <a class="action-link secondary" href="MOps/index.html">Open How I Work</a>
+                    <a class="action-link secondary" href="mailto:sthill01@gmail.com">Email Steve</a>
+                    <a class="action-link secondary" href="https://www.linkedin.com/in/sthill" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+                <p class="hero-guide"><strong>Best first stops for hiring teams:</strong> resume for the role history, examples for the four strongest work samples, How I Work for the operating approach, and the plan page for the interview-ready operating strategy.</p>
                 <div class="meta-grid">
                     <div class="meta-item"><div class="m-val">6</div><div class="m-lbl">Dashboards</div></div>
-                    <div class="meta-item"><div class="m-val">6</div><div class="m-lbl">Models</div></div>
+                    <div class="meta-item"><div class="m-val">2</div><div class="m-lbl">Model Tracks</div></div>
                     <div class="meta-item"><div class="m-val">13+</div><div class="m-lbl">Years RevOps</div></div>
-                    <div class="meta-item"><div class="m-val">$300M+</div><div class="m-lbl">Rev under analysis</div></div>
+            <div class="meta-item"><div class="m-val">4</div><div class="m-lbl">Examples</div></div>
                 </div>
             </div>
 
             <div class="hero-visual">
                 <div class="visual-card vc1">
                     <div class="swatch-row"><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div></div>
-                    <div class="vc-title">Foxit &bull; Dark UI</div>
+                    <div class="vc-title">Foxit &bull; Real-time App Intelligence</div>
                     <div class="vc-bars">
                         <div class="vc-bar" style="height: 60%; background: #FF5F00;"></div>
                         <div class="vc-bar" style="height: 85%; background: #FF8533;"></div>
@@ -277,7 +330,7 @@
         <!-- DASHBOARDS SECTION -->
         <section class="section-block">
             <div class="section-title">Dashboards <a href="Dashboards/index.html" class="view-all">View all &rarr;</a></div>
-            <div class="section-sub">Six BI dashboards, each in the brand palette and visual language of the company it was built for.</div>
+            <div class="section-sub">Six dashboards built in the visual language of the brands they support.</div>
 
             <div class="dash-grid">
                 <a href="Dashboards/netgain_b2b_saas_midfunnel.html" class="dash-card d-netgain">
@@ -344,7 +397,7 @@
                     </div>
                     <div class="card-body">
                         <div class="dash-title">Lead <em>Segmentation</em> &amp; CAC</div>
-                        <div class="dash-desc">A-D tiered lead scoring with segment CAC, channel-level efficiency, and 180-day retention curves. Driving 60%+ CAC reduction through Python/AWS pipelines.</div>
+                        <div class="dash-desc">A-D tiered lead scoring with segment CAC, channel-level efficiency, and tier-by-tier close-rate visibility. Driving 60%+ CAC reduction through better targeting and routing.</div>
                     </div>
                     <div class="card-footer">
                         <span class="cta">Open dashboard &rarr;</span>
@@ -380,7 +433,7 @@
                     </div>
                     <div class="card-body">
                         <div class="dash-title">Quantitative Equity Portfolio</div>
-                        <div class="dash-desc">Multi-strategy book — factor, momentum, mean-reversion, options income. Bloomberg-terminal-styled dashboard with live positions, strategy attribution, and risk exposures.</div>
+                        <div class="dash-desc">Multi-strategy book â€” factor, momentum, mean-reversion, options income. Bloomberg-terminal-styled dashboard with live positions, strategy attribution, and risk exposures.</div>
                     </div>
                     <div class="card-footer">
                         <span class="cta">&gt; open_terminal</span>
@@ -390,10 +443,66 @@
             </div>
         </section>
 
+        <!-- PORTFOLIO SECTION -->
+        <section class="section-block">
+            <div class="section-title">Examples <a href="CaseStudies/index.html" class="view-all">View all &rarr;</a></div>
+            <div class="section-sub">Four concise STAR examples built for hiring teams and interview prep.</div>
+
+            <div class="case-grid">
+                <a href="CaseStudies/foxit_lifecycle_case_study.html" class="case-card c-foxit">
+                    <div class="cs-eyebrow">Foxit &bull; 4-product data layer</div>
+                    <h3>Unified the reporting layer and freed 72 hours a week.</h3>
+                    <p>Cross-system lifecycle infrastructure spanning product usage, billing, support, and marketing. Built so leadership could trust one view and the team could actually run experiments.</p>
+                    <div class="cs-metrics">
+                        <span class="cs-pill">72 hrs/wk saved</span>
+                        <span class="cs-pill">3x ROI</span>
+                        <span class="cs-pill">4 products</span>
+                    </div>
+                    <div class="cs-cta">Read the example &rarr;</div>
+                </a>
+
+                <a href="CaseStudies/website_squirrel_case_study.html" class="case-card c-squirrel">
+                    <div class="cs-eyebrow">Website Squirrel &bull; growth analytics</div>
+                    <h3>Cut lead CAC by 60%+ by scoring quality instead of volume.</h3>
+                    <p>Segmentation, scoring, and routing logic connected acquisition efficiency to lead quality and profit instead of stopping at top-of-funnel counts.</p>
+                    <div class="cs-metrics">
+                        <span class="cs-pill">60%+ CAC reduction</span>
+                        <span class="cs-pill">15 hrs/wk saved</span>
+                        <span class="cs-pill">15% YoY profit</span>
+                    </div>
+                    <div class="cs-cta">Read the example &rarr;</div>
+                </a>
+
+                <a href="CaseStudies/netgain_case_study.html" class="case-card c-netgain">
+                    <div class="cs-eyebrow">Netgain &bull; 6-product SaaS</div>
+                    <h3>Found the North Star inside a 30-touchpoint buyer journey.</h3>
+                    <p>Multi-touch attribution, scoring, and high-velocity testing around the moments that mattered most drove a 250% lift in the middle of the funnel.</p>
+                    <div class="cs-metrics">
+                        <span class="cs-pill">250% mid-funnel lift</span>
+                        <span class="cs-pill">15% qualified lead lift</span>
+                        <span class="cs-pill">30 touches avg.</span>
+                    </div>
+                    <div class="cs-cta">Read the example &rarr;</div>
+                </a>
+
+                <a href="CaseStudies/uta_case_study.html" class="case-card c-uta">
+                    <div class="cs-eyebrow">UTA &bull; BI + recovery analysis</div>
+                    <h3>Mapped ticket-machine failure paths and turned a reporting gap into an action queue.</h3>
+                    <p>Rebuilt rider purchase paths, ranked the failure sequences that mattered most, and clarified where support visibility was incomplete.</p>
+                    <div class="cs-metrics">
+                        <span class="cs-pill">$2.0M fare context</span>
+                        <span class="cs-pill">250+ TVMs</span>
+                        <span class="cs-pill">$15K recovery view</span>
+                    </div>
+                    <div class="cs-cta">Read the example &rarr;</div>
+                </a>
+            </div>
+        </section>
+
         <!-- MODELS SECTION -->
         <section class="section-block">
-            <div class="section-title">Marketing Models &amp; Data Flows <a href="Models/index.html" class="view-all">View all &rarr;</a></div>
-            <div class="section-sub">The pipelines behind the dashboards &mdash; how data moves from capture to decision, system by system.</div>
+            <div class="section-title">Marketing Models <a href="Models/index.html" class="view-all">View all &rarr;</a></div>
+            <div class="section-sub">The lifecycle, attribution, and lead-quality systems behind the dashboards.</div>
 
             <div class="model-grid">
                 <a href="Models/netgain_marketing_model.html" class="model-card m-netgain">
@@ -414,20 +523,20 @@
                     <div class="m-footer"><span class="cta">View model &rarr;</span></div>
                 </a>
 
-                <a href="Models/uta_marketing_model.html" class="model-card m-uta">
-                    <div class="m-header"><span class="m-badge">UTA</span></div>
+                <a href="BIModels/index.html" class="model-card m-uta">
+                    <div class="m-header"><span class="m-badge">BI Models</span></div>
                     <div class="m-body">
-                        <h4>Fare Elasticity Model &amp; TVM Error-Log Pipeline</h4>
-                        <p>Policy-grade fare revenue modeling plus the TVM error-log pipeline that held a vendor accountable for unreported machine outages.</p>
+                        <h4>UTA + Hill Capital</h4>
+                        <p>The non-marketing BI work now lives in a dedicated section so the marketing-model pages stay focused on marketing operations and growth systems.</p>
                     </div>
-                    <div class="m-footer"><span class="cta">View model &rarr;</span></div>
+                    <div class="m-footer"><span class="cta">Open BI models &rarr;</span></div>
                 </a>
 
                 <a href="Models/website_squirrel_marketing_model.html" class="model-card m-squirrel">
                     <div class="m-header"><span class="m-badge">Website Squirrel</span></div>
                     <div class="m-body">
                         <h4>Behavioral Segmentation &amp; CAC Model</h4>
-                        <p>Python/AWS pipeline turning raw behavioral events into tiered lead scores and segment CAC. Drove 60%+ CAC reduction.</p>
+                <p>Lead-scoring workflows turning behavioral and CRM signals into segment priorities and CAC visibility. Drove 60%+ CAC reduction.</p>
                     </div>
                     <div class="m-footer"><span class="cta">View model &rarr;</span></div>
                 </a>
@@ -441,47 +550,61 @@
                     <div class="m-footer"><span class="cta">Try the calculator &rarr;</span></div>
                 </a>
 
-                <a href="#" class="model-card m-hc" style="pointer-events: none; opacity: 0.85;">
-                    <div class="m-header"><span class="m-badge">Hill Capital &middot; coming soon</span></div>
+                <a href="MOps/index.html" class="model-card m-hc">
+                    <div class="m-header"><span class="m-badge">How I Work</span></div>
                     <div class="m-body">
-                        <h4>Quant Data Flow &amp; Strategy Stack</h4>
-                        <p>Market data &rarr; factor models &rarr; strategy engines &rarr; risk overlay &rarr; execution. The pipeline behind the Hill Capital terminal.</p>
+                        <h4>How I Work</h4>
+                        <p>The role-specific page covering funnel tracking, attribution, integrations, call-center handoffs, and the metrics marketing leaders are likely to care about first.</p>
                     </div>
-                    <div class="m-footer"><span class="cta">In progress &rarr;</span></div>
+                    <div class="m-footer"><span class="cta">Open How I Work &rarr;</span></div>
+                </a>
+
+                <a href="MarketingAI/index.html" class="model-card m-ai">
+                    <div class="m-header"><span class="m-badge">Marketing AI</span></div>
+                    <div class="m-body">
+                        <h4>Marketing AI</h4>
+                        <p>How I use AI with dashboards, data extraction and cleaning, growth testing, prioritization, modeling, and Python-driven automations for fresher reporting.</p>
+                    </div>
+                    <div class="m-footer"><span class="cta">Open Marketing AI &rarr;</span></div>
                 </a>
             </div>
         </section>
 
         <!-- CAREER PIECES SECTION -->
         <section class="section-block">
-            <div class="section-title">Career &amp; Role Artifacts</div>
-            <div class="section-sub">The candidate package &mdash; track record and role-specific planning.</div>
+            <div class="section-title">Resume &amp; Interview Pages</div>
+            <div class="section-sub">Role history, working approach, and interview-ready preparation.</div>
 
             <div class="career-grid">
                 <a href="Accomplishments/accomplishments.html" class="career-card cc-accomplish">
                     <div>
-                        <div class="cc-eyebrow">Dossier &middot; 13 Years</div>
-                        <h3>Career Accomplishments</h3>
-                        <p>Role-by-role track record. What I measured, what I built, and the outcome produced. Includes the Healthicity lead-scoring model as a first-class accomplishment.</p>
+                        <div class="cc-eyebrow">Resume &middot; 13 Years</div>
+                        <h3>Resume</h3>
+                        <p>The career history, quantified outcomes, and direct links back into the strongest work examples. Includes a downloadable PDF version of the resume.</p>
                     </div>
-                    <div class="cc-cta">Read the accomplishments &rarr;</div>
+                    <div class="cc-cta">Open resume &rarr;</div>
                 </a>
 
                 <a href="IHS/plan.html" class="career-card cc-plan">
                     <div>
-                        <div class="cc-eyebrow">Role Plan &middot; Intermountain Home Services</div>
-                        <h3>60/90 Day Plan</h3>
-                        <p>Marketing Ops Analyst plan: discovery &amp; baseline in days 1-30, first high-value builds in days 31-60, reporting-to-recommendation in days 61-90. Tied to a needs analysis across 8+ brands.</p>
+                        <div class="cc-eyebrow">Interview Plan</div>
+                        <h3>120-Day Plan IHS</h3>
+                        <p>A focused marketing-ops plan: baseline and stack inventory first, shared tracking and weekly scorecards next, then testing, ROAS, and budget-move logic across a multi-brand services portfolio.</p>
                     </div>
                     <div class="cc-cta">Open the plan &rarr;</div>
                 </a>
             </div>
         </section>
 
-        <footer class="site-footer">
-            <div>&copy; 2026 Steve Hill &bull; BI / Marketing Analytics &bull; Salt Lake City, UT</div>
-            <div>All dashboards use illustrative data to demonstrate structure and analytical approach.</div>
-        </footer>
-    </div>
+</main>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

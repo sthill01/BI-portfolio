@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steve Hill &mdash; Career Accomplishments</title>
+    <title>Steve Hill &mdash; Resume</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         :root {
             --ink: #0F1B2D;
@@ -23,9 +24,45 @@
             --hl: #FFD77A;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.55; }
 
         .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 40px 80px; }
+        .page-layout { display: grid; grid-template-columns: 238px minmax(0, 1fr); gap: 24px; align-items: start; }
+        .content-column { min-width: 0; }
+        .toc {
+            position: sticky;
+            top: 24px;
+            background: #FFFFFF;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 14px 30px rgba(15,27,45,0.06);
+        }
+        .toc .toc-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+        .toc nav { display: grid; gap: 6px; }
+        .toc a {
+            display: block;
+            padding: 9px 10px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            color: var(--ink);
+            border-color: var(--line);
+            background: var(--paper-alt);
+        }
 
         /* Top nav */
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
@@ -43,6 +80,22 @@
         .hero h1 .hl { position: relative; white-space: nowrap; }
         .hero h1 .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 5px; height: 13px; background: var(--hl); z-index: -1; }
         .hero p.lede { font-size: 17px; color: var(--muted); max-width: 580px; margin-bottom: 32px; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 11px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.15s ease;
+        }
+        .hero-btn:hover { transform: translateY(-1px); }
+        .hero-btn.primary { background: var(--ink); color: #FFFFFF; }
+        .hero-btn.secondary { background: #FFFFFF; color: var(--ink); border: 1px solid var(--line); }
         .contact-row { display: flex; gap: 22px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
         .contact-row span strong { color: var(--ink); font-weight: 600; }
 
@@ -97,7 +150,7 @@
         .role-body ul.highlights { list-style: none; }
         .role-body ul.highlights li { padding: 9px 0 9px 18px; position: relative; font-size: 13.5px; line-height: 1.55; border-top: 1px solid; }
         .role-body ul.highlights li:first-child { border-top: none; }
-        .role-body ul.highlights li::before { content: "▸"; position: absolute; left: 0; top: 9px; font-size: 11px; }
+        .role-body ul.highlights li::before { content: "â–¸"; position: absolute; left: 0; top: 9px; font-size: 11px; }
         .role-body ul.highlights li .num { font-weight: 700; }
 
         .star-panel { border-radius: 12px; padding: 22px; font-size: 13.5px; line-height: 1.6; }
@@ -110,15 +163,15 @@
         /* Role: Independent Trading Venture (neutral ink) */
         .role.r-ivt { background: var(--ink); color: #EAEDF3; border: 1px solid #1A2538; }
         .role.r-ivt .tag { background: #EAEDF3; color: var(--ink); }
-        .role.r-ivt .tagline { color: rgba(234,237,243,0.6); }
-        .role.r-ivt .dates { color: rgba(234,237,243,0.7); }
+        .role.r-ivt .tagline { color: rgba(234,237,243,0.8); }
+        .role.r-ivt .dates { color: rgba(234,237,243,0.82); }
         .role.r-ivt .role-header .title-row h3 { color: white; }
-        .role.r-ivt .role-body .highlights-title { color: rgba(234,237,243,0.5); }
-        .role.r-ivt .role-body ul.highlights li { border-color: rgba(234,237,243,0.12); color: rgba(234,237,243,0.88); }
-        .role.r-ivt .role-body ul.highlights li::before { color: rgba(234,237,243,0.5); }
+        .role.r-ivt .role-body .highlights-title { color: rgba(234,237,243,0.72); }
+        .role.r-ivt .role-body ul.highlights li { border-color: rgba(234,237,243,0.16); color: rgba(244,247,251,0.94); }
+        .role.r-ivt .role-body ul.highlights li::before { color: rgba(234,237,243,0.72); }
         .role.r-ivt .role-body ul.highlights li .num { color: #7FD1FF; }
-        .role.r-ivt .star-panel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); }
-        .role.r-ivt .star-panel .star-label { color: rgba(234,237,243,0.5); }
+        .role.r-ivt .star-panel { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); }
+        .role.r-ivt .star-panel .star-label { color: rgba(234,237,243,0.72); }
         .role.r-ivt .star-panel .star-headline { color: white; }
         .role.r-ivt .star-panel strong { color: #7FD1FF; }
 
@@ -157,32 +210,32 @@
         /* Role: Netgain (SaaS ops, dark w/ orange accent) */
         .role.r-ng { background: #0F1B2D; color: #E8ECF3; }
         .role.r-ng .tag { background: var(--netgain); color: white; }
-        .role.r-ng .tagline { color: rgba(232,236,243,0.55); }
-        .role.r-ng .dates { color: rgba(232,236,243,0.55); font-family: 'JetBrains Mono', monospace; }
+        .role.r-ng .tagline { color: rgba(232,236,243,0.8); }
+        .role.r-ng .dates { color: rgba(232,236,243,0.82); font-family: 'JetBrains Mono', monospace; }
         .role.r-ng .role-header .title-row h3 { color: white; }
         .role.r-ng .role-body .highlights-title { color: var(--netgain); }
-        .role.r-ng .role-body ul.highlights li { border-color: rgba(255,255,255,0.08); color: rgba(232,236,243,0.88); }
+        .role.r-ng .role-body ul.highlights li { border-color: rgba(255,255,255,0.12); color: rgba(245,247,251,0.95); }
         .role.r-ng .role-body ul.highlights li::before { color: var(--netgain); }
         .role.r-ng .role-body ul.highlights li .num { color: var(--netgain); }
-        .role.r-ng .star-panel { background: rgba(242,106,46,0.08); border: 1px solid rgba(242,106,46,0.25); }
+        .role.r-ng .star-panel { background: rgba(242,106,46,0.12); border: 1px solid rgba(242,106,46,0.3); }
         .role.r-ng .star-panel .star-label { color: var(--netgain); }
         .role.r-ng .star-panel .star-headline { color: white; }
         .role.r-ng .star-panel strong { color: var(--netgain); }
 
-        /* Role: Foxit (dev-tools dark) */
-        .role.r-fx { background: #0B0F1A; color: #E7EAF3; border: 1px solid #1F2436; }
+        /* Role: Foxit (light blue brand) */
+        .role.r-fx { background: #F2FAFF; color: #163042; border: 1px solid #C7DEEE; }
         .role.r-fx .tag { background: var(--foxit); color: white; font-family: 'Source Serif Pro', serif; }
         .role.r-fx .co { font-family: 'Source Serif Pro', serif; }
-        .role.r-fx .tagline { color: #8089A3; font-family: 'JetBrains Mono', monospace; }
-        .role.r-fx .dates { color: #8089A3; font-family: 'JetBrains Mono', monospace; }
-        .role.r-fx .role-header .title-row h3 { color: white; }
+        .role.r-fx .tagline { color: #4E6880; font-family: 'JetBrains Mono', monospace; }
+        .role.r-fx .dates { color: #4E6880; font-family: 'JetBrains Mono', monospace; }
+        .role.r-fx .role-header .title-row h3 { color: #163042; }
         .role.r-fx .role-body .highlights-title { color: var(--foxit); font-family: 'JetBrains Mono', monospace; }
-        .role.r-fx .role-body ul.highlights li { border-color: rgba(255,255,255,0.06); color: #BDC5D8; }
+        .role.r-fx .role-body ul.highlights li { border-color: #D7E7F2; color: #35536D; }
         .role.r-fx .role-body ul.highlights li::before { color: var(--foxit); }
         .role.r-fx .role-body ul.highlights li .num { color: var(--foxit); }
-        .role.r-fx .star-panel { background: #141827; border: 1px solid #1F2436; }
+        .role.r-fx .star-panel { background: #EAF5FF; border: 1px solid #C7DEEE; }
         .role.r-fx .star-panel .star-label { color: var(--foxit); font-family: 'JetBrains Mono', monospace; }
-        .role.r-fx .star-panel .star-headline { color: white; }
+        .role.r-fx .star-panel .star-headline { color: #163042; }
         .role.r-fx .star-panel strong { color: var(--foxit); }
 
         /* Generic light role (Healthicity, Tuff Toe, RGM) */
@@ -210,24 +263,38 @@
         .skill-pill { display: inline-block; font-size: 12px; padding: 5px 11px; border-radius: 99px; background: var(--paper); border: 1px solid var(--line); margin: 0 4px 6px 0; color: var(--ink); font-weight: 500; }
         .skill-pill.pri { background: var(--ink); color: white; border-color: var(--ink); }
 
+        .case-study-links { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+        .case-study-link { display: block; text-decoration: none; color: inherit; background: white; border: 1px solid var(--line); border-left: 4px solid var(--ink); border-radius: 12px; padding: 18px 20px; transition: transform 0.2s, box-shadow 0.2s; }
+        .case-study-link:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(15,27,45,0.08); }
+        .case-study-link.csl-fx { border-left-color: var(--foxit); }
+        .case-study-link.csl-ng { border-left-color: var(--netgain); }
+        .case-study-link.csl-uta { border-left-color: var(--uta); }
+        .case-study-link.csl-ws { border-left-color: var(--squirrel); }
+        .case-study-link .csl-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+        .case-study-link h4 { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+        .case-study-link p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+        .case-study-link .csl-cta { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--ink); }
+
         /* Footer */
         footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
         footer a { color: var(--muted); text-decoration: underline; }
+        section, .section-spacer, .panel { scroll-margin-top: 88px; }
 
         @media (max-width: 960px) {
-            .hero { grid-template-columns: 1fr; }
+            .hero, .page-layout { grid-template-columns: 1fr; }
             .hero h1 { font-size: 40px; }
             .pillar-grid, .skills-grid { grid-template-columns: 1fr; }
             .role-body { grid-template-columns: 1fr; }
             .edu-skills { grid-template-columns: 1fr; }
             .hero-stats { grid-template-columns: 1fr 1fr; }
             .top-nav { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .toc { position: relative; top: auto; }
         }
         /* Portfolio cross-page topbar */
         .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -236,25 +303,38 @@
             .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/theme-coastal-growth.css">
 </head>
 <body>
-    <nav class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
         <div class="p-nav">
             <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
             <a href="../Dashboards/index.html">Dashboards</a>
-            <a href="../Models/index.html">Models</a>
-            <a href="accomplishments.html" class="active">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html" aria-current="page">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
         </div>
     </nav>
     <div class="wrap">
 
         <section class="hero">
             <div class="hero-text">
-                <div class="eyebrow">Career Accomplishments &bull; Apr 2026</div>
+                <div class="eyebrow">Resume &bull; Apr 2026</div>
                 <h1>13 years of <span class="hl">measurement infrastructure</span> for revenue and marketing teams.</h1>
-                <p class="lede">I build the pipelines, dashboards, attribution, and lead-scoring layer from the ground up &mdash; then use it to compound growth. Below: the track record, role by role, with the outcome and the approach that produced it.</p>
+                <p class="lede">This page is the portfolio-ready version of my resume: the roles, the outcomes, and the systems work behind them. It is written to stay readable for marketing leadership while still showing how I think about measurement, attribution, and operations.</p>
+                <div class="hero-actions">
+                    <a class="hero-btn primary" href="../assets/docs/steve-hill-resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume PDF</a>
+                    <a class="hero-btn secondary" href="../CaseStudies/index.html">Open Examples</a>
+                </div>
                 <div class="contact-row">
                     <span><strong>Salt Lake City, UT</strong></span>
                     <span>801-850-1253</span>
@@ -270,7 +350,19 @@
             </div>
         </section>
 
-        <section>
+        <div class="page-layout">
+            <aside class="toc" aria-label="On this page">
+                <div class="toc-label">On This Page</div>
+                <nav>
+                    <a href="#core-themes">Core Themes</a>
+                    <a href="#career-timeline">Career Timeline</a>
+                    <a href="#toolkit">Toolkit</a>
+                    <a href="#portfolio-stories">Examples</a>
+                </nav>
+            </aside>
+            <div class="content-column">
+
+        <section id="core-themes">
             <div class="section-head">
                 <div class="eyebrow">Four Themes Across Every Role</div>
                 <h2>What I build, end to end.</h2>
@@ -278,13 +370,13 @@
             </div>
             <div class="pillar-grid">
                 <div class="pillar p1">
-                    <h3>Data Infrastructure &amp; Automation</h3>
-                    <div class="pillar-kpi">Python / SQL / AWS pipelines</div>
+                    <h3>MarTech Integration, Data Flows &amp; Process Automation</h3>
+                    <div class="pillar-kpi">Integrated reporting flows / CRM signals / automation</div>
                     <ul>
-                        <li><span class="bold">72 hrs/wk</span> of manual executive reporting eliminated at Foxit via automated Python infrastructure &mdash; fueled 3&times; quarterly ROI.</li>
-                        <li><span class="bold">15 hrs/wk</span> of manual reporting removed at Website Squirrel through Python pipelines on AWS.</li>
-                        <li>SQL lead-scoring and customer-segmentation models across CRM + transactional + behavioral data at multiple companies.</li>
-                        <li>Unified product, billing, support, marketing into one reconciled source of truth at Foxit (first time leadership had one).</li>
+                        <li><span class="bold">72 hrs/wk</span> of manual executive reporting eliminated at Foxit by connecting product, billing, support, and marketing data into one usable reporting flow.</li>
+                        <li><span class="bold">15 hrs/wk</span> of manual reporting removed at Website Squirrel through automated lead-routing, scoring, and reporting workflows.</li>
+                        <li>Built working data flows across CRM, transactional, behavioral, and reporting layers so teams could see source-to-outcome performance more clearly.</li>
+                        <li>Unified product, billing, support, and marketing inputs at Foxit into one reconciled operating view for leadership.</li>
                     </ul>
                 </div>
                 <div class="pillar p2">
@@ -294,7 +386,7 @@
                         <li>Owned online + offline multi-touch attribution across a <span class="bold">6-product SaaS portfolio</span> at Netgain, driving weekly exec reporting and budget allocation.</li>
                         <li>Attribution dashboards informing <span class="bold">$50M+</span> in client media spend at RGM Group (performance agency).</li>
                         <li>Granular ROI analysis across <span class="bold">48+ campaigns</span> at Website Squirrel, surfacing durable repeat-revenue patterns.</li>
-                        <li>ARIMAX forecasting models at UTA projecting fare-structure demand, revenue, and outcome probabilities for exec policy decisions.</li>
+                        <li>Session-level failure diagnostics at UTA reconstructing rider flows, vendor alert gaps, and recoverable revenue leakage across a 250+ TVM network.</li>
                     </ul>
                 </div>
                 <div class="pillar p3">
@@ -320,7 +412,7 @@
             </div>
         </section>
 
-        <section class="section-spacer">
+        <section class="section-spacer" id="career-timeline">
             <div class="section-head">
                 <div class="eyebrow">Role-by-Role Timeline</div>
                 <h2>The work, in sequence.</h2>
@@ -370,29 +462,29 @@
                             <div class="tag">UTA</div>
                             <div>
                                 <div class="co">Utah Transit Authority</div>
-                                <div class="tagline">Fare Analyst, Project Engagement</div>
+                                <div class="tagline">Operations Analytics, Project Engagement</div>
                             </div>
                         </div>
                         <div class="dates">Oct 2024 &rarr; Jan 2025</div>
                     </div>
-                    <div class="title-row" style="padding: 0 34px 20px;"><h3>Fare-structure forecasting + vendor SLA accountability across a 250-machine fleet.</h3></div>
+                    <div class="title-row" style="padding: 0 34px 20px;"><h3>Failure-sequence diagnostics + vendor SLA accountability across a 250-machine fleet.</h3></div>
                     <div class="role-body">
                         <div>
-                            <p class="lede">Two parallel work streams: (1) fare analytics and revenue forecasting with SQL, Python, and Power BI/Tableau; (2) vendor accountability analytics across the newly-installed 250+ TVM fleet &mdash; error-log analysis, field testing, and a scope accountability document that turned vendor-support failures into enforceable SLAs.</p>
+                            <p class="lede">The core work centered on ticketing operations: reconstructing rider sessions, isolating the error sequences that caused failed purchases, and comparing those failures against what the vendor actually surfaced to Control Center. SQL, Python, Power BI, and Power Query supported the analysis across the newly installed 250+ TVM fleet.</p>
                             <div class="highlights-title">Key Accomplishments</div>
                             <ul class="highlights">
                                 <li>Built dashboards tracking <span class="num">20+ KPIs across 7 lines</span>, cutting report-gen time from 8 hrs/wk to 15 min automated.</li>
-                                <li>ARIMAX fare-structure forecast with elasticity incorporated &mdash; findings drove the exec decision to phase an <span class="num">8%</span> increase.</li>
-                                <li>A/B test on student discount: <span class="num">18% ridership uplift</span> with <span class="num">25% revenue-loss reduction</span> via targeted eligibility.</li>
-                                <li>Diagnosed the TVM vendor was filtering non-critical error classes at the source, leaving Control Center blind to machine outages.</li>
+                                <li>Sessionized machine logs and mapped the repeated user flows most likely to end in a failed purchase.</li>
+                                <li>Ranked failure classes by frequency, retry behavior, and recoverable leakage across the fleet.</li>
+                                <li>Diagnosed the TVM vendor was filtering non-critical error classes at the source, leaving Control Center with an incomplete view of machine outages.</li>
                                 <li>Authored the scope accountability document used in vendor negotiations &mdash; line-by-line contracted scope vs. field error data; vendor agreed to fix pipeline and accept SLA enforcement.</li>
                             </ul>
                         </div>
                         <div class="star-panel">
                             <div class="star-label">Highlighted Story &bull; Vendor Accountability</div>
                             <div class="star-headline">Turned a vendor-support failure into enforceable SLAs using data.</div>
-                            <p><strong>Situation.</strong> 250+ new TVMs across TRAX/FrontRunner/bus; machines were going down and the vendor wasn't surfacing error alerts to Control Center as contracted. UTA was losing revenue and rider trust blind.</p>
-                            <p><strong>Action.</strong> Three tracks in parallel: pulled raw vendor logs and cross-referenced to what Control Center actually received (class-by-class gap quantification), on-site field testing to reproduce outages, and a scope accountability document mapping contractual support scope line-by-line against observed field errors.</p>
+                            <p><strong>Situation.</strong> 250+ new TVMs across TRAX, FrontRunner, and bus; riders were encountering failed purchase sessions, but the vendor wasn't surfacing the full set of error alerts to Control Center as contracted.</p>
+                            <p><strong>Action.</strong> Three tracks in parallel: rebuilt rider sessions from raw machine logs to isolate the action sequences behind failed purchases, cross-referenced vendor logs against what Control Center actually received, and used field testing plus a scope-accountability document to map contractual support scope line by line against observed failures.</p>
                             <p><strong>Result.</strong> Vendor agreed to fix the error-reporting pipeline and accepted ongoing SLA enforcement. Detection moved from rider-complaint-driven to near-real-time. The scope accountability doc became the standing reference for future vendor-support reviews.</p>
                         </div>
                     </div>
@@ -413,22 +505,21 @@
                     <div class="title-row" style="padding: 0 34px 20px;"><h3>Lead scoring &amp; <em>behavioral segmentation</em> that cut CAC 60%+.</h3></div>
                     <div class="role-body">
                         <div>
-                            <p class="lede">Owned growth marketing and analytics for a fast-growing B2B SaaS. Built automated lead-scoring and customer-segmentation models in SQL across CRM, transactional, and behavioral data. Architected Python/AWS pipelines. Analyzed 48+ campaigns and 120+ competitors.</p>
+                            <p class="lede">Owned growth marketing and analytics for a fast-growing B2B SaaS. Built automated lead-scoring and customer-segmentation workflows in SQL across CRM, transactional, and behavioral data. Analyzed 48+ campaigns and 120+ competitors.</p>
                             <div class="highlights-title">Key Accomplishments</div>
                             <ul class="highlights">
                                 <li>Lead CAC <span class="num">down 60%+</span> via automated scoring + behavioral segmentation; top quintile converted at 28% vs. 8% company average.</li>
-                                <li>Customer retention <span class="num">up 20%</span> via automated win-back campaigns; 35% of at-risk customers recovered before renewal.</li>
-                                <li>Automated Python/AWS pipelines eliminated <span class="num">15 hrs/wk</span> of manual reporting.</li>
+                                <li>Automated scoring and reporting workflows eliminated <span class="num">15 hrs/wk</span> of manual reporting.</li>
                                 <li>Contributed to <span class="num">15% YoY profit growth</span> through channel optimization and improved targeting.</li>
                                 <li>ROI analysis across <span class="num">48+ campaigns</span> drove <span class="num">22%</span> improvement in marketing efficiency.</li>
                             </ul>
                         </div>
                         <div class="star-panel">
                             <div class="star-label">Highlighted Story</div>
-                            <div class="star-headline">Predictive scoring turned a 40% churn problem into a growth lever.</div>
-                            <p><strong>Situation.</strong> 40% of new customers churning within 12 months; marketing spending equally on high-intent and low-intent segments.</p>
-                            <p><strong>Action.</strong> Pulled 2 years of CRM + transactional + behavioral data. Built logistic regression models for conversion probability and churn risk, deployed into HubSpot via API for automated scoring + triggered nurture tracks (accelerated sales for high-score, longer nurture for low-score, win-back 60 days pre-renewal for at-risk).</p>
-                            <p><strong>Result.</strong> <strong>60%+ CAC reduction</strong>, <strong>20% retention lift</strong>, time-to-nurture cut from 5+ days manual to &lt;2 hrs automated. Combined: 22% marketing-efficiency gain, 15% contribution to YoY profit.</p>
+                            <div class="star-headline">Lead scoring turned noisy demand into a cheaper, better-targeted funnel.</div>
+                            <p><strong>Situation.</strong> Marketing was spending too evenly across high-intent and low-intent segments, which pushed CAC up and blurred where follow-up should go first.</p>
+                            <p><strong>Action.</strong> Pulled CRM, transactional, and behavioral data into one lead-priority system, wrote the scoring output into HubSpot, and used it to reshape routing, suppression, and nurture so better-fit leads got faster attention.</p>
+                            <p><strong>Result.</strong> <strong>60%+ CAC reduction</strong>, <strong>15 hrs/wk</strong> of reporting removed, and <strong>15% contribution to YoY profit</strong>. Combined: a cheaper funnel and a clearer basis for budget decisions.</p>
                         </div>
                     </div>
                 </article>
@@ -463,7 +554,7 @@
                             <div class="star-headline">"Moments that Matter" &mdash; a single NSM across 6 products.</div>
                             <p><strong>Situation.</strong> 6-product portfolio, 30-touchpoint average journey, mid-funnel SQL-to-SAL underperforming; budget split roughly equally with no dollar-value attribution back to source.</p>
                             <p><strong>Action.</strong> Built multi-touch attribution + dollar-weighted scoring. Ran cohort analysis across 12 months of leads to surface the sequence that best predicted conversion: second product-page revisit + pricing-page touch + sales-collateral download in a 14-day window. Made NSM throughput the primary mid-funnel KPI. Ran high-velocity sprints to drive more leads through it faster.</p>
-                            <p><strong>Result.</strong> Mid-funnel conversion <strong>8% &rarr; 20% (+250%)</strong>. NSM throughput tripled. Low-intent spend reallocated; PPC contribution +18%. Combined impact directly influenced <strong>$4M+ pipeline growth in year 2</strong>.</p>
+                            <p><strong>Result.</strong> Mid-funnel conversion moved from <strong>about 8% into the high-20s (+250%)</strong>. NSM throughput tripled. Low-intent spend reallocated; PPC contribution +18%. Combined impact directly influenced <strong>$4M+ pipeline growth in year 2</strong>.</p>
                         </div>
                     </div>
                 </article>
@@ -594,7 +685,7 @@
                                 <li>Attribution dashboards for <span class="num">8+ clients</span> managing <span class="num">$50M+</span> in annual media spend.</li>
                                 <li>Multi-touch model for B2B client with 8-week cycle improved budget allocation accuracy <span class="num">18%</span>, increased pipeline-contribution attribution <span class="num">40%</span>.</li>
                                 <li>Cross-client analysis surfaced best practices applied to <span class="num">6 client campaigns</span>.</li>
-                                <li>Self-service Excel/Tableau templates reduced time-to-reporting <span class="num">60%</span> for new clients.</li>
+                                <li>Self-service Excel/Power Query templates reduced time-to-reporting <span class="num">60%</span> for new clients.</li>
                             </ul>
                         </div>
                         <div class="star-panel">
@@ -610,7 +701,7 @@
             </div>
         </section>
 
-        <section class="section-spacer">
+        <section class="section-spacer" id="toolkit">
             <div class="section-head">
                 <div class="eyebrow">Education &amp; Technical Stack</div>
                 <h2>The toolkit.</h2>
@@ -646,7 +737,7 @@
                             <span class="skill-pill">HTML/CSS</span>
                             <h4 style="margin-top: 16px;">BI &amp; Visualization</h4>
                             <span class="skill-pill pri">Power BI</span>
-                            <span class="skill-pill">Tableau</span>
+                            <span class="skill-pill">Power Query</span>
                             <span class="skill-pill">Looker</span>
                             <span class="skill-pill">Data Studio</span>
                             <h4 style="margin-top: 16px;">Data Stack</h4>
@@ -673,9 +764,9 @@
                             <span class="skill-pill">Multi-touch Attribution</span>
                             <span class="skill-pill">A/B &amp; MVT Testing</span>
                             <span class="skill-pill">Cohort Analysis</span>
-                            <span class="skill-pill">ARIMAX</span>
-                            <span class="skill-pill">Logistic Regression</span>
-                            <span class="skill-pill">Elasticity</span>
+                            <span class="skill-pill">Failure Diagnostics</span>
+                    <span class="skill-pill">Predictive Scoring</span>
+                            <span class="skill-pill">Sequence Analysis</span>
                             <span class="skill-pill">Factor Models</span>
                             <span class="skill-pill">Regime Analysis</span>
                         </div>
@@ -684,10 +775,52 @@
             </div>
         </section>
 
-        <footer>
-            <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
-            <div>Salt Lake City, UT &bull; Currently open to Marketing Analytics and BI roles.</div>
-        </footer>
-    </div>
+        <section class="section-spacer" id="portfolio-stories">
+            <div class="section-head">
+                <div class="eyebrow">Four Standalone Examples</div>
+                <h2>Prefer the example version?</h2>
+                <p>These are the four signature examples, rewritten as one-page STAR summaries for hiring teams who want the problem, the build, and the result in one place.</p>
+            </div>
+            <div class="case-study-links">
+                <a href="../CaseStudies/foxit_lifecycle_case_study.html" class="case-study-link csl-fx">
+                    <div class="csl-eyebrow">Foxit</div>
+                    <h4>Unified data layer &amp; lifecycle engine</h4>
+                    <p>72 hours per week of manual reporting removed, 3x ROI in a quarter, and one reconciled view across four products.</p>
+                    <div class="csl-cta">Open example &rarr;</div>
+                </a>
+                <a href="../CaseStudies/website_squirrel_case_study.html" class="case-study-link csl-ws">
+                    <div class="csl-eyebrow">Website Squirrel</div>
+                    <h4>Lead scoring and CAC efficiency</h4>
+                    <p>Automated segmentation and scoring that cut lead CAC by 60%+ and made routing and follow-up more efficient.</p>
+                    <div class="csl-cta">Open example &rarr;</div>
+                </a>
+                <a href="../CaseStudies/netgain_case_study.html" class="case-study-link csl-ng">
+                    <div class="csl-eyebrow">Netgain</div>
+                    <h4>Attribution, NSM, and mid-funnel lift</h4>
+                    <p>Six products, 30 touchpoints, and a 250% improvement in the middle of the funnel once the right signal was isolated.</p>
+                    <div class="csl-cta">Open example &rarr;</div>
+                </a>
+                <a href="../CaseStudies/uta_case_study.html" class="case-study-link csl-uta">
+                    <div class="csl-eyebrow">UTA</div>
+                    <h4>Failure diagnostics &amp; vendor accountability</h4>
+                    <p>Session-level failure analysis, alert-gap diagnostics, and operational accountability across a 250+ machine fleet.</p>
+                    <div class="csl-cta">Open example &rarr;</div>
+                </a>
+            </div>
+        </section>
+            </div>
+        </div>
+
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

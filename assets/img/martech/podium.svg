@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" role="img" aria-labelledby="title">
+  <title>Podium</title>
+  <rect width="180" height="56" rx="16" fill="#FFFFFF"/>
+  <rect x="18" y="10" width="34" height="34" rx="10" fill="#163042"/>
+  <path d="M28 18h8c6 0 10 3 10 9s-4 9-10 9h-4v6h-4V18Zm4 4v10h4c4 0 6-1 6-5s-2-5-6-5h-4Z" fill="#FFFFFF"/>
+  <text x="82" y="24" fill="#163042" font-family="Arial, sans-serif" font-size="15" font-weight="700">Podium</text>
+  <text x="82" y="39" fill="#5F7280" font-family="Arial, sans-serif" font-size="10" font-weight="600">Reviews and NPS</text>
+</svg>

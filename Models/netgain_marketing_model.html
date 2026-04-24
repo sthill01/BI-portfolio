@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netgain &mdash; Multi-Touch Attribution Model &amp; Data Flow</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         :root {
             --ng-orange: #F26A2E;
@@ -121,7 +122,7 @@
         .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -134,16 +135,24 @@
 </head>
 <body>
     
-    <nav class="p-topbar">
-    <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
-    <div class="p-nav">
-        <a href="../index.html">Home</a>
-        <a href="../Dashboards/index.html">Dashboards</a>
-        <a href="../Models/index.html" class="active">Models</a>
-        <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-        <a href="../IHS/plan.html">60/90 Day Plan</a>
-    </div>
-</nav>
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="../Models/index.html" aria-current="page">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
 
     <div class="wrap">
         <nav class="top-nav">
@@ -152,7 +161,7 @@
                 <a href="../Dashboards/index.html">Dashboards</a>
                 <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
                 <a href="index.html">Models</a>
-                <a href="../IHS/plan.html">60/90 Day Plan</a>
+                <a href="../IHS/plan.html">120 Day Plan IHS</a>
             </div>
         </nav>
 
@@ -372,9 +381,9 @@
         </div>
 
         <div class="section-head">
-            <div class="eyebrow">Marketing Funnel</div>
+            <div class="eyebrow">Marketing Funnel &middot; 18-Month Tenure (Sep &apos;21 &rarr; Mar &apos;23)</div>
             <h2>Six stages, one NSM gate in the middle.</h2>
-            <p>Every stage is dollar-attributable. The "Moments that Matter" gate &mdash; the NSM &mdash; is the pivot the entire program was tuned toward.</p>
+            <p>Every stage is dollar-attributable. The "Moments that Matter" gate &mdash; the NSM &mdash; is the pivot the entire program was tuned toward. The <strong>+250% SQL&rarr;SAL lift</strong> below represents the end-of-tenure rate (20.0%) against the onboarding baseline (8.0%).</p>
         </div>
 
         <div class="funnel-wrap">
@@ -453,10 +462,25 @@
             </div>
         </div>
 
-        <footer class="page">
-            <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
-            <div><a href="../Dashboards/netgain_b2b_saas_midfunnel.html">&larr; View the Netgain dashboard</a></div>
-        </footer>
-    </div>
+        <section style="margin-top: 32px; padding: 24px; border: 1px solid #F2D3C2; border-radius: 22px; background: linear-gradient(135deg, #FFF7F2, #FFFFFF); box-shadow: 0 18px 40px rgba(15,27,45,0.08);">
+            <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #F26A2E; margin-bottom: 10px;">STAR Case Study</div>
+            <h2 style="margin: 0; color: #0F1B2D;">Need the concise interview version of this Netgain work?</h2>
+            <p style="margin: 10px 0 0; max-width: 760px; color: #526072; line-height: 1.7;">This model page shows the attribution and NSM logic. The matching case study turns it into a clean STAR narrative with the business problem, the testing sprint structure, and the quantified 250% mid-funnel result.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+                <a href="../CaseStudies/netgain_case_study.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; background: #F26A2E; color: #FFFFFF; font-weight: 700; text-decoration: none;">Read the STAR case study</a>
+                <a href="../CaseStudies/index.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; border: 1px solid #E8D9CF; color: #0F1B2D; text-decoration: none;">Browse all four stories</a>
+            </div>
+        </section>
+
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

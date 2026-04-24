@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +6,13 @@
     <title>Foxit | API Client Growth Funnel</title>
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+Pro:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+        <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         /* Portfolio cross-page topbar */
         .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -98,18 +99,27 @@
             .hero-split, .panel-row { grid-template-columns: 1fr; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/theme-foxit-light.css">
 </head>
 <body>
-        <div class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
-        <nav class="p-nav">
+                <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
             <a href="../index.html">Home</a>
-            <a href="index.html" class="active">Dashboards</a>
-            <a href="../Models/index.html">Models</a>
-            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
-        </nav>
-    </div>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html" aria-current="page">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
     <div class="layout">
         <aside class="sidebar">
             <div class="logo-block">
@@ -225,13 +235,22 @@
                 <canvas id="cohortHeatmap" style="max-height: 350px;"></canvas>
                 <div class="footnote">Activation-driven retention curve stabilizes around 22-25% by month 12.</div>
             </div>
+            <section style="margin-top: 28px; padding: 24px; border: 1px solid #C7DEEE; border-radius: 18px; background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(234,245,255,0.96)); box-shadow: 0 18px 40px rgba(43,140,190,0.12);">
+                <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #FF5F00; margin-bottom: 10px;">STAR Case Study</div>
+                <h2 style="margin: 0; font-size: 24px; color: #163042;">Want the interview-ready Foxit version of this story?</h2>
+                <p style="margin: 10px 0 0; max-width: 720px; color: #4E6880; line-height: 1.65;">This dashboard shows the operating layer. The companion case study walks through the situation, task, actions, and quantified outcome: 72 hours per week saved and 3x ROI from a unified lifecycle engine.</p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+                    <a href="../CaseStudies/foxit_lifecycle_case_study.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; background: #FF5F00; color: #FFFFFF; font-weight: 700; text-decoration: none;">Read the STAR case study</a>
+                    <a href="../CaseStudies/index.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; border: 1px solid rgba(31,79,104,0.16); color: #163042; text-decoration: none;">Browse all four stories</a>
+                </div>
+            </section>
         </main>
     </div>
 
     <script>
         Chart.defaults.font.family = "'Open Sans', sans-serif";
-        Chart.defaults.color = '#8089A3';
-        Chart.defaults.borderColor = '#262B3F';
+        Chart.defaults.color = '#4E6880';
+        Chart.defaults.borderColor = '#C7DEEE';
 
         const FX_ORANGE = '#FF5F00';
         const FX_ORANGE_LIGHT = '#FF8533';
@@ -277,8 +296,8 @@
                 indexAxis: 'y', responsive: true, maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8089A3' } },
-                    y: { grid: { display: false }, ticks: { color: '#E7EAF3', font: { family: 'Barlow', weight: '600', size: 13 } } }
+                    x: { beginAtZero: true, grid: { color: 'rgba(31,79,104,0.08)' }, ticks: { color: '#4E6880' } },
+                    y: { grid: { display: false }, ticks: { color: '#163042', font: { family: 'Barlow', weight: '600', size: 13 } } }
                 }
             }
         });
@@ -297,17 +316,17 @@
             options: {
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    x: { stacked: true, grid: { display: false }, ticks: { color: '#8089A3' } },
-                    y: { stacked: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8089A3' } }
+                    x: { stacked: true, grid: { display: false }, ticks: { color: '#4E6880' } },
+                    y: { stacked: true, grid: { color: 'rgba(31,79,104,0.08)' }, ticks: { color: '#4E6880' } }
                 },
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14, color: '#8089A3' } } }
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14, color: '#4E6880' } } }
             }
         });
 
         const cohortCanvas = document.getElementById('cohortHeatmap');
         const ctx = cohortCanvas.getContext('2d');
         cohortCanvas.width = 900; cohortCanvas.height = 320;
-        ctx.fillStyle = '#141827';
+        ctx.fillStyle = '#F2FAFF';
         ctx.fillRect(0, 0, 900, 320);
         const cellW = 62, cellH = 22, offX = 10, offY = 10;
         data.cohorts.forEach((row, r) => {
@@ -315,20 +334,20 @@
                 if (v === null) return;
                 const t = v / 100;
                 const r1 = 255, g1 = 95, b1 = 0;
-                const r2 = 20,  g2 = 24, b2 = 39;
+                const r2 = 234, g2 = 245, b2 = 255;
                 const rr = Math.round(r2 + (r1 - r2) * t);
                 const gg = Math.round(g2 + (g1 - g2) * t);
                 const bb = Math.round(b2 + (b1 - b2) * t);
                 ctx.fillStyle = `rgb(${rr}, ${gg}, ${bb})`;
                 ctx.fillRect(offX + c * cellW, offY + r * cellH, cellW - 2, cellH - 2);
-                ctx.fillStyle = v > 45 ? '#0B0F1A' : '#E7EAF3';
+                ctx.fillStyle = '#163042';
                 ctx.font = "600 11px 'Barlow'";
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(v + '%', offX + c * cellW + cellW/2, offY + r * cellH + cellH/2 - 1);
             });
         });
-        ctx.fillStyle = '#8089A3';
+        ctx.fillStyle = '#4E6880';
         ctx.font = "600 10px 'JetBrains Mono'";
         ctx.textAlign = 'center';
         data.cohortLabels.forEach((lbl, i) => {
@@ -337,3 +356,12 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

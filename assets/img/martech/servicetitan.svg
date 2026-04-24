@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" role="img" aria-labelledby="title">
+  <title>ServiceTitan</title>
+  <rect width="180" height="56" rx="16" fill="#0F1B2D"/>
+  <path d="M18 14h32v8H38v20H30V22H18v-8Z" fill="#FFFFFF"/>
+  <path d="M52 14h10l6 8-6 8h-10l6-8-6-8Zm0 16h10l6 8-6 8h-10l6-8-6-8Z" fill="#D92D20"/>
+  <text x="82" y="24" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="15" font-weight="700">ServiceTitan</text>
+  <text x="82" y="39" fill="#C7D4E0" font-family="Arial, sans-serif" font-size="10" font-weight="600">Booking to job close</text>
+</svg>

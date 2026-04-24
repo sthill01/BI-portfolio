@@ -1,0 +1,59 @@
+:root {
+    --ih-navy: #2A2233;
+    --ih-navy-2: #5C3B50;
+    --ih-navy-light: #B45750;
+    --ih-sky: #E76F51;
+    --ih-sky-soft: #FDE7DE;
+    --ih-gold: #F4A261;
+    --ih-gold-soft: #FCE9D9;
+    --ih-mint: #4CAF88;
+    --ih-mint-soft: #E8F5EF;
+    --ih-coral: #E76F51;
+    --ih-cream: #FFF8F1;
+    --ih-paper: #FFFFFF;
+    --ih-ink: #2A2233;
+    --ih-ink-2: #746C7C;
+    --ih-line: #F0DDD0;
+    --case-accent: #E76F51;
+    --case-accent-soft: rgba(231, 111, 81, 0.12);
+    --case-paper: #FFF8F1;
+    --case-surface: #FFFFFF;
+    --case-surface-alt: #FFF1E7;
+    --case-line: #F0DDD0;
+    --case-ink: #2A2233;
+    --case-muted: #746C7C;
+}
+
+.p-topbar {
+    background: #2A2233;
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.p-topbar .p-brand span {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.p-topbar .p-nav a:hover,
+.p-topbar .p-nav a.active {
+    color: #F4A261;
+}
+
+.hero {
+    background: linear-gradient(135deg, #2A2233 0%, #E76F51 54%, #F4C37A 100%);
+    box-shadow: 0 12px 36px rgba(42, 34, 51, 0.2);
+}
+
+.hero::before {
+    background: radial-gradient(circle at 72% 30%, rgba(255, 248, 241, 0.24) 0%, transparent 70%);
+}
+
+.hero-meta {
+    background: rgba(255, 248, 241, 0.18);
+    color: #FFF8F1;
+    border-color: rgba(255, 248, 241, 0.28);
+}
+
+.breadcrumb a,
+.crumb a {
+    color: #E76F51;
+}

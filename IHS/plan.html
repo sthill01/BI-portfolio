@@ -1,879 +1,456 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>60 / 90 Day Plan · Marketing Operations Analyst · Intermountain Home Services</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ih-navy: #0F2A44;
-    --ih-navy-2: #17324F;
-    --ih-navy-light: #3A5978;
-    --ih-sky: #3E8AC7;
-    --ih-sky-soft: #E7F0F8;
-    --ih-gold: #D8A94B;
-    --ih-gold-soft: #FBF2DC;
-    --ih-mint: #4FA58F;
-    --ih-mint-soft: #E4F1EC;
-    --ih-coral: #C8553D;
-    --ih-cream: #FAF6EF;
-    --ih-paper: #FFFEFA;
-    --ih-ink: #1A1A1A;
-    --ih-ink-2: #4F4F4F;
-    --ih-line: #E6DFD3;
-  }
-
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--ih-cream);
-    color: var(--ih-ink);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .topbar {
-    background: var(--ih-navy);
-    color: #fff;
-    padding: 14px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid var(--ih-gold);
-  }
-  .brand {
-    font-family: 'Source Serif Pro', serif;
-    font-weight: 700;
-    font-size: 19px;
-    letter-spacing: -0.3px;
-  }
-  .brand .sub { color: var(--ih-gold); font-weight: 400; font-size: 13px; margin-left: 8px; }
-  .topnav a {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 22px;
-    font-weight: 500;
-    font-size: 13.5px;
-  }
-  .topnav a:hover { color: var(--ih-gold); }
-  .topnav .active { color: var(--ih-gold); }
-
-  .container {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 48px;
-  }
-
-  .breadcrumb {
-    font-size: 13px;
-    color: var(--ih-ink-2);
-    margin-bottom: 20px;
-  }
-  .breadcrumb a { color: var(--ih-sky); text-decoration: none; }
-
-  .hero {
-    background: linear-gradient(135deg, var(--ih-navy) 0%, var(--ih-navy-2) 60%, #1d3d5c 100%);
-    color: #fff;
-    border-radius: 18px;
-    padding: 48px 52px;
-    margin-bottom: 36px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 12px 40px rgba(15, 42, 68, 0.25);
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 340px;
-    height: 340px;
-    background: radial-gradient(circle at 70% 30%, rgba(216, 169, 75, 0.24) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-meta {
-    display: inline-block;
-    background: rgba(216, 169, 75, 0.18);
-    color: var(--ih-gold);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid rgba(216, 169, 75, 0.35);
-    margin-bottom: 18px;
-  }
-  .hero h1 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 44px;
-    font-weight: 700;
-    margin: 0 0 12px 0;
-    letter-spacing: -1px;
-    line-height: 1.1;
-  }
-  .hero .role {
-    font-size: 17px;
-    color: #CFD9E4;
-    margin: 0 0 22px 0;
-    font-weight: 400;
-  }
-  .hero .role strong { color: #fff; font-weight: 600; }
-  .hero .stamp {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-top: 26px;
-    border-top: 1px solid rgba(255,255,255,0.15);
-    padding-top: 22px;
-  }
-  .hero .stamp-item .l {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    color: rgba(255,255,255,0.55);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 4px;
-  }
-  .hero .stamp-item .v {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 600;
-  }
-
-  .framing {
-    background: var(--ih-paper);
-    border-left: 4px solid var(--ih-gold);
-    padding: 26px 30px;
-    border-radius: 4px 12px 12px 4px;
-    margin-bottom: 40px;
-    box-shadow: 0 2px 10px rgba(15, 42, 68, 0.06);
-  }
-  .framing h2 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 15px;
-    color: var(--ih-gold);
-    margin: 0 0 10px 0;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 700;
-  }
-  .framing p {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 17px;
-    color: var(--ih-ink);
-    margin: 0;
-    font-style: italic;
-    line-height: 1.55;
-  }
-
-  h2.section-h {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 28px;
-    font-weight: 700;
-    margin: 56px 0 6px 0;
-    color: var(--ih-navy);
-    letter-spacing: -0.5px;
-  }
-  h2.section-h + .section-sub {
-    font-size: 14px;
-    color: var(--ih-ink-2);
-    margin: 0 0 24px 0;
-    max-width: 820px;
-  }
-
-  /* Principles */
-  .principles {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-    margin-bottom: 8px;
-  }
-  .principle {
-    background: var(--ih-paper);
-    border: 1px solid var(--ih-line);
-    border-top: 3px solid var(--ih-sky);
-    border-radius: 10px;
-    padding: 20px 18px;
-    transition: transform 0.2s ease;
-  }
-  .principle:hover { transform: translateY(-2px); }
-  .principle .num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--ih-sky);
-    margin-bottom: 8px;
-  }
-  .principle h3 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 15px;
-    font-weight: 700;
-    margin: 0 0 6px 0;
-    color: var(--ih-navy);
-    line-height: 1.3;
-  }
-  .principle p {
-    font-size: 12.5px;
-    color: var(--ih-ink-2);
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  /* Timeline */
-  .timeline {
-    position: relative;
-    padding-left: 40px;
-    margin-top: 30px;
-  }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 12px;
-    top: 24px;
-    bottom: 24px;
-    width: 3px;
-    background: linear-gradient(to bottom, var(--ih-sky), var(--ih-mint), var(--ih-gold));
-    border-radius: 3px;
-  }
-
-  .phase {
-    position: relative;
-    margin-bottom: 44px;
-  }
-  .phase::before {
-    content: '';
-    position: absolute;
-    left: -35px;
-    top: 14px;
-    width: 21px;
-    height: 21px;
-    border-radius: 50%;
-    border: 4px solid var(--ih-cream);
-    box-shadow: 0 0 0 2px var(--ih-navy);
-  }
-  .phase.p1::before { background: var(--ih-sky); box-shadow: 0 0 0 2px var(--ih-sky); }
-  .phase.p2::before { background: var(--ih-mint); box-shadow: 0 0 0 2px var(--ih-mint); }
-  .phase.p3::before { background: var(--ih-gold); box-shadow: 0 0 0 2px var(--ih-gold); }
-
-  .phase-card {
-    background: var(--ih-paper);
-    border: 1px solid var(--ih-line);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 4px 18px rgba(15, 42, 68, 0.06);
-  }
-  .phase-header {
-    padding: 22px 28px;
-    border-bottom: 1px solid var(--ih-line);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .phase.p1 .phase-header { background: var(--ih-sky-soft); }
-  .phase.p2 .phase-header { background: var(--ih-mint-soft); }
-  .phase.p3 .phase-header { background: var(--ih-gold-soft); }
-
-  .phase-header .days {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--ih-ink-2);
-    text-transform: uppercase;
-  }
-  .phase-header h3 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 26px;
-    font-weight: 700;
-    margin: 4px 0 0 0;
-    color: var(--ih-navy);
-    letter-spacing: -0.4px;
-  }
-  .phase.p1 .phase-header h3 { color: #1F5A8A; }
-  .phase.p2 .phase-header h3 { color: #2F6D5B; }
-  .phase.p3 .phase-header h3 { color: #8C6D28; }
-
-  .phase-header .badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-  }
-  .phase.p1 .badge { background: var(--ih-sky); color: #fff; }
-  .phase.p2 .badge { background: var(--ih-mint); color: #fff; }
-  .phase.p3 .badge { background: var(--ih-gold); color: #3A2B0F; }
-
-  .phase-body {
-    padding: 28px;
-  }
-  .phase-body .intro {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 16px;
-    color: var(--ih-ink);
-    margin: 0 0 22px 0;
-    font-style: italic;
-    line-height: 1.55;
-  }
-
-  .weeks {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 26px;
-  }
-  .week {
-    background: var(--ih-cream);
-    border: 1px solid var(--ih-line);
-    border-left: 3px solid var(--ih-navy-light);
-    border-radius: 8px;
-    padding: 16px 18px;
-  }
-  .week .wk {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--ih-sky);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 4px;
-  }
-  .week h4 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 15.5px;
-    font-weight: 700;
-    margin: 0 0 6px 0;
-    color: var(--ih-navy);
-    line-height: 1.3;
-  }
-  .week p {
-    font-size: 13px;
-    color: var(--ih-ink-2);
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  .deliverables {
-    background: var(--ih-navy);
-    color: #fff;
-    border-radius: 10px;
-    padding: 20px 24px;
-  }
-  .deliverables h4 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 15px;
-    font-weight: 700;
-    margin: 0 0 12px 0;
-    color: var(--ih-gold);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .deliverables ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .deliverables li {
-    padding: 8px 0 8px 24px;
-    position: relative;
-    font-size: 13.5px;
-    color: #E0E8F0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-  .deliverables li:last-child { border-bottom: none; }
-  .deliverables li::before {
-    content: '▸';
-    position: absolute;
-    left: 4px;
-    color: var(--ih-gold);
-    font-weight: 700;
-  }
-  .deliverables li strong { color: #fff; font-weight: 600; }
-
-  /* Support & Risks */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-top: 18px;
-  }
-  .support-card, .risks-card {
-    background: var(--ih-paper);
-    border: 1px solid var(--ih-line);
-    border-radius: 12px;
-    padding: 26px;
-  }
-  .support-card {
-    border-top: 3px solid var(--ih-sky);
-  }
-  .risks-card {
-    border-top: 3px solid var(--ih-coral);
-  }
-  .support-card h3, .risks-card h3 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 19px;
-    font-weight: 700;
-    margin: 0 0 14px 0;
-    color: var(--ih-navy);
-  }
-
-  .support-list { list-style: none; padding: 0; margin: 0; }
-  .support-list li {
-    padding: 10px 0 10px 26px;
-    position: relative;
-    font-size: 13.5px;
-    color: var(--ih-ink);
-    border-bottom: 1px solid var(--ih-line);
-    line-height: 1.5;
-  }
-  .support-list li:last-child { border-bottom: none; }
-  .support-list li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    top: 10px;
-    color: var(--ih-mint);
-    font-weight: 700;
-    font-size: 14px;
-  }
-  .support-list strong { color: var(--ih-navy); font-weight: 600; }
-
-  .risk {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--ih-line);
-  }
-  .risk:last-child { border-bottom: none; }
-  .risk .title {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--ih-coral);
-    margin-bottom: 4px;
-  }
-  .risk p {
-    font-size: 12.5px;
-    color: var(--ih-ink-2);
-    margin: 0;
-    line-height: 1.5;
-  }
-  .risk p strong { color: var(--ih-ink); font-weight: 600; }
-
-  /* Why this works */
-  .why-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-top: 20px;
-  }
-  .why {
-    background: var(--ih-navy);
-    color: #fff;
-    border-radius: 12px;
-    padding: 26px 24px;
-    position: relative;
-  }
-  .why .num {
-    position: absolute;
-    top: 18px;
-    right: 22px;
-    font-family: 'Source Serif Pro', serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--ih-gold);
-    opacity: 0.5;
-    line-height: 1;
-  }
-  .why h3 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 17px;
-    font-weight: 700;
-    margin: 0 0 10px 0;
-    color: var(--ih-gold);
-    max-width: 80%;
-    line-height: 1.3;
-  }
-  .why p {
-    font-size: 13px;
-    color: #D0D8E4;
-    margin: 0;
-    line-height: 1.55;
-  }
-
-  /* Closing */
-  .closing {
-    text-align: center;
-    background: var(--ih-paper);
-    border: 2px solid var(--ih-gold);
-    border-radius: 16px;
-    padding: 48px 40px;
-    margin-top: 56px;
-  }
-  .closing h2 {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--ih-navy);
-    margin: 0 0 12px 0;
-    letter-spacing: -0.5px;
-  }
-  .closing p {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 17px;
-    color: var(--ih-ink-2);
-    margin: 0 0 22px 0;
-    font-style: italic;
-    max-width: 720px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .closing .sign {
-    font-family: 'Source Serif Pro', serif;
-    font-size: 16px;
-    color: var(--ih-navy);
-    font-weight: 600;
-    margin-top: 14px;
-  }
-  .closing .sign .role {
-    font-weight: 400;
-    color: var(--ih-ink-2);
-    font-size: 13.5px;
-    display: block;
-    margin-top: 4px;
-  }
-
-  footer {
-    border-top: 1px solid var(--ih-line);
-    padding: 28px 48px;
-    margin-top: 40px;
-    color: var(--ih-ink-2);
-    font-size: 13px;
-    background: var(--ih-paper);
-    text-align: center;
-  }
-  footer a { color: var(--ih-sky); text-decoration: none; }
-
-  @media (max-width: 900px) {
-    .container { padding: 28px 20px; }
-    .hero { padding: 32px 24px; }
-    .hero h1 { font-size: 30px; }
-    .hero .stamp { grid-template-columns: repeat(2, 1fr); }
-    .principles { grid-template-columns: repeat(2, 1fr); }
-    .weeks { grid-template-columns: 1fr; }
-    .two-col, .why-grid { grid-template-columns: 1fr; }
-  }
-/* Portfolio cross-page topbar */
-.p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
-.p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
-.p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-.p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
-.p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
-.p-topbar .p-nav a:hover { color: #FFD77A; }
-.p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
-@media (max-width: 720px) {
-  .p-topbar { flex-direction: column; gap: 10px; padding: 12px 20px; align-items: flex-start; }
-  .p-topbar .p-nav { flex-wrap: wrap; gap: 16px; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>120-Day Plan IHS &middot; Intermountain Home Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/portfolio-base.css">
+    <style>
+        :root {
+            --navy: #163042;
+            --navy-2: #1F4F68;
+            --sky: #2B8CBE;
+            --sky-soft: #E6F5FA;
+            --gold: #FFB84D;
+            --gold-soft: #FFF2D9;
+            --mint: #38A169;
+            --mint-soft: #E8F6EE;
+            --paper: #F4FBFA;
+            --surface: #FFFFFF;
+            --line: #DCE9E8;
+            --ink: #163042;
+            --muted: #4E6471;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        html, body { margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top right, rgba(255,255,255,0.8), transparent 28%), var(--paper); color: var(--ink); line-height: 1.6; }
+        .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', serif; font-size: 15px; font-weight: 700; color: #fff; text-decoration: none; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.68); font-weight: 400; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 22px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.72); text-decoration: none; }
+        .p-topbar .p-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 40px 80px; }
+        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 18px; }
+        .crumb a { color: var(--sky); text-decoration: none; }
+        .page-layout { display: grid; grid-template-columns: 238px minmax(0, 1fr); gap: 24px; align-items: start; }
+        .content-column { min-width: 0; }
+        .toc {
+            position: sticky;
+            top: 24px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 14px 30px rgba(22,48,66,0.06);
+        }
+        .toc .toc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 10px; }
+        .toc nav { display: grid; gap: 6px; }
+        .toc a { display: block; padding: 9px 10px; border-radius: 12px; border: 1px solid transparent; color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none; }
+        .toc a:hover { color: var(--ink); border-color: var(--line); background: #F9FCFC; }
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 60%, #2A6B86 100%);
+            color: #FFFFFF;
+            border-radius: 24px;
+            padding: 38px 40px;
+            box-shadow: 0 18px 44px rgba(15,42,68,0.22);
+            margin-bottom: 22px;
+        }
+        .hero .eyebrow { display: inline-block; margin-bottom: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(255,184,77,0.16); color: var(--gold); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; }
+        .hero h1 { margin: 0 0 12px; font-family: 'Source Serif Pro', serif; font-size: 48px; line-height: 1.05; letter-spacing: -1.1px; }
+        .hero p { margin: 0; font-size: 15px; color: #D8E4ED; max-width: 74ch; }
+        .hero .stamp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+        .hero .stamp-card { padding: 14px 16px; border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: rgba(255,255,255,0.06); }
+        .hero .stamp-card .k { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.72); margin-bottom: 6px; }
+        .hero .stamp-card .v { font-family: 'Source Serif Pro', serif; font-size: 18px; }
+        .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 26px; box-shadow: 0 14px 30px rgba(22,48,66,0.06); margin-bottom: 24px; }
+        .bottom-line { border-left: 4px solid var(--gold); background: linear-gradient(135deg, #FFFFFF, #FFF7E9); }
+        .panel .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 8px; }
+        .panel h2 { margin: 0 0 10px; font-family: 'Source Serif Pro', serif; font-size: 30px; letter-spacing: -0.7px; }
+        .panel p { margin: 0; color: var(--muted); font-size: 14.5px; }
+        .logo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 18px; }
+        .logo-card { background: #FBFEFD; border: 1px solid var(--line); border-radius: 14px; padding: 16px 12px 12px; min-height: 108px; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+        .logo-card img { max-width: 100%; height: 34px; object-fit: contain; margin: 0 auto; }
+        .logo-card .name { font-size: 11px; font-weight: 700; color: var(--muted); }
+        .section { margin-bottom: 28px; }
+        .section-head { margin-bottom: 16px; }
+        .section-head .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 8px; }
+        .section-head h2 { margin: 0 0 8px; font-family: 'Source Serif Pro', serif; font-size: 31px; letter-spacing: -0.7px; }
+        .section-head p { margin: 0; color: var(--muted); font-size: 14px; max-width: 66ch; }
+        .lifecycle { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+        .stage { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 14px; min-height: 118px; }
+        .stage .phase { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sky); margin-bottom: 8px; }
+        .stage h3 { margin: 0 0 6px; font-size: 17px; }
+        .stage p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+        .stack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .stack-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+        .stack-list { display: grid; gap: 10px; margin-top: 14px; }
+        .stack-row { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: start; padding-top: 10px; border-top: 1px dashed var(--line); }
+        .stack-row:first-child { border-top: none; padding-top: 0; }
+        .stack-row .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+        .stack-row .value { color: var(--muted); font-size: 13.5px; }
+        .logo-strip { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+        .tool-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; background: #FBFEFD; font-size: 12px; font-weight: 700; color: var(--ink); }
+        .tool-badge img { height: 18px; object-fit: contain; }
+        .tool-text { display: inline-flex; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; background: #FBFEFD; font-size: 12px; font-weight: 700; }
+        .phase-grid { display: grid; gap: 18px; }
+        .phase { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 24px; }
+        .phase-header { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 18px; }
+        .phase-header .days { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--sky); margin-bottom: 6px; }
+        .phase-header h3 { margin: 0; font-family: 'Source Serif Pro', serif; font-size: 28px; letter-spacing: -0.6px; }
+        .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; padding: 8px 12px; border-radius: 999px; background: var(--sky-soft); color: var(--sky); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; }
+        .phase-grid-inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; }
+        .worklist { display: grid; gap: 12px; }
+        .work { padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: #FBFEFD; }
+        .work .wk { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 6px; }
+        .work h4 { margin: 0 0 6px; font-size: 18px; color: var(--ink); }
+        .work p { margin: 0; color: var(--muted); font-size: 13.5px; }
+        .deliverable { background: linear-gradient(135deg, #FFFFFF, #F8FCFB); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+        .deliverable h4 { margin: 0 0 10px; font-family: 'Source Serif Pro', serif; font-size: 22px; }
+        .deliverable ul { margin: 0 0 14px; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+        .deliverable li + li { margin-top: 8px; }
+        .mini-table { width: 100%; border-collapse: collapse; font-size: 12.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+        .mini-table th { background: #EDF7FA; padding: 10px 12px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; }
+        .mini-table td { padding: 10px 12px; border-top: 1px solid var(--line); color: var(--muted); }
+        .brief-grid, .move-grid, .need-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .brief-card, .move-card, .need-card { background: #FBFEFD; border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+        .brief-card .status { display: inline-block; margin-bottom: 8px; padding: 4px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; }
+        .brief-card.scale .status { background: var(--mint-soft); color: var(--mint); }
+        .brief-card.fix .status { background: var(--gold-soft); color: #A46A11; }
+        .brief-card.test .status { background: var(--sky-soft); color: var(--sky); }
+        .brief-card h5, .move-card h5, .need-card h5 { margin: 0 0 6px; font-size: 16px; color: var(--ink); }
+        .brief-card p, .move-card p, .need-card p { margin: 0; color: var(--muted); font-size: 13px; }
+        .need-card ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+        .panel, .section { scroll-margin-top: 88px; }
+        @media (max-width: 980px) {
+            .hero .stamp, .logo-grid, .lifecycle, .stack-grid, .phase-grid-inner, .brief-grid, .move-grid, .need-grid, .page-layout { grid-template-columns: 1fr; }
+            .toc { position: relative; top: auto; }
+        }
+        @media (max-width: 720px) {
+            .p-topbar { flex-direction: column; gap: 10px; align-items: flex-start; padding: 12px 20px; }
+            .wrap { padding: 44px 20px 72px; }
+            .hero h1 { font-size: 38px; }
+        }
+    </style>
 </head>
 <body>
-
-<nav class="p-topbar">
-  <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
-  <div class="p-nav">
-    <a href="../index.html">Home</a>
-    <a href="../Dashboards/index.html">Dashboards</a>
-    <a href="../Models/index.html">Models</a>
-    <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-    <a href="plan.html" class="active">60 / 90 Day Plan</a>
-  </div>
-</nav>
-
-<div class="container">
-
-  <div class="breadcrumb">
-    <a href="../index.html">Portfolio</a> › 60 / 90 Day Plan
-  </div>
-
-  <section class="hero">
-    <span class="hero-meta">Proposal · Marketing Operations Analyst</span>
-    <h1>60 / 90 Day Plan</h1>
-    <p class="role">Prepared by <strong>Steve Hill</strong> for <strong>Intermountain Home Services</strong> — proposed scope across 8+ brands, reporting to the CMO, marketing through customer service.</p>
-    <div class="stamp">
-      <div class="stamp-item"><div class="l">Role</div><div class="v">Marketing Ops Analyst</div></div>
-      <div class="stamp-item"><div class="l">Scope</div><div class="v">8+ brands · Marketing → CS</div></div>
-      <div class="stamp-item"><div class="l">Reporting to</div><div class="v">Jacqueline · CMO</div></div>
-      <div class="stamp-item"><div class="l">Horizon</div><div class="v">Days 1 – 90</div></div>
-    </div>
-  </section>
-
-  <div class="framing">
-    <h2>Framing</h2>
-    <p>"Ship something useful in month two, earn trust, then propose larger architecture in quarter two. Every dashboard answers a specific decision — if I can't name the person making it, it doesn't get built."</p>
-  </div>
-
-  <h2 class="section-h">Guiding Principles</h2>
-  <p class="section-sub">Five operating rules that govern what gets built, what gets cut, and how trust compounds over the first 90 days.</p>
-  <div class="principles">
-    <div class="principle">
-      <div class="num">01</div>
-      <h3>Data quality first, model complexity second</h3>
-      <p>A trustworthy dashboard beats an elegant model no one believes.</p>
-    </div>
-    <div class="principle">
-      <div class="num">02</div>
-      <h3>Ship useful before ship ambitious</h3>
-      <p>Month two deliverables are real and live; month three is where we get ambitious.</p>
-    </div>
-    <div class="principle">
-      <div class="num">03</div>
-      <h3>Close the loop</h3>
-      <p>Reporting without a feedback loop is wasted effort. Every dashboard ties back to a decision.</p>
-    </div>
-    <div class="principle">
-      <div class="num">04</div>
-      <h3>Measurement is a team sport</h3>
-      <p>Build <em>with</em> brand GMs and Jacqueline, never <em>at</em> them.</p>
-    </div>
-    <div class="principle">
-      <div class="num">05</div>
-      <h3>Every dashboard answers a decision</h3>
-      <p>If I can't name the person making the decision, it doesn't get built.</p>
-    </div>
-  </div>
-
-  <h2 class="section-h">Timeline</h2>
-  <p class="section-sub">Three phases, 90 days, each with weekly detail and a deliverables contract at the end.</p>
-
-  <div class="timeline">
-
-    <!-- Phase 1 -->
-    <div class="phase p1">
-      <div class="phase-card">
-        <div class="phase-header">
-          <div>
-            <div class="days">Days 1 – 30</div>
-            <h3>Discover &amp; Baseline</h3>
-          </div>
-          <span class="badge">Phase 1 · Listen</span>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
         </div>
-        <div class="phase-body">
-          <p class="intro">Understand the org, map the data, and let stakeholders tell me where the pain is before proposing a single dashboard.</p>
-          <div class="weeks">
-            <div class="week">
-              <div class="wk">Week 1</div>
-              <h4>Onboarding &amp; organization</h4>
-              <p>Shadow the marketing org across 8+ brands. 30-min meetings with each brand GM. Sit in on one CS call review and one marketing standup. Understand where decisions happen and where friction lives.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Week 2</div>
-              <h4>Data source inventory</h4>
-              <p>Map every system per brand: ad accounts (GA, Google Ads, Meta), CRM/lead platform, call tracking, CS ticketing, billing, web analytics. Document schema and access. Mechanical work — but where gaps surface.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Week 3</div>
-              <h4>Stakeholder interviews</h4>
-              <p>60-min interviews with Jacqueline, Blythe, 3–4 brand GMs, and a CS lead. Key question: "What 2–3 decisions are you trying to make that data doesn't support today?" Listen for patterns across brands.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Week 4</div>
-              <h4>Audit &amp; gap analysis</h4>
-              <p>Review existing dashboards, recurring reports, ad-hoc requests. What's consumed weekly? Ignored? Duplicated across brands? Document the "report graveyard" — tools built for last quarter's question.</p>
-            </div>
-          </div>
-          <div class="deliverables">
-            <h4>End of Day 30 — Deliverables</h4>
-            <ul>
-              <li><strong>Data Landscape Memo</strong> — source systems, access, and schema for each brand.</li>
-              <li><strong>Prioritized Gaps List</strong> — ranked by stakeholder frequency and estimated impact.</li>
-              <li><strong>Stakeholder Decision Map</strong> — who decides what, what they need, what they have today.</li>
-            </ul>
-          </div>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html" aria-current="page">120 Day Plan IHS</a>
         </div>
-      </div>
-    </div>
+    </nav>
 
-    <!-- Phase 2 -->
-    <div class="phase p2">
-      <div class="phase-card">
-        <div class="phase-header">
-          <div>
-            <div class="days">Days 31 – 60</div>
-            <h3>First High-Value Builds</h3>
-          </div>
-          <span class="badge">Phase 2 · Ship</span>
+    <main id="main-content" class="wrap">
+        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <span>120-Day Plan IHS</span></div>
+
+        <section class="hero">
+            <div class="eyebrow">Intermountain Home Services &bull; Marketing Operations Analyst</div>
+            <h1>Build the measurement layer that makes faster growth testing possible across the brand portfolio.</h1>
+            <p>This plan assumes the first win is not a fancy dashboard. It is a trusted operating framework: clean funnel definitions, cleaner source tracking, a cross-brand scorecard Jacqueline can use weekly, and enough closed-loop visibility to tell what to scale, what to fix, and what to test.</p>
+            <div class="stamp">
+                <div class="stamp-card"><div class="k">Primary North Star</div><div class="v">Services booked / day</div></div>
+                <div class="stamp-card"><div class="k">Demand Metric</div><div class="v">Calls / day</div></div>
+                <div class="stamp-card"><div class="k">Media Metric</div><div class="v">ROAS</div></div>
+                <div class="stamp-card"><div class="k">Operating Style</div><div class="v">Scale / Fix / Test</div></div>
+            </div>
+        </section>
+
+        <div class="page-layout">
+            <aside class="toc" aria-label="On this page">
+                <div class="toc-label">On This Page</div>
+                <nav>
+                    <a href="#bottom-line">Bottom Line</a>
+                    <a href="#brand-portfolio">Brand Portfolio</a>
+                    <a href="#lifecycle-map">Lifecycle Map</a>
+                    <a href="#canonical-stack">Canonical Stack</a>
+                    <a href="#plan-phases">120-Day Plan IHS</a>
+                    <a href="#what-i-would-need">What I Would Need</a>
+                </nav>
+            </aside>
+            <div class="content-column">
+
+        <section class="panel bottom-line" id="bottom-line">
+            <div class="eyebrow">Bottom Line</div>
+            <h2>The goal is not only reporting clarity. It is a framework for growth testing.</h2>
+            <p>By the end of 120 days, Jacqueline should have one trustworthy scorecard, one shared language for source and funnel stages, one practical testing rhythm, and a clearer view of where to standardize first. Once the systems are instrumented cleanly, the team can run tests faster, see impact sooner, rule out weak ideas quickly, and scale strong ideas across brands with more confidence.</p>
+        </section>
+
+        <section class="panel" id="brand-portfolio">
+            <div class="eyebrow">Brand Portfolio</div>
+            <h2>The brands this system needs to support.</h2>
+            <p>These are the operating companies currently listed under Intermountain Home Services. The measurement layer should let Jacqueline compare demand quality, booking efficiency, and growth performance across them without flattening away meaningful brand differences.</p>
+            <div class="logo-grid">
+                <div class="logo-card"><img src="../assets/img/ihs-brands/beehive.svg" alt="Beehive Plumbing logo"><div class="name">Beehive Plumbing</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/comfort-solutions.svg" alt="Comfort Solutions logo"><div class="name">Comfort Solutions</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/diamond.svg" alt="Diamond logo"><div class="name">Diamond</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/master-plumbing.svg" alt="Master Plumbing logo"><div class="name">Master Rooter</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/sameday.svg" alt="SameDay logo"><div class="name">SameDay</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/superior-water-air.svg" alt="Superior Water and Air logo"><div class="name">Superior Water &amp; Air</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/walker.svg" alt="Walker logo"><div class="name">Walker / St. George</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/craigs-services.svg" alt="Craig's Services logo"><div class="name">Craig's Services</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/lees.svg" alt="Lee's logo"><div class="name">Lee's</div></div>
+                <div class="logo-card"><img src="../assets/img/ihs-brands/my-buddy-the-plumber.svg" alt="My Buddy the Plumber logo"><div class="name">My Buddy the Plumber</div></div>
+            </div>
+        </section>
+
+        <section class="section" id="lifecycle-map">
+            <div class="section-head">
+                <div class="eyebrow">Lifecycle Map</div>
+                <h2>The customer journey the scorecard has to cover.</h2>
+                <p>Intermountain can build an edge by measuring all the way from first touch through completed service, then into repeat and referral behavior. That is the bridge between marketing and true revenue operations.</p>
+            </div>
+            <div class="lifecycle">
+                <article class="stage"><span class="phase">Stage 1</span><h3>First Touch</h3><p>Channel, campaign, and offer begin the demand path.</p></article>
+                <article class="stage"><span class="phase">Stage 2</span><h3>Call / Form</h3><p>Call tracking, form capture, and speed-to-response start shaping quality.</p></article>
+                <article class="stage"><span class="phase">Stage 3</span><h3>Booked Job</h3><p>This is the clearest early proof that media and call intake are working together.</p></article>
+                <article class="stage"><span class="phase">Stage 4</span><h3>Completed Service</h3><p>The revenue event needs to connect back to the source and campaign.</p></article>
+                <article class="stage"><span class="phase">Stage 5</span><h3>Repeat Customer</h3><p>Follow-up and lifecycle marketing turn one-time jobs into higher LTV.</p></article>
+                <article class="stage"><span class="phase">Stage 6</span><h3>Referral / NPS</h3><p>The cleanest downstream quality signal is a customer who returns and refers.</p></article>
+            </div>
+        </section>
+
+        <section class="section" id="canonical-stack">
+            <div class="section-head">
+                <div class="eyebrow">Canonical Stack</div>
+                <h2>Observed current public stack vs. the growth stack I would standardize toward.</h2>
+                <p>Publicly visible evidence suggests Intermountain is partly standardized at the ops layer and still siloed at the web and tracking layer. That is a good starting point for a MOps analyst because the first 120 days can create clarity without forcing everything into one sprint.</p>
+            </div>
+            <div class="stack-grid">
+                <article class="stack-card">
+                    <div class="eyebrow">Observed Current Public Stack</div>
+                    <h2>Partly standardized, partly siloed.</h2>
+                    <div class="stack-list">
+                        <div class="stack-row"><div class="label">Sites</div><div class="value">Most brand sites appear to run on WordPress with WP Engine and Cloudflare, but not all brands are uniform.</div></div>
+                        <div class="stack-row"><div class="label">Tracking</div><div class="value">GTM appears on most brands, but container IDs vary by brand, which points to tracking silos and inconsistent governance.</div></div>
+                        <div class="stack-row"><div class="label">Acquisition</div><div class="value">Google Ads, Meta, and call tracking appear unevenly across brands rather than in one obvious shared pattern.</div></div>
+                        <div class="stack-row"><div class="label">Ops layer</div><div class="value">ServiceTitan appears to be the likely shared operating platform, while Power BI is explicitly named in the role.</div></div>
+                    </div>
+                    <div class="logo-strip">
+                        <span class="tool-text">WordPress</span>
+                        <span class="tool-text">WP Engine</span>
+                        <span class="tool-text">Cloudflare</span>
+                        <span class="tool-text">GTM</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/google-ads.svg" alt="Google Ads logo">Google Ads</span>
+                        <span class="tool-text">Meta</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/callrail.svg" alt="CallRail logo">CallRail</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/servicetitan.svg" alt="ServiceTitan logo">ServiceTitan</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/power-bi.svg" alt="Power BI logo">Power BI</span>
+                    </div>
+                </article>
+                <article class="stack-card">
+                    <div class="eyebrow">Target Standardized Growth Stack</div>
+                    <h2>One scorecard, one taxonomy, one testing rhythm.</h2>
+                    <div class="stack-list">
+                        <div class="stack-row"><div class="label">Shared taxonomy</div><div class="value">Standard UTMs, campaign names, lead-source logic, and funnel-stage definitions across brands.</div></div>
+                        <div class="stack-row"><div class="label">Closed-loop handoff</div><div class="value">Connect first touch, calls, booked jobs, completed service, and revenue back into one weekly view.</div></div>
+                        <div class="stack-row"><div class="label">Scorecard layer</div><div class="value">Power BI becomes the place Jacqueline can compare ROAS, CAC, calls per day, and services booked per day by brand.</div></div>
+                        <div class="stack-row"><div class="label">Testing layer</div><div class="value">Once the data is trustworthy enough, growth tests can be run and judged quickly instead of by feel.</div></div>
+                    </div>
+                    <div class="logo-strip">
+                        <span class="tool-badge"><img src="../assets/img/martech/google-ads.svg" alt="Google Ads logo">Google Ads</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/ga4.svg" alt="GA4 logo">GA4</span>
+                        <span class="tool-text">GTM Governance</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/callrail.svg" alt="CallRail logo">CallRail</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/servicetitan.svg" alt="ServiceTitan logo">ServiceTitan</span>
+                        <span class="tool-badge"><img src="../assets/img/martech/power-bi.svg" alt="Power BI logo">Power BI</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="plan-phases">
+            <div class="section-head">
+                <div class="eyebrow">120-Day Plan IHS</div>
+                <h2>Four phases: inventory, stabilize, operationalize, then scale.</h2>
+            </div>
+            <div class="phase-grid">
+                <article class="phase">
+                    <div class="phase-header">
+                        <div>
+                            <div class="days">Days 1 - 30</div>
+                            <h3>Inventory the stack and ship the first scorecard</h3>
+                        </div>
+                        <span class="badge">Phase 1</span>
+                    </div>
+                    <div class="phase-grid-inner">
+                        <div class="worklist">
+                            <div class="work"><div class="wk">Weeks 1 - 2</div><h4>Brand stack inventory</h4><p>Catalog CMS, GTM container, analytics tags, ad pixels, call tracking, scheduler, and the handoff into ServiceTitan where visible.</p></div>
+                            <div class="work"><div class="wk">Weeks 2 - 3</div><h4>Tracking audit</h4><p>Rank the broken handoffs by business impact so the first fixes are tied to better decisions, not just cleaner dashboards.</p></div>
+                            <div class="work"><div class="wk">Week 4</div><h4>Growth baseline scorecard</h4><p>Get spend, leads, calls, calls per day, booked jobs, services booked per day, CAC, ROAS, and revenue into one first-pass view by brand.</p></div>
+                        </div>
+                        <div class="deliverable">
+                            <h4>End of Day 30</h4>
+                            <ul>
+                                <li><strong>Brand Stack Inventory &amp; Standardization Matrix</strong></li>
+                                <li><strong>Growth Baseline Scorecard</strong></li>
+                                <li><strong>Tracking Audit</strong></li>
+                            </ul>
+                            <table class="mini-table">
+                                <thead>
+                                    <tr><th>Brand</th><th>Spend</th><th>Calls / day</th><th>Services booked / day</th><th>CAC</th><th>ROAS</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Superior</td><td>$185K</td><td>41</td><td>8.3</td><td>$746</td><td>4.2</td></tr>
+                                    <tr><td>SameDay</td><td>$140K</td><td>34</td><td>7.1</td><td>$654</td><td>4.0</td></tr>
+                                    <tr><td>Beehive</td><td>$92K</td><td>24</td><td>5.2</td><td>$590</td><td>3.6</td></tr>
+                                    <tr><td>Diamond</td><td>$88K</td><td>22</td><td>4.7</td><td>$620</td><td>3.4</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="phase">
+                    <div class="phase-header">
+                        <div>
+                            <div class="days">Days 31 - 60</div>
+                            <h3>Stabilize source tracking and harden the first reporting layer</h3>
+                        </div>
+                        <span class="badge">Phase 2</span>
+                    </div>
+                    <div class="phase-grid-inner">
+                        <div class="worklist">
+                            <div class="work"><div class="wk">Weeks 5 - 6</div><h4>Shared tracking governance proposal</h4><p>Set standards for GTM, UTMs, event names, lead-source logic, and the offline conversion handoff into reporting.</p></div>
+                            <div class="work"><div class="wk">Weeks 7 - 8</div><h4>Growth baseline scorecard v2</h4><p>Harden the first-pass scorecard so it is dependable enough to use in weekly leadership conversations.</p></div>
+                            <div class="work"><div class="wk">Weeks 9 - 10</div><h4>Cross-brand weekly scorecard</h4><p>Give Jacqueline a Power BI scorecard that is simple enough to scan weekly and detailed enough to act on.</p></div>
+                        </div>
+                        <div class="deliverable">
+                            <h4>End of Day 60</h4>
+                            <ul>
+                                <li><strong>Shared Tracking Governance Proposal</strong></li>
+                                <li><strong>Growth Baseline Scorecard v2</strong></li>
+                                <li><strong>Cross-Brand Weekly Scorecard</strong></li>
+                            </ul>
+                            <table class="mini-table">
+                                <thead>
+                                    <tr><th>Workstream</th><th>Status</th><th>Focus</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Tracking governance</td><td>In place</td><td>UTMs, GTM, source logic</td></tr>
+                                    <tr><td>Scorecard v2</td><td>Live</td><td>Calls, bookings, ROAS, CAC</td></tr>
+                                    <tr><td>Cross-brand view</td><td>Live</td><td>Compare brands weekly</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="phase">
+                    <div class="phase-header">
+                        <div>
+                            <div class="days">Days 61 - 90</div>
+                            <h3>Operationalize the weekly growth review and attribution layer</h3>
+                        </div>
+                        <span class="badge">Phase 3</span>
+                    </div>
+                    <div class="phase-grid-inner">
+                        <div class="worklist">
+                            <div class="work"><div class="wk">Days 61 - 70</div><h4>Friday growth brief</h4><p>Turn the scorecard into a weekly scale / fix / test rhythm grounded in ROAS, CAC, booked-job rate, and services booked per day.</p></div>
+                            <div class="work"><div class="wk">Days 71 - 80</div><h4>Closed-loop attribution v0</h4><p>Connect source quality to calls, booked work, and early revenue outcomes where the data already supports it.</p></div>
+                            <div class="work"><div class="wk">Days 81 - 90</div><h4>Attribution + leakage layer</h4><p>Separate media issues from booking, service, and follow-up issues so channels are not blamed for downstream operational leaks.</p></div>
+                        </div>
+                        <div class="deliverable">
+                            <h4>End of Day 90</h4>
+                            <ul>
+                                <li><strong>Weekly Growth Review</strong></li>
+                                <li><strong>Closed-Loop Attribution v0</strong></li>
+                                <li><strong>Leakage Layer</strong></li>
+                            </ul>
+                            <div class="brief-grid">
+                                <div class="brief-card scale"><span class="status">Scale</span><h5>Superior &ndash; Paid Search</h5><p>ROAS is healthy, calls per day are rising, and services booked per day is holding above target.</p></div>
+                                <div class="brief-card fix"><span class="status">Fix</span><h5>SameDay &ndash; Meta Leads</h5><p>Lead volume looks fine, but booked-job rate is lagging. Review routing, offer quality, and response speed before adding spend.</p></div>
+                                <div class="brief-card test"><span class="status">Test</span><h5>Beehive &ndash; Branded Search</h5><p>Reported ROAS is strong, but incrementality is not clear yet. Run a controlled test before treating it as pure growth.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="phase">
+                    <div class="phase-header">
+                        <div>
+                            <div class="days">Days 91 - 120</div>
+                            <h3>Use the data to make budget moves and prioritize standardization</h3>
+                        </div>
+                        <span class="badge">Phase 4</span>
+                    </div>
+                    <div class="phase-grid-inner">
+                        <div class="worklist">
+                            <div class="work"><div class="wk">Days 91 - 100</div><h4>Brand benchmark</h4><p>Compare CAC, ROAS, booked-job rate, calls per day, services booked per day, and early payback across brands.</p></div>
+                            <div class="work"><div class="wk">Days 101 - 110</div><h4>Testing queue</h4><p>Prioritize the first branded search, geo, offer, or routing tests worth running once the measurement layer is trustworthy.</p></div>
+                            <div class="work"><div class="wk">Days 111 - 120</div><h4>Stack standardization roadmap</h4><p>Recommend where shared governance should go first so the biggest silos are addressed in the next quarter.</p></div>
+                        </div>
+                        <div class="deliverable">
+                            <h4>End of Day 120</h4>
+                            <ul>
+                                <li><strong>Brand Efficiency Benchmark</strong></li>
+                                <li><strong>Budget Move Board</strong></li>
+                                <li><strong>Stack Standardization Roadmap</strong></li>
+                            </ul>
+                            <div class="move-grid">
+                                <div class="move-card"><h5>Scale</h5><p>Increase spend where ROAS is holding, CAC is stable, and services booked per day is rising.</p></div>
+                                <div class="move-card"><h5>Fix</h5><p>Hold spend where calls are coming in but booked-job rate or service completion is weak.</p></div>
+                                <div class="move-card"><h5>Test</h5><p>Run quick tests where reported efficiency looks strong but incrementality is still uncertain.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="what-i-would-need">
+            <div class="section-head">
+                <div class="eyebrow">What I Would Need</div>
+                <h2>A few early conditions make the plan move much faster.</h2>
+            </div>
+            <div class="need-grid">
+                <article class="need-card">
+                    <h5>System access</h5>
+                    <ul>
+                        <li>Ad platforms, GA4, call tracking, ServiceTitan or adjacent ops data, and revenue fields.</li>
+                        <li>Enough access to verify how source and booking data are currently stitched together.</li>
+                    </ul>
+                </article>
+                <article class="need-card">
+                    <h5>Leadership alignment</h5>
+                    <ul>
+                        <li>Regular review time with Jacqueline in the first 120 days.</li>
+                        <li>Support for shared taxonomy and tracking governance across brands.</li>
+                    </ul>
+                </article>
+                <article class="need-card">
+                    <h5>Operating honesty</h5>
+                    <ul>
+                        <li>Permission to call out where the leak is downstream, not just in the media.</li>
+                        <li>Agreement that the scorecard exists to improve decisions, not just to report activity.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+            </div>
         </div>
-        <div class="phase-body">
-          <p class="intro">This is where trust gets earned — real dashboards live in Power BI, standardized taxonomy in flight, and a weekly KPI cadence Jacqueline can rely on.</p>
-          <div class="weeks">
-            <div class="week">
-              <div class="wk">Weeks 5 – 6</div>
-              <h4>Cross-brand attribution MVP</h4>
-              <p>Power BI dashboard: first-touch attribution by channel and brand. Spend, leads, attributed revenue by source. Shared weekly. Establishes credibility and proves data can flow.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 7 – 8</div>
-              <h4>UTM taxonomy &amp; CRM schema</h4>
-              <p>Standardize campaign tagging and lead flow. Propose <em>one</em> schema that works for all 8+ brands without forcing anyone into a box. This is political — do it carefully.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 7 – 8 (parallel)</div>
-              <h4>Weekly KPI deck cadence</h4>
-              <p>Recurring Friday dashboard to Jacqueline and brand GMs. Lead volume, conversion, CAC, spend, revenue. Nothing fancy — just what we said we'd measure.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 9 – 10</div>
-              <h4>CS → acquisition feedback loop v0</h4>
-              <p>Close the loop: which lead sources convert to completed service, which don't. Overlay win/loss and completion rates on the attribution dashboard. Where marketing meets reality.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 11 – 12</div>
-              <h4>QA &amp; stakeholder feedback</h4>
-              <p>Iterate on the attribution dashboard and KPI deck. Fix data issues. Strengthen trust before layering on sophistication.</p>
-            </div>
-          </div>
-          <div class="deliverables">
-            <h4>End of Day 60 — Deliverables</h4>
-            <ul>
-              <li><strong>MVP Attribution Dashboard</strong> live in Power BI — first-touch by channel and brand, updated daily.</li>
-              <li><strong>UTM / CRM Schema Proposal</strong> — standardized tagging and lead fields approved by marketing and GMs.</li>
-              <li><strong>Weekly KPI Deck</strong> — cadence established, delivered every Friday.</li>
-              <li><strong>CS → Acquisition Feedback Report v0</strong> — directional view of conversion and completion by lead source.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Phase 3 -->
-    <div class="phase p3">
-      <div class="phase-card">
-        <div class="phase-header">
-          <div>
-            <div class="days">Days 61 – 90</div>
-            <h3>Reporting → Recommendation</h3>
-          </div>
-          <span class="badge">Phase 3 · Recommend</span>
-        </div>
-        <div class="phase-body">
-          <p class="intro">With the foundation live and trusted, the job shifts from surfacing numbers to recommending moves — multi-touch attribution, CAC/ROAS benchmarking, and an incrementality test plan queued for Q3.</p>
-          <div class="weeks">
-            <div class="week">
-              <div class="wk">Weeks 9 – 10</div>
-              <h4>Multi-touch attribution layer</h4>
-              <p>Add a second layer: first-touch, last-touch, linear side-by-side. Lets Jacqueline and brand GMs see influence, not just first-click noise.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 11 – 12</div>
-              <h4>Brand CAC / ROAS benchmark study</h4>
-              <p>Comparative analysis by brand. Which brands are over-investing relative to yield? This is the question Jacqueline likely cares about most.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 11 – 12</div>
-              <h4>Incrementality test plan</h4>
-              <p>Propose testing framework for paid-search branded terms (notoriously inflated). Outline methodology for measuring true incremental lift and ROI. A Q3 execution plan.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 13 – 14</div>
-              <h4>Automation handoff</h4>
-              <p>Identify one recurring manual report (brand KPI pull or ad-spend reconciliation) and automate it. Document and hand off to a brand ops person or Jacqueline's team.</p>
-            </div>
-            <div class="week">
-              <div class="wk">Weeks 13 – 14</div>
-              <h4>Q3 analytics roadmap</h4>
-              <p>Synthesize 90 days of learning into a Q3 plan: which brands need deeper measurement, incrementality readiness, MMM opportunity, and schema investments.</p>
-            </div>
-          </div>
-          <div class="deliverables">
-            <h4>End of Day 90 — Deliverables</h4>
-            <ul>
-              <li><strong>Multi-Touch Attribution Layer</strong> live in Power BI — first-touch, last-touch, linear side-by-side.</li>
-              <li><strong>Brand CAC / ROAS Benchmark Study</strong> — comparative analysis with over/under-investment flagging.</li>
-              <li><strong>Incrementality Test Plan</strong> — methodology, sample size, timeline for branded-search testing.</li>
-              <li><strong>Q3 Marketing Analytics Roadmap</strong> — next 13 weeks of priorities, resource requests, expected outcomes.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Support & Risks -->
-  <h2 class="section-h">What I'd Need From You</h2>
-  <p class="section-sub">Success conditions and the risks I'd actively manage so neither becomes a surprise at Day 45.</p>
-
-  <div class="two-col">
-    <div class="support-card">
-      <h3>From Jacqueline, to succeed</h3>
-      <ul class="support-list">
-        <li><strong>System access</strong> — all 8 brands' ad accounts (GA, Google Ads, Meta, CallRail), CRM (HubSpot / Salesforce), CS ticketing, billing read-access.</li>
-        <li><strong>Intro to brand GMs</strong> — framed as a trusted analytics partner, not an auditor.</li>
-        <li><strong>30 min / week standing check-in</strong> for the first 90 days — keep me aligned, unblock fast.</li>
-        <li><strong>Budget clarity on tools</strong> — incrementality platforms, MMM providers, or integration tools, so proposals land inside your band.</li>
-      </ul>
-    </div>
-
-    <div class="risks-card">
-      <h3>Risks I'd actively watch</h3>
-      <div class="risk">
-        <div class="title">Brand resistance to shared taxonomy</div>
-        <p>Each GM may argue "our business is different." <strong>Mitigation:</strong> show comparative insight first (cross-brand benchmarks), then propose schema as benefit, not mandate.</p>
-      </div>
-      <div class="risk">
-        <div class="title">Data quality worse than expected</div>
-        <p>UTM tagging broken, CRM schema inconsistent, CS missing lead source. <strong>Mitigation:</strong> ship MVP with caveats documented. Fix quality over time — don't let perfect be the enemy of useful.</p>
-      </div>
-      <div class="risk">
-        <div class="title">CS lacks clean lead-source traceability</div>
-        <p>If CS can't tie completed service back to the original lead source, the feedback loop breaks. <strong>Mitigation:</strong> phase 1 directional (flagged as estimates); phase 2 adds instrumentation.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Why this works -->
-  <h2 class="section-h">Why This Plan Works for Intermountain</h2>
-  <p class="section-sub">Three specifics about Intermountain — not generic analytics wisdom — that make this plan the right fit for this seat, at this moment.</p>
-
-  <div class="why-grid">
-    <div class="why">
-      <div class="num">01</div>
-      <h3>8+ brands, one seat, massive leverage</h3>
-      <p>One standardized attribution model and shared taxonomy unlock cross-brand benchmarking that brand GMs can't generate alone. This is Intermountain's competitive advantage as a holding company.</p>
-    </div>
-    <div class="why">
-      <div class="num">02</div>
-      <h3>Jacqueline's performance-marketing DNA</h3>
-      <p>With a paid-search and performance-marketing background, you already think in CAC, ROAS, and incrementality. I don't need to sell <em>why</em> — only execute fast.</p>
-    </div>
-    <div class="why">
-      <div class="num">03</div>
-      <h3>Marketing → CS unlocks the feedback loop</h3>
-      <p>Most home-services companies measure marketing in isolation. Closing the loop to CS completion and profitability is where the real insight lives — from "we spent X on leads" to "we profitably acquired Y service-revenue customers."</p>
-    </div>
-  </div>
-
-  <div class="closing">
-    <h2>Ready on Day 1.</h2>
-    <p>This plan is a hypothesis, not a contract. The first 30 days will tell us what to keep, cut, or re-sequence. I'm looking forward to talking through it.</p>
-    <div class="sign">
-      Steve Hill
-      <span class="role">Marketing Operations Analyst — Candidate, Intermountain Home Services</span>
-    </div>
-  </div>
-
-</div>
-
-<footer>
-  60 / 90 Day Plan · Prepared April 2026 · <a href="../index.html">← Portfolio home</a>
-</footer>
-
+    </main>
 </body>
 </html>
+
+
+
+
+

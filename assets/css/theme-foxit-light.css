@@ -1,0 +1,188 @@
+:root {
+    --case-accent: #FF5F00;
+    --case-accent-soft: rgba(255, 95, 0, 0.14);
+    --case-paper: #EAF5FF;
+    --case-surface: #FFFFFF;
+    --case-surface-alt: #F2FAFF;
+    --case-line: #C7DEEE;
+    --case-ink: #163042;
+    --case-muted: #4E6880;
+    --fx-orange: #FF5F00;
+    --fx-orange-light: #FF8533;
+    --fx-orange-2: #FF8533;
+    --fx-orange-glow: rgba(255, 95, 0, 0.14);
+    --fx-ink: #EAF5FF;
+    --fx-panel: #FFFFFF;
+    --fx-panel-2: #F2FAFF;
+    --fx-line: #C7DEEE;
+    --fx-border: #C7DEEE;
+    --fx-text: #163042;
+    --fx-muted: #4E6880;
+    --fx-dim: #7A8EA3;
+    --fx-good: #38A169;
+    --fx-bad: #D95D52;
+}
+
+body {
+    background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.84), transparent 28%),
+        var(--fx-ink);
+    color: var(--fx-text);
+}
+
+body.dark-case {
+    background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.84), transparent 28%),
+        var(--case-paper);
+    color: var(--case-ink);
+}
+
+.p-topbar {
+    background: #1F4F68;
+    border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+.p-topbar .p-brand span {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.p-topbar .p-nav a:hover,
+.p-topbar .p-nav a.active,
+.p-topbar .p-nav a[aria-current="page"] {
+    color: #FFB84D;
+}
+
+.topbar,
+.sidebar,
+.hero,
+.flow-canvas,
+.layer,
+.trigger-table,
+.unified-layer,
+.outcome-card,
+.signal-panel,
+.hero-card,
+.panel,
+.cohort-wrap {
+    background: var(--fx-panel);
+    border-color: var(--fx-line);
+}
+
+.hero-card {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F2FAFF 100%);
+    box-shadow: 0 14px 32px rgba(43, 140, 190, 0.1);
+}
+
+.hero,
+.hero-copy {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(234, 245, 255, 0.94)),
+        var(--fx-panel);
+}
+
+.brand,
+.logo-name,
+.top-header h1,
+.signal-title,
+.panel-title,
+.hero h1,
+.section-head h2,
+.layer h4,
+.tt-row .cohort,
+.silo h5,
+.hero-copy h1 {
+    color: var(--fx-text);
+}
+
+.hero-headline {
+    color: var(--fx-text);
+    font-weight: 600;
+}
+
+.hero-copy h1 .accent {
+    color: #1F4F68;
+}
+
+.hero-copy p,
+.hero-tagline,
+.hero p,
+.hero-desc,
+.section-head p,
+.panel-sub,
+.footnote,
+.signal-badge,
+.signal-row .lbl,
+.logo-sub,
+.nav-label,
+.nav-item,
+.breadcrumb,
+.sidebar .spec,
+.sidebar .spec .row span,
+.sidebar .toc a,
+.tt-row .signal,
+.outcome-card .lbl,
+footer.page,
+.metric-card .k,
+.metric-card .sub {
+    color: var(--fx-muted);
+}
+
+.sidebar .spec .row .v em,
+.proof-card .big,
+.star-step,
+.section-head .eyebrow,
+.hero .tag,
+.sidebar .label,
+.layer .badge,
+.section-head .num,
+.library-card .eyebrow,
+.library-card .cta {
+    color: var(--fx-orange);
+}
+
+.sidebar .spec .row .v,
+.metric-card .v {
+    color: var(--fx-text);
+}
+
+.sidebar .toc a:hover,
+.nav-item:hover {
+    background: rgba(255, 95, 0, 0.08);
+    color: var(--fx-text);
+}
+
+.sidebar .toc a.active,
+.nav-item.active {
+    background: rgba(255, 95, 0, 0.12);
+    color: var(--fx-text);
+}
+
+.tt-head {
+    background: #E3F1FB;
+}
+
+.signal-row,
+.metric-card,
+.star-card,
+.detail-card,
+.proof-card,
+.related-card,
+.callout {
+    background: var(--fx-panel-2);
+    border-color: var(--fx-line);
+}
+
+.silo {
+    background: #F7FBFF;
+}
+
+.silo .icon,
+.hero-desc code {
+    background: #DFF0FC;
+}
+
+.action-link.secondary,
+.link-chip,
+.library-card .metric-pill {
+    border-color: var(--fx-line);
+}

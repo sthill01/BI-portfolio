@@ -1,0 +1,162 @@
+:root {
+    --ink: #163042;
+    --paper: #F4FBFA;
+    --paper-alt: #FCFFFE;
+    --line: #DCE9E8;
+    --muted: #4E6471;
+    --mute-soft: #6B7F8B;
+    --hl: #FFDEA0;
+    --intermountain-navy: #163042;
+    --intermountain-gold: #FFB84D;
+    --ih-navy: #163042;
+    --ih-navy-2: #1F4F68;
+    --ih-navy-light: #2B8CBE;
+    --ih-sky: #2B8CBE;
+    --ih-sky-soft: #E6F5FA;
+    --ih-gold: #FFB84D;
+    --ih-gold-soft: #FFF2D9;
+    --ih-mint: #38A169;
+    --ih-mint-soft: #E8F6EE;
+    --ih-coral: #F08A5D;
+    --ih-cream: #F4FBFA;
+    --ih-paper: #FFFFFF;
+    --ih-ink: #163042;
+    --ih-ink-2: #5F7280;
+    --ih-line: #DCE9E8;
+    --case-accent: #2B8CBE;
+    --case-accent-soft: rgba(43, 140, 190, 0.12);
+    --case-paper: #F4FBFA;
+    --case-surface: #FFFFFF;
+    --case-surface-alt: #EDF8FA;
+    --case-line: #DCE9E8;
+    --case-ink: #163042;
+    --case-muted: #4E6471;
+}
+
+body {
+    background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.78), transparent 28%),
+        var(--paper);
+    color: var(--ink);
+}
+
+.section-sub,
+.section-head p {
+    color: #4E6471;
+}
+
+.hero .eyebrow,
+.hero .hero-text .eyebrow {
+    color: rgba(244, 250, 255, 0.84);
+}
+
+.hero h1,
+.hero .hero-text h1,
+.hero .hero-text h1 span,
+.hero .contact-row span strong,
+.hero .hero-guide strong {
+    color: #FFFFFF;
+}
+
+.hero .hero-text p,
+.hero p.lede,
+.hero .contact-row,
+.hero .contact-row span,
+.hero .hero-guide {
+    color: rgba(244, 250, 255, 0.9);
+}
+
+.hero .meta-item {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    padding: 14px 16px;
+    backdrop-filter: blur(10px);
+}
+
+.hero .meta-item .m-val {
+    color: #FFFFFF;
+}
+
+.hero .meta-item .m-lbl {
+    color: rgba(244, 250, 255, 0.76);
+}
+
+.hero .hero-stats {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(14px);
+}
+
+.hero .hero-stat .v {
+    color: #FFFFFF;
+}
+
+.hero .hero-stat .v em {
+    color: #FFDEA0;
+}
+
+.hero .hero-stat .l,
+.hero .hero-stat .sub {
+    color: rgba(244, 250, 255, 0.82);
+}
+
+.p-topbar {
+    background: #163042;
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.p-topbar .p-brand span {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.p-topbar .p-nav a:hover {
+    color: #FFB84D;
+}
+
+.p-topbar .p-nav a.active,
+.p-topbar .p-nav a[aria-current="page"] {
+    color: #FFFFFF;
+}
+
+.hero {
+    background: linear-gradient(135deg, #163042 0%, #2B8CBE 56%, #79C5D8 100%);
+    box-shadow: 0 12px 36px rgba(22, 48, 66, 0.18);
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    padding: 34px 36px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(255, 184, 77, 0.22) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-meta {
+    background: rgba(255, 184, 77, 0.16);
+    color: #FFB84D;
+    border-color: rgba(255, 184, 77, 0.3);
+}
+
+.breadcrumb a,
+.crumb a {
+    color: #2B8CBE;
+}
+
+.hero-stats,
+.stack-note,
+.stat-tile,
+.pillar,
+.case-study-link {
+    box-shadow: 0 12px 30px rgba(22, 48, 66, 0.05);
+}

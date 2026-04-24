@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +6,12 @@
     <title>Netgain | Mid-Funnel Performance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+        <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
-        /* Portfolio cross-page topbar */
         .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -48,8 +48,6 @@
         .breadcrumb span { color: var(--ng-orange); font-weight: 600; }
         .filters { display: flex; gap: 10px; flex-wrap: wrap; }
         .filters select { padding: 9px 14px; border: 1px solid var(--ng-line); border-radius: 8px; font-size: 13px; background: white; font-family: inherit; color: var(--ng-text); cursor: pointer; }
-        .filters select:focus { outline: none; border-color: var(--ng-orange); }
-
         .hero-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
         .hero-metric { background: linear-gradient(135deg, var(--ng-navy) 0%, var(--ng-slate) 100%); color: white; padding: 28px; border-radius: 14px; position: relative; overflow: hidden; }
         .hero-metric::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 180px; height: 180px; border-radius: 50%; background: var(--ng-orange); opacity: 0.12; }
@@ -58,7 +56,6 @@
         .hero-metric .value { font-size: 48px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; }
         .hero-metric .delta { font-size: 13px; color: #7FD199; margin-top: 10px; font-weight: 500; }
         .hero-metric .ctx { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.15); }
-
         .side-metric { background: white; padding: 22px; border-radius: 14px; border: 1px solid var(--ng-line); display: flex; flex-direction: column; justify-content: space-between; }
         .side-metric .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--ng-muted); font-weight: 600; }
         .side-metric .value { font-size: 34px; font-weight: 800; color: var(--ng-navy); letter-spacing: -1px; margin: 8px 0 4px; }
@@ -66,13 +63,11 @@
         .side-metric .delta.up { color: #2A9D5F; font-weight: 600; }
         .side-metric .bar { height: 4px; background: var(--ng-line); border-radius: 2px; margin-top: 14px; overflow: hidden; }
         .side-metric .bar-fill { height: 100%; background: var(--ng-orange); border-radius: 2px; }
-
         .kpi-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
         .kpi-card { background: white; padding: 20px 22px; border-radius: 12px; border: 1px solid var(--ng-line); }
         .kpi-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ng-muted); font-weight: 600; }
         .kpi-card .value { font-size: 28px; font-weight: 800; color: var(--ng-navy); letter-spacing: -0.8px; margin: 8px 0 2px; }
         .kpi-card .meta { font-size: 12px; color: var(--ng-muted); }
-
         .panel { background: white; padding: 28px; border-radius: 14px; border: 1px solid var(--ng-line); margin-bottom: 18px; }
         .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
         .panel-title { font-size: 16px; font-weight: 700; color: var(--ng-navy); }
@@ -86,21 +81,27 @@
             .hero-row, .kpi-strip, .two-col { grid-template-columns: 1fr; }
         }
         .foot { font-size: 11px; color: var(--ng-muted); margin-top: 12px; font-style: italic; }
-        .pill-legend { display: inline-flex; gap: 6px; align-items: center; font-size: 11px; color: var(--ng-muted); margin-right: 14px; }
-        .pill-legend .swatch { width: 10px; height: 10px; border-radius: 3px; }
     </style>
 </head>
 <body>
-        <div class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
-        <nav class="p-nav">
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
             <a href="../index.html">Home</a>
-            <a href="index.html" class="active">Dashboards</a>
-            <a href="../Models/index.html">Models</a>
-            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
-        </nav>
-    </div>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html" aria-current="page">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
     <div class="topnav">
         <div class="brand">
             <div class="brand-mark">N</div>
@@ -123,74 +124,74 @@
             <div>
                 <div class="breadcrumb">RevOps / <span>Mid-Funnel Performance</span></div>
                 <h1>B2B SaaS Mid-Funnel</h1>
-                <div class="sub">MQL &rarr; SQL &rarr; Opp &rarr; Won with multi-touch attribution across 6 products</div>
+                <div class="sub">MQL &rarr; SQL &rarr; SAL &rarr; Won with multi-touch attribution across 6 products</div>
             </div>
             <div class="filters">
                 <select><option>All Account Sizes</option><option>SMB</option><option>Mid-Market</option><option>Enterprise</option></select>
                 <select><option>All Industries</option><option>Tech</option><option>Finance</option><option>Healthcare</option></select>
-                <select><option>Q1 2025</option><option>Q4 2024</option><option>Q3 2024</option></select>
+                <select><option>Full Trend (Jan '20 &ndash; Dec '23)</option><option>2023</option><option>2022</option><option>2021</option></select>
             </div>
         </div>
 
         <div class="hero-row">
             <div class="hero-metric">
                 <span class="tag">Moments that Matter</span>
-                <div class="label">Mid-Funnel Lift vs. Baseline</div>
+                <div class="label">SQL &rarr; SAL Mid-Funnel Lift vs. Baseline</div>
                 <div class="value">+250%</div>
-                <div class="delta">&uarr; Isolated via high-velocity testing, 6-product portfolio</div>
-                <div class="ctx">1&ndash;18 mo sales cycles &bull; 30 touchpoints &bull; online + offline MTA</div>
+                <div class="delta">&uarr; 8.0% &rarr; 28.0% from Jan '20 to Dec '23 &bull; seasonal but consistently rising</div>
+                <div class="ctx">1&ndash;18 mo sales cycles &bull; 30 touchpoints &bull; 6-product B2B SaaS portfolio</div>
             </div>
             <div class="side-metric">
                 <div>
-                    <div class="label">MQLs (Current Month)</div>
-                    <div class="value">1,047</div>
-                    <div class="delta up">&uarr; 14% vs. last month</div>
+                    <div class="label">MQLs (Final Month, Dec '23)</div>
+                    <div class="value">1,184</div>
+                    <div class="delta up">&uarr; +52% vs. Jan '20 baseline</div>
                 </div>
-                <div class="bar"><div class="bar-fill" style="width: 74%"></div></div>
+                <div class="bar"><div class="bar-fill" style="width: 82%"></div></div>
             </div>
             <div class="side-metric">
                 <div>
-                    <div class="label">Avg Deal Size</div>
-                    <div class="value">$32.4K</div>
-                    <div class="delta up">&uarr; $2.1K vs. last qtr</div>
+                    <div class="label">Pipeline Impact, 2023</div>
+                    <div class="value">$4M+</div>
+                    <div class="delta up">&uarr; NSM-driven mid-funnel throughput tripled</div>
                 </div>
-                <div class="bar"><div class="bar-fill" style="width: 62%"></div></div>
+                <div class="bar"><div class="bar-fill" style="width: 78%"></div></div>
             </div>
         </div>
 
         <div class="kpi-strip">
             <div class="kpi-card">
                 <div class="label">MQL &rarr; SQL</div>
-                <div class="value">24.3%</div>
-                <div class="meta">&uarr; 1.2pp vs. baseline</div>
+                <div class="value">24.4%</div>
+                <div class="meta">&uarr; +6.6pp vs. Jan '20 baseline</div>
             </div>
             <div class="kpi-card">
-                <div class="label">SQL &rarr; Opp</div>
-                <div class="value">47.8%</div>
-                <div class="meta">&uarr; 3.1pp YoY</div>
+                <div class="label">SQL &rarr; SAL <span style="color: var(--ng-orange); font-weight: 700;">(NSM)</span></div>
+                <div class="value">28.0%</div>
+                <div class="meta">&uarr; +250% lift (8.0% &rarr; 28.0%)</div>
             </div>
             <div class="kpi-card">
-                <div class="label">Opp &rarr; Closed Won</div>
-                <div class="value">26.4%</div>
-                <div class="meta">&darr; 0.8pp vs. last qtr</div>
+                <div class="label">SAL &rarr; Closed Won</div>
+                <div class="value">18.5%</div>
+                <div class="meta">&uarr; +6.2pp vs. Jan '20 baseline</div>
             </div>
         </div>
 
         <div class="panel">
             <div class="panel-head">
                 <div>
-                    <div class="panel-title">Conversion Rates: 12-Month Trend</div>
-                    <div class="panel-sub">Stage-by-stage transition health</div>
+                    <div class="panel-title">Conversion Rates: Seasonal 48-Month Trend (Jan '20 &rarr; Dec '23)</div>
+                    <div class="panel-sub">Stage-by-stage transition health &mdash; SQL&rarr;SAL is the &ldquo;Moments that Matter&rdquo; NSM gate</div>
                 </div>
                 <div class="chip-row">
                     <span class="chip active">All Stages</span>
                     <span class="chip">MQL&rarr;SQL</span>
-                    <span class="chip">SQL&rarr;Opp</span>
-                    <span class="chip">Opp&rarr;Won</span>
+                    <span class="chip">SQL&rarr;SAL</span>
+                    <span class="chip">SAL&rarr;Won</span>
                 </div>
             </div>
             <div class="chart-box"><canvas id="conversionTrendChart"></canvas></div>
-            <div class="foot">Each line = stage-to-stage transition rate, smoothed monthly.</div>
+            <div class="foot">Each line = stage-to-stage transition rate. The three stage rates trend upward across 2020&ndash;2023 with normal seasonal softening in summer and year-end acceleration. SQL&rarr;SAL remains the clearest NSM gate, rising from 8.0% to 28.0%.</div>
         </div>
 
         <div class="two-col">
@@ -208,13 +209,23 @@
                 <div class="panel-head">
                     <div>
                         <div class="panel-title">Time-in-Stage Distribution</div>
-                        <div class="panel-sub">Median days by stage, Q1 2025 vs. baseline</div>
+                        <div class="panel-sub">Median days by stage, 2020 baseline vs. Q4 2023</div>
                     </div>
                 </div>
                 <div class="chart-box"><canvas id="stageTimeChart"></canvas></div>
-                <div class="foot">Lower = faster pipeline velocity.</div>
+                <div class="foot">Lower = faster pipeline velocity. SAL-stage time shortened by about 28% as NSM-driving sequences became more common.</div>
             </div>
         </div>
+
+        <section style="margin-top: 28px; padding: 24px; border: 1px solid #F2D3C2; border-radius: 22px; background: linear-gradient(135deg, #FFF7F2, #FFFFFF); box-shadow: 0 18px 40px rgba(15,27,45,0.08);">
+            <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #F26A2E; margin-bottom: 10px;">STAR Case Study</div>
+            <h2 style="margin: 0; font-size: 24px; color: #0F1B2D;">Want the interview-ready Netgain version of this story?</h2>
+            <p style="margin: 10px 0 0; max-width: 760px; color: #526072; line-height: 1.65;">This dashboard shows the funnel mechanics. The companion case study frames the situation, the NSM problem to solve, the actions behind the testing loop, and the quantified result: 250% mid-funnel lift across a six-product portfolio.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+                <a href="../CaseStudies/netgain_case_study.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; background: #F26A2E; color: #FFFFFF; font-weight: 700; text-decoration: none;">Read the STAR case study</a>
+                <a href="../CaseStudies/index.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; border: 1px solid #E8D9CF; color: #0F1B2D; text-decoration: none;">Browse all four stories</a>
+            </div>
+        </section>
     </div>
 
     <script>
@@ -226,16 +237,16 @@
         const NG_NAVY = '#0F1B2D';
 
         const data = {
-            months: ['Apr-24', 'May-24', 'Jun-24', 'Jul-24', 'Aug-24', 'Sep-24', 'Oct-24', 'Nov-24', 'Dec-24', 'Jan-25', 'Feb-25', 'Mar-25'],
-            mqlSqlRate: [23.1, 23.8, 24.1, 23.9, 24.4, 25.2, 24.8, 24.1, 23.6, 24.5, 24.3, 24.3],
-            sqlOppRate: [44.2, 44.8, 45.3, 45.9, 46.2, 47.1, 48.2, 48.5, 47.9, 47.1, 47.8, 47.8],
-            oppWonRate: [27.3, 27.8, 27.4, 27.1, 26.8, 26.3, 25.9, 25.6, 25.3, 26.1, 26.4, 26.4],
+            months: ['Jan-20','Feb-20','Mar-20','Apr-20','May-20','Jun-20','Jul-20','Aug-20','Sep-20','Oct-20','Nov-20','Dec-20','Jan-21','Feb-21','Mar-21','Apr-21','May-21','Jun-21','Jul-21','Aug-21','Sep-21','Oct-21','Nov-21','Dec-21','Jan-22','Feb-22','Mar-22','Apr-22','May-22','Jun-22','Jul-22','Aug-22','Sep-22','Oct-22','Nov-22','Dec-22','Jan-23','Feb-23','Mar-23','Apr-23','May-23','Jun-23','Jul-23','Aug-23','Sep-23','Oct-23','Nov-23','Dec-23'],
+            mqlSqlRate: [17.8,18.2,18.5,18.7,18.8,18.7,18.7,18.6,18.6,18.7,18.9,19.2,19.5,19.9,20.2,20.4,20.5,20.5,20.4,20.3,20.3,20.4,20.6,20.9,21.3,21.6,22.0,22.2,22.2,22.2,22.1,22.1,22.0,22.1,22.3,22.6,23.0,23.4,23.7,23.9,24.0,24.0,23.9,23.8,23.8,23.9,24.1,24.4],
+            sqlSalRate: [8.0,8.7,9.3,9.6,9.8,9.7,9.8,9.9,10.3,10.9,11.8,12.8,13.7,14.5,15.1,15.4,15.5,15.4,15.4,15.4,15.7,16.3,17.1,18.0,18.9,19.7,20.3,20.6,20.6,20.5,20.5,20.5,20.8,21.4,22.2,23.1,24.0,24.8,25.4,25.7,25.7,25.6,25.6,25.6,25.9,26.5,27.2,28.0],
+            oppWonRate: [12.3,12.5,12.5,12.5,12.3,12.2,12.1,12.2,12.4,12.8,13.2,13.6,13.9,14.1,14.2,14.1,14.0,13.8,13.8,13.8,14.0,14.4,14.8,15.2,15.5,15.8,15.8,15.8,15.6,15.5,15.4,15.5,15.7,16.0,16.4,16.8,17.2,17.4,17.5,17.4,17.2,17.1,17.0,17.1,17.3,17.7,18.1,18.5],
             channels: ['Paid Search', 'Paid Social', 'Organic', 'Email', 'Webinar', 'Direct'],
             firstTouchCredit: [32, 24, 18, 12, 8, 6],
             multiTouchCredit: [28, 22, 22, 14, 10, 4],
-            stages: ['MQL', 'SQL', 'Opp'],
-            q1Time: [8, 15, 25],
-            mediaTime: [12, 21, 35]
+            stages: ['MQL', 'SQL', 'SAL'],
+            q4Time: [5, 10, 18],
+            baselineTime: [8, 16, 25]
         };
 
         new Chart(document.getElementById('conversionTrendChart').getContext('2d'), {
@@ -243,15 +254,16 @@
             data: {
                 labels: data.months,
                 datasets: [
-                    { label: 'MQL \u2192 SQL', data: data.mqlSqlRate, borderColor: NG_ORANGE, backgroundColor: 'rgba(242,106,46,0.12)', tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: true },
-                    { label: 'SQL \u2192 Opp', data: data.sqlOppRate, borderColor: NG_NAVY, backgroundColor: 'rgba(15,27,45,0.08)', tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
-                    { label: 'Opp \u2192 Won', data: data.oppWonRate, borderColor: '#6E788C', backgroundColor: 'transparent', tension: 0.4, borderWidth: 2, borderDash: [5, 4], pointRadius: 0, pointHoverRadius: 5 }
+                    { label: 'MQL \u2192 SQL', data: data.mqlSqlRate, borderColor: NG_NAVY, backgroundColor: 'rgba(15,27,45,0.06)', tension: 0.4, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5 },
+                    { label: 'SQL \u2192 SAL (NSM)', data: data.sqlSalRate, borderColor: NG_ORANGE, backgroundColor: 'rgba(242,106,46,0.15)', tension: 0.4, borderWidth: 3.5, pointRadius: 0, pointHoverRadius: 5, fill: true },
+                    { label: 'SAL \u2192 Won', data: data.oppWonRate, borderColor: '#6E788C', backgroundColor: 'transparent', tension: 0.4, borderWidth: 2, borderDash: [5, 4], pointRadius: 0, pointHoverRadius: 5 }
                 ]
             },
             options: {
-                responsive: true, maintainAspectRatio: false,
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
-                    y: { beginAtZero: false, min: 20, max: 55, ticks: { callback: v => v + '%' }, grid: { color: '#EEF0F4' } },
+                    y: { beginAtZero: false, min: 5, max: 32, ticks: { callback: value => value + '%' }, grid: { color: '#EEF0F4' } },
                     x: { grid: { display: false } }
                 },
                 plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 16 } } }
@@ -268,8 +280,12 @@
                 ]
             },
             options: {
-                responsive: true, maintainAspectRatio: false,
-                scales: { y: { beginAtZero: true, grid: { color: '#EEF0F4' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#EEF0F4' }, ticks: { callback: value => value + '%' } },
+                    x: { grid: { display: false } }
+                },
                 plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } }
             }
         });
@@ -279,16 +295,29 @@
             data: {
                 labels: data.stages,
                 datasets: [
-                    { label: 'Baseline', data: data.mediaTime, backgroundColor: '#C8CEDA', borderRadius: 6 },
-                    { label: 'Q1 2025', data: data.q1Time, backgroundColor: NG_NAVY, borderRadius: 6 }
+                    { label: '2020 baseline', data: data.baselineTime, backgroundColor: '#C8CEDA', borderRadius: 6 },
+                    { label: 'Q4 2023', data: data.q4Time, backgroundColor: NG_NAVY, borderRadius: 6 }
                 ]
             },
             options: {
-                responsive: true, maintainAspectRatio: false,
-                scales: { y: { beginAtZero: true, grid: { color: '#EEF0F4' }, ticks: { callback: v => v + 'd' } }, x: { grid: { display: false } } },
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#EEF0F4' }, ticks: { callback: value => value + 'd' } },
+                    x: { grid: { display: false } }
+                },
                 plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } }
             }
         });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

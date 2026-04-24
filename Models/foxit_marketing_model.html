@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foxit &mdash; In-App Lifecycle Engine &amp; Unified Data Layer</title>
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         :root {
             --fx-orange: #FF5F00;
@@ -130,7 +131,7 @@
         .p-topbar { background: #071621; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -140,19 +141,28 @@
         }
 
     </style>
+    <link rel="stylesheet" href="../assets/css/theme-foxit-light.css">
 </head>
 <body>
     
-    <nav class="p-topbar">
-    <a href="../index.html" class="p-brand">Steve Hill <span>— BI &amp; Marketing Analytics</span></a>
-    <div class="p-nav">
-        <a href="../index.html">Home</a>
-        <a href="../Dashboards/index.html">Dashboards</a>
-        <a href="../Models/index.html" class="active">Models</a>
-        <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-        <a href="../IHS/plan.html">60/90 Day Plan</a>
-    </div>
-</nav>
+            <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="../Models/index.html" aria-current="page">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
 
     <div class="topbar">
         <a href="../Dashboards/index.html" class="brand"><div class="mark">F</div> Foxit Marketing Model <span class="sub">// steve_hill</span></a>
@@ -160,7 +170,7 @@
             <a href="../Dashboards/index.html">Dashboards</a>
             <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
             <a href="index.html">Models</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
         </div>
     </div>
     <div class="wrap">
@@ -339,7 +349,7 @@
                             <ul>
                                 <li>One row per customer, with product + billing + support + marketing rolled in.</li>
                                 <li><strong>LTV, CAC, and cohort</strong> calculated once, referenced everywhere.</li>
-                                <li>Tableau reporting layer reads directly from this table.</li>
+                                <li>Power Query reporting layer reads directly from this table.</li>
                                 <li>Refresh window documented with confidence intervals for downstream consumers.</li>
                             </ul>
                         </div>
@@ -454,12 +464,28 @@
                     </div>
                 </section>
 
-                <footer class="page">
-                    <div>&copy; 2026 Steve Hill &bull; Marketing Operations Analyst</div>
-                    <div><a href="../Dashboards/foxit_api_client_growth_funnel.html">&lt;&lt; view_foxit_dashboard</a></div>
-                </footer>
-            </main>
+                <section class="section" style="margin-top: 34px; padding: 26px; border: 1px solid #C7DEEE; border-radius: 20px; background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(234,245,255,0.96)); box-shadow: 0 18px 40px rgba(43,140,190,0.12);">
+                    <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #FF5F00; margin-bottom: 10px;">STAR Case Study</div>
+                    <h2 style="margin: 0; color: #163042;">Need the concise interview version of this Foxit work?</h2>
+                    <p style="margin: 10px 0 0; max-width: 760px; color: #4E6880; line-height: 1.7;">This model page shows the mechanics. The matching case study tells the story in STAR format, including the cross-functional problem, the lifecycle build, and the measured outcome: 72 hours per week saved and 3x ROI.</p>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+                        <a href="../CaseStudies/foxit_lifecycle_case_study.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; background: #FF5F00; color: #FFFFFF; font-weight: 700; text-decoration: none;">Read the STAR case study</a>
+                        <a href="../CaseStudies/index.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; border: 1px solid rgba(31,79,104,0.16); color: #163042; text-decoration: none;">Browse all four stories</a>
+                    </div>
+                </section>
+
+</main>
         </div>
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

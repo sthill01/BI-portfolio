@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" role="img" aria-labelledby="title">
+  <title>HubSpot</title>
+  <rect width="180" height="56" rx="16" fill="#FFFFFF"/>
+  <circle cx="31" cy="28" r="10" fill="#FF7A59"/>
+  <circle cx="46" cy="14" r="4" fill="#FF7A59"/>
+  <circle cx="48" cy="42" r="4" fill="#FF7A59"/>
+  <path d="M37 22l7-5M37 34l9 5M31 18V8" stroke="#FF7A59" stroke-width="3" stroke-linecap="round"/>
+  <text x="82" y="24" fill="#163042" font-family="Arial, sans-serif" font-size="15" font-weight="700">HubSpot</text>
+  <text x="82" y="39" fill="#5F7280" font-family="Arial, sans-serif" font-size="10" font-weight="600">CRM and nurture</text>
+</svg>

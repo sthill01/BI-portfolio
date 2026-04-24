@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UTA BI model showing how rider-flow analysis, failure-path ranking, and alert-gap review supported service recovery decisions.">
+    <title>UTA BI Model &mdash; Failure Path Review</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/portfolio-base.css">
+    <style>
+        :root {
+            --blue: #0055A4;
+            --blue-dark: #10233C;
+            --paper: #F7FAFD;
+            --surface: #FFFFFF;
+            --line: #DBE5EF;
+            --muted: #5B6D82;
+            --cream: #F1F5FA;
+            --red: #C8453B;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body { font-family: 'IBM Plex Sans', sans-serif; background: radial-gradient(circle at top right, rgba(255,255,255,0.84), transparent 28%), var(--paper); color: var(--blue-dark); line-height: 1.6; }
+        .p-topbar { background: #10233C; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        .p-topbar .p-brand { font-family: 'Source Serif Pro', serif; font-size: 15px; font-weight: 700; color: #fff; text-decoration: none; }
+        .p-topbar .p-brand span { color: rgba(255,255,255,0.68); font-weight: 400; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 22px; font-size: 13px; }
+        .p-topbar .p-nav a { color: rgba(255,255,255,0.72); text-decoration: none; }
+        .p-topbar .p-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 40px 80px; }
+        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 18px; }
+        .crumb a { color: var(--blue); text-decoration: none; }
+        .hero {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 34px;
+            margin-bottom: 28px;
+            box-shadow: 0 18px 36px rgba(16,35,60,0.08);
+        }
+        .hero .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--blue); margin-bottom: 12px; }
+        .hero h1 { margin: 0 0 14px; font-family: 'Source Serif Pro', serif; font-size: 46px; letter-spacing: -1.1px; line-height: 1.05; }
+        .hero p { margin: 0; color: var(--muted); font-size: 15px; max-width: 64ch; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
+        .stat { background: var(--cream); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+        .stat .k { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 6px; }
+        .stat .v { font-family: 'Source Serif Pro', serif; font-size: 28px; line-height: 1; }
+        .stat .sub { margin-top: 6px; color: var(--muted); font-size: 12px; }
+        .section { margin-bottom: 28px; }
+        .section-head { margin-bottom: 16px; }
+        .section-head .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--blue); margin-bottom: 8px; }
+        .section-head h2 { margin: 0 0 8px; font-family: 'Source Serif Pro', serif; font-size: 30px; letter-spacing: -0.6px; }
+        .section-head p { margin: 0; color: var(--muted); font-size: 14px; max-width: 60ch; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+        .card h3 { margin: 0 0 8px; font-size: 18px; color: var(--blue-dark); }
+        .card p, .card li { color: var(--muted); font-size: 13.5px; }
+        .card ul { margin: 0; padding-left: 18px; }
+        .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+        .flow-step { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; position: relative; }
+        .flow-step:not(:last-child)::after { content: ""; position: absolute; right: -8px; top: 34px; width: 16px; height: 2px; background: rgba(0,85,164,0.35); }
+        .flow-step .num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--blue); margin-bottom: 8px; }
+        .flow-step h3 { margin: 0 0 8px; font-size: 18px; }
+        .flow-step p { margin: 0; color: var(--muted); font-size: 13px; }
+        .decision { background: linear-gradient(135deg, #FFFFFF, #F5F9FD); border: 1px solid var(--line); border-radius: 22px; padding: 24px; }
+        .decision strong { color: var(--blue-dark); }
+        @media (max-width: 960px) { .stats, .grid, .flow { grid-template-columns: 1fr; } .flow-step:not(:last-child)::after { display: none; } }
+        @media (max-width: 720px) { .p-topbar { flex-direction: column; gap: 10px; align-items: flex-start; padding: 12px 20px; } .wrap { padding: 44px 20px 72px; } .hero h1 { font-size: 38px; } }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html" aria-current="page">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
+    <main id="main-content" class="wrap">
+        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <a href="index.html">BI Models</a> &nbsp;/&nbsp; <span>UTA BI Model</span></div>
+        <section class="hero">
+            <div class="eyebrow">UTA &bull; BI Model</div>
+            <h1>Failure-path review for rider flow, support visibility, and service recovery.</h1>
+            <p>This page explains the UTA work in plain language. The goal was to understand where ticket purchases were failing, which issues the support alert stream was missing, and how to rank the problems in a way leadership could act on.</p>
+            <div class="stats">
+                <div class="stat"><div class="k">Fare context</div><div class="v">$2.0M</div><div class="sub">Illustrative annual context for the machine network</div></div>
+                <div class="stat"><div class="k">Recovery view</div><div class="v">$15K</div><div class="sub">Estimated annual opportunity tied to top failure paths</div></div>
+                <div class="stat"><div class="k">Fleet scope</div><div class="v">250+</div><div class="sub">Machines in the analysis view</div></div>
+                <div class="stat"><div class="k">Dominant path</div><div class="v">31%</div><div class="sub">Share of failures tied to one recurring path</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div class="eyebrow">What This Model Answers</div>
+                <h2>The business questions behind the analysis.</h2>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>Where are riders getting stuck?</h3>
+                    <p>Not every machine issue matters equally. The point was to find the repeat failure steps most likely to break a purchase attempt.</p>
+                </article>
+                <article class="card">
+                    <h3>What is support missing?</h3>
+                    <p>The alert stream did not always reflect the rider experience, so the comparison between machine behavior and support visibility was essential.</p>
+                </article>
+                <article class="card">
+                    <h3>What should get fixed first?</h3>
+                    <p>The output had to support prioritization, not just description: which failure paths were common, costly, and worth escalating.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div class="eyebrow">BI Flow</div>
+                <h2>How the analysis worked in plain English.</h2>
+            </div>
+            <div class="flow">
+                <article class="flow-step">
+                    <div class="num">Step 1</div>
+                    <h3>Collect the events</h3>
+                    <p>Pull the machine events, alert records, and support context into one place.</p>
+                </article>
+                <article class="flow-step">
+                    <div class="num">Step 2</div>
+                    <h3>Rebuild the rider path</h3>
+                    <p>Organize the event stream into readable purchase attempts from start to failure or completion.</p>
+                </article>
+                <article class="flow-step">
+                    <div class="num">Step 3</div>
+                    <h3>Compare with alerts</h3>
+                    <p>Check which real-world failures showed up in support reporting and which ones did not.</p>
+                </article>
+                <article class="flow-step">
+                    <div class="num">Step 4</div>
+                    <h3>Rank the recovery work</h3>
+                    <p>Prioritize the failure paths by frequency, impact, and likely value of fixing them.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div class="eyebrow">Tools Used</div>
+                <h2>What I actually used.</h2>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>Excel + Power Query</h3>
+                    <ul>
+                        <li>Quick shaping and review of machine data extracts.</li>
+                        <li>Readable validation during early analysis passes.</li>
+                    </ul>
+                </article>
+                <article class="card">
+                    <h3>SQL + Python</h3>
+                    <ul>
+                        <li>Joining event sources and organizing purchase attempts.</li>
+                        <li>Ranking repeated failure paths and common patterns.</li>
+                    </ul>
+                </article>
+                <article class="card">
+                    <h3>Power BI</h3>
+                    <ul>
+                        <li>Surfacing the top failure paths and alert gaps.</li>
+                        <li>Giving leadership a clearer remediation view.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="section decision">
+            <div class="section-head">
+                <div class="eyebrow">Decision Output</div>
+                <h2>Why the model mattered.</h2>
+            </div>
+            <p><strong>This was not a technical exercise for its own sake.</strong> The value was making the machine problem easier to explain, easier to challenge with the vendor, and easier to prioritize for service recovery. That is the standard I use for BI work in general.</p>
+            <div class="action-row">
+                <a class="action-link" href="../Dashboards/uta_fare_revenue_elasticity.html">Open dashboard</a>
+                <a class="action-link secondary" href="../CaseStudies/uta_case_study.html">Open example</a>
+            </div>
+            <div class="proprietary-note">All Raw Data Remains Proprietary</div>
+        </section>
+    </main>
+</body>
+</html>
+
+
+
+
+
+

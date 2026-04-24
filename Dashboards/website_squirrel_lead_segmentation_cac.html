@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Website Squirrel | Lead Segmentation &amp; CAC</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&family=Source+Serif+Pro:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+        <link rel="stylesheet" href="../assets/css/portfolio-base.css">
     <style>
         :root {
             --ws-orange: #FF6B35;
@@ -68,7 +69,7 @@
         .stat .icon-chip { position: absolute; top: 22px; right: 22px; width: 38px; height: 38px; background: var(--ws-orange-soft); border: 2px solid var(--ws-ink); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--ws-orange-dark); font-size: 14px; font-family: 'Poppins'; transform: rotate(-4deg); }
         .stat.hero-stat .icon-chip { background: white; color: var(--ws-orange); border-color: white; }
 
-        /* Main chart — asymmetric full-width */
+        /* Main chart â€” asymmetric full-width */
         .big-panel { background: white; border: 2px solid var(--ws-ink); border-radius: 28px; padding: 32px 36px; box-shadow: 8px 8px 0 var(--ws-ink); margin-bottom: 28px; position: relative; overflow: hidden; }
         .big-panel::before { content: ""; position: absolute; right: -80px; top: -80px; width: 240px; height: 240px; border-radius: 50%; background: var(--ws-yellow); opacity: 0.25; }
         .panel-head { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
@@ -99,7 +100,7 @@
         .p-topbar { background: #0B1422; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Inter', -apple-system, sans-serif; position: relative; z-index: 100; }
         .p-topbar .p-brand { font-family: 'Source Serif Pro', Georgia, serif; font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; letter-spacing: -0.2px; }
         .p-topbar .p-brand span { color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 2px; }
-        .p-topbar .p-nav { display: flex; gap: 26px; font-size: 13px; }
+        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 26px; font-size: 13px; }
         .p-topbar .p-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color 0.15s; }
         .p-topbar .p-nav a:hover { color: #FFD77A; }
         .p-topbar .p-nav a.active { color: #fff; font-weight: 600; }
@@ -110,16 +111,24 @@
     </style>
 </head>
 <body>
-        <div class="p-topbar">
-        <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
-        <nav class="p-nav">
+                <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
             <a href="../index.html">Home</a>
-            <a href="index.html" class="active">Dashboards</a>
-            <a href="../Models/index.html">Models</a>
-            <a href="../Accomplishments/accomplishments.html">Accomplishments</a>
-            <a href="../IHS/plan.html">60/90 Day Plan</a>
-        </nav>
-    </div>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html" aria-current="page">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
     <div class="topbar">
         <div class="logo">
             <div class="logo-dot"><span>S</span></div>
@@ -135,7 +144,7 @@
         <div class="hero-inner">
             <div class="hero-kicker"><span class="emoji"></span>Lead segmentation &bull; CAC efficiency</div>
             <h1 class="hero-title">Squirrels find <em>cheaper leads</em> by sorting acorns smarter.</h1>
-            <p class="hero-sub">Automated lead scoring + behavioral segmentation drives 60%+ CAC reduction. Here's the breakdown by tier, channel, and retention curve.</p>
+            <p class="hero-sub">Automated lead scoring + behavioral segmentation drives 60%+ CAC reduction. Here's the breakdown by tier, channel, and lead-quality performance.</p>
             <div class="filter-row">
                 <select class="chunky"><option>Last 30 days</option><option>Last 90 days</option><option>Last 365 days</option></select>
                 <span class="chunky active">All Campaigns</span>
@@ -155,7 +164,7 @@
                     <div class="stat-value">$47</div>
                     <div class="stat-delta" style="color: white;">60%+ cheaper than blended average</div>
                 </div>
-                <div class="stat-caption">Highest-quality segment. Pipelined through Python/AWS lead-scoring. Drove 15% YoY profit contribution.</div>
+                <div class="stat-caption">Highest-quality segment. Best lead-to-close performance and strongest profit contribution.</div>
             </div>
             <div class="stat">
                 <div class="icon-chip">#</div>
@@ -177,9 +186,9 @@
             </div>
             <div class="stat">
                 <div class="icon-chip">%</div>
-                <div class="stat-label">90d Retention</div>
-                <div class="stat-value">64.2%</div>
-                <div class="stat-delta">&uarr; 2.1pp YoY</div>
+                <div class="stat-label">A-Tier Close Rate</div>
+                <div class="stat-value">28%</div>
+                <div class="stat-delta">&uarr; 3.5x vs. blended</div>
             </div>
         </div>
 
@@ -195,7 +204,7 @@
                 </div>
             </div>
             <div class="chart-box"><canvas id="cacSegmentChart"></canvas></div>
-            <div class="bottom-note">A-tier has the lowest CAC; D-tier is volume play &mdash; still contribution-positive when retained through day-90.</div>
+            <div class="bottom-note">A-tier has the lowest CAC and the strongest close rate; D-tier is volume-heavy but low quality.</div>
         </div>
 
         <div class="split">
@@ -212,14 +221,23 @@
             <div class="card warm">
                 <div class="panel-head">
                     <div>
-                        <div class="ttl">Retention by Tier (0 &rarr; 180 days)</div>
-                        <div class="sub">Cohort retention curve &mdash; A-tier is what you keep paying less to acquire</div>
+                        <div class="ttl">Lead-to-Close Rate by Tier</div>
+                        <div class="sub">The quality view behind the segmentation model</div>
                     </div>
                 </div>
-                <div class="chart-box-sm"><canvas id="retentionChart"></canvas></div>
-                <div class="bottom-note">A-tier holds 59% at day 180; D-tier collapses to 22%. This is why segment-level CAC matters more than blended.</div>
+                <div class="chart-box-sm"><canvas id="closeRateChart"></canvas></div>
+                <div class="bottom-note">A-tier closes at 28% versus 5% for D-tier. This is why segment-level CAC matters more than blended cost per lead.</div>
             </div>
         </div>
+        <section style="margin-top: 28px; padding: 24px; border: 1px solid #F3D7C7; border-radius: 24px; background: linear-gradient(135deg, #FFF7EE, #FFFFFF); box-shadow: 0 18px 36px rgba(26,26,26,0.08);">
+            <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #FF6B35; margin-bottom: 10px;">STAR Case Study</div>
+            <h2 style="margin: 0; font-size: 24px; color: #1A1A1A;">Want the interview-ready Website Squirrel version of this story?</h2>
+            <p style="margin: 10px 0 0; max-width: 760px; color: #5F5F5F; line-height: 1.65;">This dashboard shows the scoring output. The companion case study explains the business context, the segmentation work, and the quantified win: 60%+ CAC reduction, faster reporting, and stronger year-over-year profit contribution.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+                <a href="../CaseStudies/website_squirrel_case_study.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; background: #FF6B35; color: #FFFFFF; font-weight: 700; text-decoration: none;">Read the STAR case study</a>
+                <a href="../CaseStudies/index.html" style="display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; border: 1px solid #E6D8CE; color: #1A1A1A; text-decoration: none;">Browse all four stories</a>
+            </div>
+        </section>
     </div>
 
     <script>
@@ -240,11 +258,7 @@
             cacPrior: [52, 84, 119, 198],
             channels: ['Google Search', 'Facebook', 'Organic', 'Referral', 'Direct'],
             channelCAC: [68, 142, 38, 94, 156],
-            retentionDays: [0, 30, 60, 90, 120, 150, 180],
-            retentionA: [100, 88, 79, 71, 65, 62, 59],
-            retentionB: [100, 82, 71, 62, 54, 50, 48],
-            retentionC: [100, 75, 62, 51, 42, 37, 34],
-            retentionD: [100, 68, 54, 43, 32, 26, 22]
+            closeRateByTier: [28, 16, 9, 5]
         };
 
         new Chart(document.getElementById('cacSegmentChart').getContext('2d'), {
@@ -287,26 +301,32 @@
             }
         });
 
-        new Chart(document.getElementById('retentionChart').getContext('2d'), {
-            type: 'line',
+        new Chart(document.getElementById('closeRateChart').getContext('2d'), {
+            type: 'bar',
             data: {
-                labels: data.retentionDays.map(d => d + 'd'),
+                labels: data.segments,
                 datasets: [
-                    { label: 'A-Tier', data: data.retentionA, borderColor: WS_ORANGE, backgroundColor: 'rgba(255,107,53,0.2)', tension: 0.4, borderWidth: 3, pointBackgroundColor: WS_ORANGE, pointBorderColor: 'white', pointBorderWidth: 2, pointRadius: 4, fill: true },
-                    { label: 'B-Tier', data: data.retentionB, borderColor: WS_YELLOW, backgroundColor: 'transparent', tension: 0.4, borderWidth: 2.5, pointBackgroundColor: WS_YELLOW, pointRadius: 3 },
-                    { label: 'C-Tier', data: data.retentionC, borderColor: WS_MINT, backgroundColor: 'transparent', tension: 0.4, borderWidth: 2.5, pointBackgroundColor: WS_MINT, pointRadius: 3 },
-                    { label: 'D-Tier', data: data.retentionD, borderColor: '#C0C0C0', backgroundColor: 'transparent', tension: 0.4, borderWidth: 2, borderDash: [4,3], pointRadius: 2 }
+                    { label: 'Lead-to-close rate', data: data.closeRateByTier, backgroundColor: [WS_ORANGE, WS_YELLOW, WS_MINT, '#C0C0C0'], borderRadius: 10, borderSkipped: false }
                 ]
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%', color: 'rgba(255,255,255,0.6)' }, grid: { color: 'rgba(255,255,255,0.08)' } },
-                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.7)' } }
+                    y: { beginAtZero: true, max: 30, ticks: { callback: v => v + '%', color: 'rgba(255,255,255,0.6)' }, grid: { color: 'rgba(255,255,255,0.08)' } },
+                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.8)', font: { family: 'Poppins', weight: '600', size: 12 } } }
                 },
-                plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.85)', usePointStyle: true, boxWidth: 8, padding: 12 } } }
+                plugins: { legend: { display: false } }
             }
         });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

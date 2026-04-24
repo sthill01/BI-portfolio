@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UTA example: ticket-machine failure analysis, rider-flow diagnostics, and vendor accountability using BI tools and plain-language operations analysis.">
+    <meta name="theme-color" content="#0055A4">
+    <meta property="og:title" content="UTA Example">
+    <meta property="og:description" content="A concise STAR story showing how rider-flow analysis and BI work supported service recovery at UTA.">
+    <meta property="og:type" content="website">
+    <title>UTA Example &mdash; Failure Analysis &amp; BI Accountability</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/portfolio-base.css">
+    <link rel="stylesheet" href="../assets/css/case-studies.css">
+    <style>
+        :root {
+            --case-accent: #0055A4;
+            --case-accent-soft: rgba(0, 85, 164, 0.12);
+            --case-paper: #F6F6F2;
+            --case-surface: #FFFFFF;
+            --case-surface-alt: #F1F3F7;
+            --case-line: #DFE4EB;
+            --case-ink: #10233C;
+            --case-muted: #586B84;
+            --font-body: "IBM Plex Sans", -apple-system, sans-serif;
+            --font-display: "Source Serif Pro", Georgia, serif;
+            --font-mono: "JetBrains Mono", Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="p-topbar" aria-label="Primary">
+                <div class="p-brand-wrap">
+            <a href="../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="../index.html">Home</a>
+            <a href="../MOps/index.html">How I Work</a>
+            <a href="../Dashboards/index.html">Dashboards</a>
+            <a href="../Models/index.html">Marketing Models</a>
+            <a href="../BIModels/index.html">BI Models</a>
+            <a href="../MarketingAI/index.html">Marketing AI</a>
+            <a href="../Blog/index.html">Blog</a>
+            <a href="../CaseStudies/index.html" aria-current="page">Examples</a>
+            <a href="../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
+
+    <main id="main-content" class="case-wrap">
+        <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <a href="index.html">Examples</a> &nbsp;/&nbsp; <span>UTA</span></div>
+
+        <section class="page-hero">
+            <div class="hero-copy">
+                <div class="hero-eyebrow">Utah Transit Authority &bull; BI + operations analysis</div>
+                <h1>Mapped ticket-machine failure paths and turned a reporting gap into <span class="accent">a clearer recovery and accountability plan</span>.</h1>
+                <p>UTA needed a clearer view of why riders were abandoning ticket purchases and why support teams were not seeing the same failures riders were experiencing in the field. The work focused on system-failure causes, rider flow, and which failure patterns deserved action first.</p>
+                <div class="hero-tagline">Short version: plain-language BI work made a machine problem easier to diagnose, prioritize, and escalate.</div>
+                <div class="action-row">
+                    <a class="action-link" href="../Dashboards/uta_fare_revenue_elasticity.html">Open dashboard</a>
+                    <a class="action-link secondary" href="../BIModels/uta_bi_model.html">Open BI model</a>
+                    <a class="action-link secondary" href="../Accomplishments/accomplishments.html">Open resume</a>
+                </div>
+            </div>
+            <aside class="hero-panel">
+                <div class="hero-metrics">
+                    <div class="metric-card">
+                        <div class="k">Fare context</div>
+                        <div class="v">$2.0M</div>
+                        <div class="sub">Illustrative annual context touching the machine network</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="k">Recovery view</div>
+                        <div class="v">$15K</div>
+                        <div class="sub">Estimated annual opportunity tied to top failure paths</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="k">Fleet scope</div>
+                        <div class="v">250+</div>
+                        <div class="sub">Machines included in the analysis view</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="k">Top failure path</div>
+                        <div class="v">31%</div>
+                        <div class="sub">Share of failed sessions tied to one dominant path</div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <div class="page-layout">
+            <aside class="toc" aria-label="On this page">
+                <div class="toc-label">On This Page</div>
+                <nav>
+                    <a href="#customer-lifecycle">Customer Lifecycle</a>
+                    <a href="#star-method">STAR Method</a>
+                    <a href="#growth-bi-levers">Growth / BI Levers</a>
+                </nav>
+            </aside>
+            <div class="content-column">
+
+        <section class="section" id="customer-lifecycle">
+            <div class="section-head">
+                <div class="eyebrow">Customer Lifecycle</div>
+                <h2>Where the leverage sat.</h2>
+            </div>
+            <div class="journey-map">
+                <p class="journey-intro">This was mostly a service-delivery and recovery story. The value came from understanding where riders were getting stuck, what support teams were missing, and which fixes had the clearest operational payoff.</p>
+                <div class="journey-strip">
+                    <article class="journey-stage support">
+                        <span class="phase">Demand Capture</span>
+                        <h3>Entry</h3>
+                        <p>The story begins after riders already intend to buy.</p>
+                    </article>
+                    <article class="journey-stage support">
+                        <span class="phase">Lead / User Intake</span>
+                        <h3>Start</h3>
+                        <p>Riders enter the purchase flow at the machine.</p>
+                    </article>
+                    <article class="journey-stage active">
+                        <span class="phase">Qualification / Conversion</span>
+                        <h3>Purchase Path</h3>
+                        <p>The main issue was where purchase attempts broke down.</p>
+                    </article>
+                    <article class="journey-stage active">
+                        <span class="phase">Service / Experience</span>
+                        <h3>Failure Analysis</h3>
+                        <p>Machine behavior and rider flow were reconstructed step by step.</p>
+                    </article>
+                    <article class="journey-stage active">
+                        <span class="phase">Follow-Up / Repeat</span>
+                        <h3>Recovery</h3>
+                        <p>The output supported vendor fixes, alert tuning, and service follow-up.</p>
+                    </article>
+                    <article class="journey-stage support">
+                        <span class="phase">Referral / Promoter</span>
+                        <h3>Trust</h3>
+                        <p>Improving reliability supports rider confidence over time.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="star-method">
+            <div class="section-head">
+                <div class="eyebrow">STAR Method</div>
+                <h2>The case, kept short.</h2>
+            </div>
+            <div class="star-grid">
+                <article class="star-card">
+                    <div class="star-step">Situation</div>
+                    <h3>Riders were hitting repeat ticket-machine failures, but support visibility was incomplete.</h3>
+                    <p>Control Center saw some alerts, but not enough of the actual rider experience to understand the full failure pattern.</p>
+                </article>
+                <article class="star-card">
+                    <div class="star-step">Task</div>
+                    <h3>Show where the failures were happening, how often they repeated, and what support teams were missing.</h3>
+                    <p>The goal was to turn a vague machine problem into something leadership could prioritize and escalate with evidence.</p>
+                </article>
+                <article class="star-card">
+                    <div class="star-step">Action</div>
+                    <h3>Rebuilt the purchase path, pinpointed where riders got stuck, and compared that with what the vendor reported.</h3>
+                    <p>I used Excel, SQL, Power BI, Power Query, and Python to organize machine events into readable purchase attempts, rank the common failure paths, and compare those failures with the alert stream support teams were receiving.</p>
+                </article>
+                <article class="star-card">
+                    <div class="star-step">Result</div>
+                    <h3>The team got a clearer recovery plan and a better basis for vendor accountability.</h3>
+                    <p>The work highlighted the dominant failure paths, surfaced roughly $15K in annual recovery opportunity inside a $2.0M fare context, and made the vendor reporting gap easier to challenge.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="growth-bi-levers">
+            <div class="section-head">
+                <div class="eyebrow">Growth / BI Levers Used</div>
+                <h2>The practical moves behind the result.</h2>
+            </div>
+            <div class="detail-grid">
+                <article class="detail-card">
+                    <h3>Path reconstruction</h3>
+                    <ul>
+                        <li>Turned machine events into readable purchase attempts.</li>
+                        <li>Made failure sequences easier to compare and rank.</li>
+                    </ul>
+                </article>
+                <article class="detail-card">
+                    <h3>Alert-gap review</h3>
+                    <ul>
+                        <li>Compared machine-side failures with the vendor alert stream.</li>
+                        <li>Showed where support teams were getting an incomplete view.</li>
+                    </ul>
+                </article>
+                <article class="detail-card">
+                    <h3>Recovery prioritization</h3>
+                    <ul>
+                        <li>Ranked fixes by frequency, rider impact, and recoverable value.</li>
+                        <li>Made remediation more practical for leadership and ops teams.</li>
+                    </ul>
+                </article>
+            </div>
+            <div class="proprietary-note">All Raw Data Remains Proprietary</div>
+        </section>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
+
+
