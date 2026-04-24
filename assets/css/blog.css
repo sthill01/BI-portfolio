@@ -236,6 +236,18 @@ body.blog-body {
     max-width: 66ch;
 }
 
+.prose a {
+    color: var(--blog-sky);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(43, 140, 190, 0.35);
+    font-weight: 600;
+}
+
+.prose a:hover {
+    color: var(--blog-ink);
+    border-bottom-color: var(--blog-ink);
+}
+
 .feature-grid,
 .post-grid,
 .pillar-grid,
