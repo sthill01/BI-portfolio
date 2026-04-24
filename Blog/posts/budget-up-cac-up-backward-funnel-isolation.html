@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Website Squirrel case study on diagnosing rising CAC with backward funnel isolation and revenue-weighted signal mapping.">
+    <title>Budget up, CAC up: how backward funnel isolation cut our CAC 60%+ &mdash; Steve Hill</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/portfolio-base.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body class="blog-body">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="p-topbar" aria-label="Primary">
+        <div class="p-brand-wrap">
+            <a href="../../index.html" class="p-brand">Steve Hill <span>&middot; Portfolio</span></a>
+            <div class="p-brand-cta">Consulting, Contract, Employment &middot; <a href="tel:8018501253">801-850-1253</a></div>
+        </div>
+        <div class="p-nav">
+            <a href="../../index.html">Home</a>
+            <a href="../../MOps/index.html">How I Work</a>
+            <a href="../../Dashboards/index.html">Dashboards</a>
+            <a href="../../Models/index.html">Marketing Models</a>
+            <a href="../../BIModels/index.html">BI Models</a>
+            <a href="../../MarketingAI/index.html">Marketing AI</a>
+            <a href="../index.html" aria-current="page">Blog</a>
+            <a href="../../CaseStudies/index.html">Examples</a>
+            <a href="../../Accomplishments/accomplishments.html">Resume</a>
+            <a href="../../IHS/plan.html">120 Day Plan IHS</a>
+        </div>
+    </nav>
+    <main id="main-content" class="blog-wrap">
+        <div class="crumb"><a href="../../index.html">Home</a> &nbsp;/&nbsp; <a href="../index.html">Blog</a> &nbsp;/&nbsp; <span>Budget Up, CAC Up</span></div>
+
+        <section class="article-hero">
+            <article class="article-copy">
+                <a class="back-link" href="../index.html">&larr; Back to Blog</a>
+                <div class="eyebrow">Case Study</div>
+                <h1>Budget up, CAC up: how backward funnel isolation cut our CAC 60%+.</h1>
+                <p>A Website Squirrel case study in what to do when two metrics move the wrong way at the same time. Paid budget was scaling, CAC was climbing with it, and the answer was not another round of bid tuning. The answer came from auditing attribution, mapping the funnel backward from paid conversion, and isolating the segment whose behavior actually predicted revenue.</p>
+            </article>
+            <aside class="article-meta">
+                <div class="eyebrow">Post Snapshot</div>
+                <h2>What this covers</h2>
+                <p>The repeatable method I use when a business is spending more to acquire worse-fit customers.</p>
+                <div class="post-meta-row">
+                    <span class="pill">Apr 24, 2026</span>
+                    <span class="pill">8 min read</span>
+                </div>
+                <ul>
+                    <li>Start by naming the contradiction, not by tuning the channel.</li>
+                    <li>Audit attribution before you trust the CAC line.</li>
+                    <li>Find the segment whose behavior predicts conversion and feed that signal back into spend.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <div class="page-layout">
+            <aside class="toc" aria-label="On this page">
+                <div class="toc-label">On This Page</div>
+                <nav>
+                    <a href="#when-metrics-break">When Metrics Break</a>
+                    <a href="#six-moves">The Six-Move Method</a>
+                    <a href="#anchor-and-audit">Anchor and Audit</a>
+                    <a href="#map-and-isolate">Map and Isolate</a>
+                    <a href="#segment-source-intent">Segment the Source of Intent</a>
+                    <a href="#decision-and-result">Decision and Result</a>
+                    <a href="#what-generalizes">What Generalizes</a>
+                    <a href="#post-it-line">The Post-it Line</a>
+                    <a href="#related-posts">Related Posts</a>
+                </nav>
+            </aside>
+            <div class="content-column prose">
+                <section class="prose-section" id="when-metrics-break">
+                    <h2>When two metrics move the way they should not, stop optimizing</h2>
+                    <p>Somewhere in a quarterly review, a marketing leader is staring at a chart that bends the wrong way. Paid media budget is up. Customer acquisition cost is also up. That is the kind of contradiction that should stop the room. When spend scales, you usually expect at least a little efficiency. When CAC rises alongside budget, something systemic is off and tactical channel tweaks are unlikely to fix it.</p>
+                    <p>That was the situation at Website Squirrel, where I was running marketing operations and analytics. We were spending more and acquiring worse-fit customers. The obvious reaction would have been to blame creative, call the agency, or trim spend. The better move was to diagnose the system first. This post is that diagnostic method turned into a repeatable workflow, paired with the segment insight that cut blended CAC by more than 60% in the quarters that followed.</p>
+                </section>
+
+                <section class="prose-section" id="six-moves">
+                    <h2>The six-move method</h2>
+                    <p>I now think of this approach as <strong>Backward Funnel Isolation with Revenue-Weighted Signal Mapping</strong>. The idea is simple: when the top-line economics move in the wrong direction, work backward from the closed-loop outcome until you find the behavior and the segment that actually predict revenue.</p>
+                    <div class="mini-board">
+                        <div class="mini-board-head">
+                            <h3>The method in six moves</h3>
+                            <p>The sequence matters. Most teams skip the early moves and misread the signal.</p>
+                        </div>
+                        <div class="mini-grid">
+                            <div class="mini-card"><div class="label">1</div><div class="value">Anchor</div><div class="note">Name the contradiction clearly instead of vagueing it out.</div></div>
+                            <div class="mini-card"><div class="label">2</div><div class="value">Audit</div><div class="note">Fix attribution before reading the funnel.</div></div>
+                            <div class="mini-card"><div class="label">3</div><div class="value">Map</div><div class="note">Lay out the end-to-end funnel and read transitions, not just stages.</div></div>
+                            <div class="mini-card"><div class="label">4</div><div class="value">Isolate intent</div><div class="note">Find the micro-actions that actually predict conversion.</div></div>
+                            <div class="mini-card"><div class="label">5</div><div class="value">Look earlier</div><div class="note">Study the behavior that happens before the high-intent actions.</div></div>
+                            <div class="mini-card"><div class="label">6</div><div class="value">Segment</div><div class="note">Do not stop at channel. Find who the person is and dollar-weight that signal.</div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="prose-section" id="anchor-and-audit">
+                    <h2>Anchor the symptom and audit attribution first</h2>
+                    <p>The contradiction at Website Squirrel was simple: budget up, CAC up. That one sentence matters because it keeps the team from skipping straight to tactical fixes. We also wrote the problem in a slightly fuller form: spend is up, CAC is up, and we do not yet know whether the real issue is attribution drift, audience quality, or funnel leakage. That kept the diagnosis honest.</p>
+                    <p>Then we stopped the analysis and audited attribution. This is the step most teams skip. We checked UTM taxonomy consistency, conversion event firing, session stitching, CRM-to-platform closed-loop data, and de-duping rules between channels. We found gaps, fixed them, and only then trusted the CAC line enough to analyze it. If attribution is weak, the CAC number is partly fictional, and everything that sits downstream of it is weaker than it looks. That is why I see this case study as an application of the broader <a href="marketing-analyst-problem-solving-framework.html">marketing analyst problem-solving framework</a>, not a separate trick.</p>
+                </section>
+
+                <section class="prose-section" id="map-and-isolate">
+                    <h2>Map the funnel and isolate the high-intent sequence</h2>
+                    <p>Once the measurement layer was trustworthy, we laid out the full funnel: ad impression, click, landing-page view, content or product engagement, pricing-page view, sign-up page click, checkout start, account created, activation, and paid conversion. The important thing was not the raw counts. It was the stage-to-stage movement in the middle. That is where the signal usually hides.</p>
+                    <p>The top of the funnel was not broken. Traffic was coming in. The leak appeared in the transition from engaged browser to committed prospect. When we isolated the most predictive action sequence, the pattern was clear: <strong>pricing-page view &rarr; sign-up-page click &rarr; checkout start</strong>. Anyone completing that sequence converted to paid at a dramatically higher rate than visitors who only completed one or two of those steps.</p>
+                    <p>The key insight was that the pricing-page view was doing most of the diagnostic work. That was the moment the user effectively said, "I am seriously considering paying for this." The intent was being formed before the conversion event itself. That is why optimizing the ad platforms directly on cheap sign-up clicks would have kept sending spend toward people who never intended to buy. The platform was not broken. The target signal was.</p>
+                </section>
+
+                <section class="prose-section" id="segment-source-intent">
+                    <h2>Look backward from intent and segment the source of it</h2>
+                    <p>Once the high-intent sequence was clear, we asked what happened before it. The winning users were not impulse buyers. They tended to read three to five pieces of content, spend eight to twelve minutes in session, and come back two to four times before they touched the pricing page. That gave us a behavioral fingerprint, which suggested there was probably a firmographic fingerprint sitting underneath it too.</p>
+                    <p>We joined the behavioral cohort back to firmographic signals like employee count, revenue band, and industry. That was the step that unlocked the answer. The CAC picture by segment looked very different from the CAC picture by channel.</p>
+                    <div class="mini-board">
+                        <div class="mini-board-head">
+                            <h3>The segment economics were not linear</h3>
+                            <p>The two extremes were both bad. The middle was where the value lived.</p>
+                        </div>
+                        <div class="mini-grid">
+                            <div class="mini-card"><div class="label">Segment A</div><div class="value">Solopreneurs</div><div class="note">High CAC, low LTV, fast churn. Cheap clicks, weak customers.</div></div>
+                            <div class="mini-card"><div class="label">Segment B</div><div class="value">Small established firms</div><div class="note">Lowest CAC, better conversion, better retention. This was the sweet spot.</div></div>
+                            <div class="mini-card"><div class="label">Segment C</div><div class="value">Larger businesses</div><div class="note">Traffic looked healthy, but intent was often adjacent to our actual offer.</div></div>
+                            <div class="mini-card"><div class="label">Core lesson</div><div class="value">Segment by person</div><div class="note">Channel alone was hiding the real economic story.</div></div>
+                        </div>
+                    </div>
+                    <p>That ranking matters. Many teams assume the largest accounts will automatically have the best economics. In this case the distribution was non-monotonic: both ends were weak, and the middle was where the spend actually worked. That is why the real job was not reducing top-of-funnel costs in the abstract. It was redirecting spend toward the segment whose behavior most reliably predicted paid conversion and retention.</p>
+                </section>
+
+                <section class="prose-section" id="decision-and-result">
+                    <h2>The decision and the result</h2>
+                    <p>The budget decision itself was not mine to make. I was the analyst, not the final budget owner. My role was to make the right call so visible that it became the obvious call. The team shifted focus toward the Segment B profile. Landing pages were rewritten to speak to established small businesses rather than solopreneurs. Paid targeting tightened around firmographic proxies that matched the sweet spot. Content was reprioritized toward the research behaviors in the winning cohort, and higher-value leads were routed more intentionally.</p>
+                    <p><strong>The outcome was a 60%+ reduction in blended CAC and a 15% year-over-year contribution to profit.</strong> We were not making the funnel cheaper by squeezing the same bad inputs harder. We were changing where the spend landed and what the platforms were being told to value. This is also the cleanest concrete example I have of why <a href="cost-per-lead-vs-booked-customer.html">cost per lead and cost per booked customer</a> cannot be treated as the same metric.</p>
+                </section>
+
+                <section class="prose-section" id="what-generalizes">
+                    <h2>What generalizes to other businesses</h2>
+                    <p>This method travels well. If the business has a funnel and a closed-loop outcome, the same scaffold still works: name the contradiction, audit attribution, map the funnel, isolate the high-intent actions, study the behavior that precedes them, segment by who the person is, and feed the right signal back into the buying system.</p>
+                    <p>In a home-services environment, the stages would be different. The signals might be ZIP check, call duration, financing-page view, request-a-quote flow, or a booked dispatch instead of a checkout start. But the method is the same. The cheapest leads are often not the best leads, and the platforms will optimize toward whatever signal you hand them. The job is to hand them the signal that actually predicts value.</p>
+                    <p>If you want the shorter version of the methodology itself, it lines up cleanly with the earlier <a href="marketing-analyst-problem-solving-framework.html">problem-solving framework</a>: better framing, disciplined sourcing, and clearer translation into action. This post is just the method under live fire.</p>
+                </section>
+
+                <section class="prose-section" id="post-it-line">
+                    <h2>The one line I would put on a Post-it</h2>
+                    <p><strong>Stop optimizing for the conversion event. Optimize for the segment whose behavior predicts it.</strong></p>
+                    <p>Everything else is detail.</p>
+                </section>
+
+                <section class="section" id="related-posts">
+                    <div class="section-head">
+                        <div class="eyebrow">Related Posts</div>
+                        <h2>Keep reading</h2>
+                    </div>
+                    <div class="related-grid">
+                        <a class="related-card" href="cost-per-lead-vs-booked-customer.html">
+                            <h3>Cost per lead vs. cost per booked customer</h3>
+                            <p>Why rising CAC often hides a quality problem more than a pure media problem.</p>
+                        </a>
+                        <a class="related-card" href="practical-attribution-home-services.html">
+                            <h3>Practical attribution for home services</h3>
+                            <p>The attribution discipline that has to be in place before this method can work.</p>
+                        </a>
+                        <a class="related-card" href="marketing-analyst-problem-solving-framework.html">
+                            <h3>The marketing analyst problem-solving framework</h3>
+                            <p>The broader six-phase model this case study fits inside.</p>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
