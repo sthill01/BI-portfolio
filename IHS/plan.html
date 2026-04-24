@@ -124,7 +124,10 @@
         .brief-card.test .status { background: var(--sky-soft); color: var(--sky); }
         .brief-card h5, .move-card h5, .need-card h5 { margin: 0 0 6px; font-size: 16px; color: var(--ink); }
         .brief-card p, .move-card p, .need-card p { margin: 0; color: var(--muted); font-size: 13px; }
+        .need-card .need-code { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; margin-bottom: 10px; padding: 0 10px; border-radius: 999px; background: var(--sky-soft); color: var(--sky); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
+        .need-card .need-sub { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
         .need-card ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+        .need-card ul li + li { margin-top: 6px; }
         .panel, .section { scroll-margin-top: 88px; }
         @media (max-width: 980px) {
             .hero .stamp, .logo-grid, .lifecycle, .stack-grid, .phase-grid-inner, .brief-grid, .move-grid, .need-grid, .page-layout { grid-template-columns: 1fr; }
@@ -178,6 +181,7 @@
                 <div class="toc-label">On This Page</div>
                 <nav>
                     <a href="#bottom-line">Bottom Line</a>
+                    <a href="#needs-matrix">Needs Matrix</a>
                     <a href="#brand-portfolio">Brand Portfolio</a>
                     <a href="#lifecycle-map">Lifecycle Map</a>
                     <a href="#canonical-stack">Canonical Stack</a>
@@ -191,6 +195,76 @@
             <div class="eyebrow">Bottom Line</div>
             <h2>The goal is not only reporting clarity. It is a framework for growth testing.</h2>
             <p>By the end of 120 days, Jacqueline should have one trustworthy scorecard, one shared language for source and funnel stages, one practical testing rhythm, and a clearer view of where to standardize first. Once the systems are instrumented cleanly, the team can run tests faster, see impact sooner, rule out weak ideas quickly, and scale strong ideas across brands with more confidence.</p>
+        </section>
+
+        <section class="section" id="needs-matrix">
+            <div class="section-head">
+                <div class="eyebrow">Needs Matrix</div>
+                <h2>The six operating needs this role is really being asked to solve.</h2>
+                <p>This is how I would frame the role near the top: six connected workstreams that move from cleaner attribution to better funnel control, stronger unit economics, tighter operational linkage, cleaner data connections, and more useful automation.</p>
+            </div>
+            <div class="need-grid">
+                <article class="need-card">
+                    <div class="need-code">A</div>
+                    <h5>Lead &amp; Attribution</h5>
+                    <p class="need-sub">Goal: make source truth dependable enough to connect demand creation to booked and completed revenue.</p>
+                    <ul>
+                        <li>UTM taxonomy and lead source tracking</li>
+                        <li>Multi-touch attribution and first-touch vs. last-touch views</li>
+                        <li>Offline attribution via MMM</li>
+                    </ul>
+                </article>
+                <article class="need-card">
+                    <div class="need-code">B</div>
+                    <h5>Funnel &amp; Conversion</h5>
+                    <p class="need-sub">Goal: make stage-level leakage visible so marketing, intake, and booking can improve together.</p>
+                    <ul>
+                        <li>Stage-level funnel dashboards</li>
+                        <li>Call-center conversion analysis and speed-to-first-touch</li>
+                        <li>Leakage diagnostics by stage and brand</li>
+                    </ul>
+                </article>
+                <article class="need-card">
+                    <div class="need-code">C</div>
+                    <h5>CAC, ROAS &amp; LTV by Channel and Brand</h5>
+                    <p class="need-sub">Goal: give leadership a clearer read on efficiency, payback, and where to scale or pull back.</p>
+                    <ul>
+                        <li>Channel-level CAC and incrementality-adjusted ROAS</li>
+                        <li>Cohort LTV and payback period</li>
+                        <li>LTV:CAC ratio by brand and channel</li>
+                    </ul>
+                </article>
+                <article class="need-card">
+                    <div class="need-code">D</div>
+                    <h5>Operational Performance &amp; CS Feedback Loop</h5>
+                    <p class="need-sub">Goal: connect acquisition quality to service outcomes instead of stopping at lead volume alone.</p>
+                    <ul>
+                        <li>Marketing-to-service-completion linkage</li>
+                        <li>Complaint and retention signals tied to acquisition source</li>
+                        <li>Revenue per lead by brand, channel, and service path</li>
+                    </ul>
+                </article>
+                <article class="need-card">
+                    <div class="need-code">E</div>
+                    <h5>Data Infrastructure &amp; Connections</h5>
+                    <p class="need-sub">Goal: reduce silos by making the core systems speak the same language and hand data off cleanly.</p>
+                    <ul>
+                        <li>CRM, marketing platform, and analytics integrations</li>
+                        <li>Shared schema, API and ETL pipelines, and data contracts</li>
+                        <li>Lead-routing automation and cleaner cross-system handoffs</li>
+                    </ul>
+                </article>
+                <article class="need-card">
+                    <div class="need-code">F</div>
+                    <h5>AI &amp; Automation Layer</h5>
+                    <p class="need-sub">Goal: cut reporting lag and manual effort while making the measurement layer easier to trust and use.</p>
+                    <ul>
+                        <li>Automated reporting and LLM-assisted narrative summaries</li>
+                        <li>Anomaly detection and automated data-quality alerts</li>
+                        <li>Reduction of manual reporting hours</li>
+                    </ul>
+                </article>
+            </div>
         </section>
 
         <section class="panel" id="brand-portfolio">

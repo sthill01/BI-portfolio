@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,70 +20,896 @@
             --mint: #38A169;
             --gold: #FFB84D;
             --soft: #E7F5FA;
-            --soft-mint: #EBF8F0;
         }
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         html, body { margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top right, rgba(255,255,255,0.84), transparent 28%), var(--paper); color: var(--ink); line-height: 1.6; }
-        .p-topbar { background: #163042; color: #fff; padding: 11px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.12); }
-        .p-topbar .p-brand { font-family: 'Source Serif Pro', serif; font-size: 15px; font-weight: 700; color: #fff; text-decoration: none; }
-        .p-topbar .p-brand span { color: rgba(255,255,255,0.68); font-weight: 400; }
-        .p-topbar .p-nav { display: flex; flex-wrap: wrap; gap: 22px; font-size: 13px; }
-        .p-topbar .p-nav a { color: rgba(255,255,255,0.72); text-decoration: none; }
-        .p-topbar .p-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
-        .wrap { max-width: 1180px; margin: 0 auto; padding: 56px 40px 80px; }
-        .crumb { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 18px; }
-        .crumb a { color: var(--sky); text-decoration: none; }
-        .page-layout { display: grid; grid-template-columns: 238px minmax(0, 1fr); gap: 24px; align-items: start; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.84), transparent 28%), var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+        .p-topbar {
+            background: #163042;
+            color: #fff;
+            padding: 11px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+        .p-topbar .p-brand {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+        .p-topbar .p-brand span {
+            color: rgba(255,255,255,0.68);
+            font-weight: 400;
+        }
+        .p-topbar .p-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            font-size: 13px;
+        }
+        .p-topbar .p-nav a {
+            color: rgba(255,255,255,0.72);
+            text-decoration: none;
+        }
+        .p-topbar .p-nav a[aria-current="page"] {
+            color: #fff;
+            font-weight: 600;
+        }
+        .wrap {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 56px 40px 80px;
+        }
+        .crumb {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            margin-bottom: 18px;
+        }
+        .crumb a {
+            color: var(--sky);
+            text-decoration: none;
+        }
+        .page-layout {
+            display: grid;
+            grid-template-columns: 238px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
         .content-column { min-width: 0; }
-        .toc { position: sticky; top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px; box-shadow: 0 14px 30px rgba(22,48,66,0.06); }
-        .toc .toc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 10px; }
-        .toc nav { display: grid; gap: 6px; }
-        .toc a { display: block; padding: 9px 10px; border-radius: 12px; border: 1px solid transparent; color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none; }
-        .toc a:hover { color: var(--ink); border-color: var(--line); background: #F9FCFC; }
-        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; margin-bottom: 30px; }
-        .hero-card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 34px; box-shadow: 0 18px 36px rgba(22,48,66,0.08); }
-        .hero-card .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 12px; }
-        .hero-card h1 { margin: 0 0 14px; font-family: 'Source Serif Pro', serif; font-size: 48px; letter-spacing: -1.2px; line-height: 1.04; }
-        .hero-card p { margin: 0; color: var(--muted); font-size: 15px; max-width: 62ch; }
-        .hero-panel h2 { margin: 0 0 12px; font-family: 'Source Serif Pro', serif; font-size: 25px; }
-        .hero-panel ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+        .toc {
+            position: sticky;
+            top: 24px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #F8FCFB 100%);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 14px 30px rgba(22,48,66,0.06);
+        }
+        .toc .toc-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--sky);
+            margin-bottom: 10px;
+        }
+        .toc nav {
+            display: grid;
+            gap: 6px;
+        }
+        .toc a {
+            display: block;
+            padding: 9px 10px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            color: var(--ink);
+            border-color: var(--line);
+            background: #F9FCFC;
+        }
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+        .hero-card {
+            border-radius: 26px;
+            padding: 34px;
+            box-shadow: 0 18px 36px rgba(22,48,66,0.08);
+            border: 1px solid var(--line);
+        }
+        .hero-lead {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #FFFFFF 0%, #EDF7FA 100%);
+        }
+        .hero-lead::after {
+            content: "";
+            position: absolute;
+            right: -56px;
+            bottom: -64px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(43,140,190,0.16), rgba(43,140,190,0));
+        }
+        .hero-panel {
+            background: linear-gradient(160deg, #163042 0%, #1F4F68 100%);
+            color: #FFFFFF;
+        }
+        .hero-card .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--sky);
+            margin-bottom: 12px;
+        }
+        .hero-lead h1 {
+            margin: 0 0 14px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 48px;
+            letter-spacing: -1.2px;
+            line-height: 1.04;
+        }
+        .hero-lead p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+            max-width: 62ch;
+        }
+        .hero-panel h2 {
+            margin: 0 0 12px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 25px;
+            color: #FFFFFF;
+        }
+        .hero-panel ul {
+            margin: 0;
+            padding-left: 18px;
+            color: rgba(255,255,255,0.84);
+            font-size: 14px;
+        }
         .hero-panel li + li { margin-top: 8px; }
-        .section { margin-bottom: 32px; }
-        .section-head { margin-bottom: 16px; }
-        .section-head .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 8px; }
-        .section-head h2 { margin: 0 0 8px; font-family: 'Source Serif Pro', serif; font-size: 31px; letter-spacing: -0.7px; }
-        .section-head p { margin: 0; color: var(--muted); font-size: 14px; max-width: 66ch; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
-        .card h3 { margin: 0 0 8px; font-size: 18px; color: var(--ink); }
-        .card p, .card li { color: var(--muted); font-size: 13.5px; }
-        .card ul { margin: 0; padding-left: 18px; }
-        .mini-board { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
-        .mini-board-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin-bottom: 14px; }
-        .mini-board-head h3 { margin: 0; font-size: 18px; color: var(--ink); }
-        .mini-board-head p { margin: 0; color: var(--muted); font-size: 12.5px; max-width: 50ch; }
-        .mini-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
-        .mini-card { background: linear-gradient(135deg, #FFFFFF, #F8FCFB); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
-        .mini-card .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 5px; }
-        .mini-card .value { font-family: 'Source Serif Pro', serif; font-size: 24px; line-height: 1.05; color: var(--ink); }
-        .mini-card .note { margin-top: 6px; color: var(--muted); font-size: 11.5px; }
-        .workflow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 16px; }
-        .workflow-step { background: linear-gradient(135deg, #FFFFFF, #F8FCFB); border: 1px solid var(--line); border-radius: 18px; padding: 16px 14px; min-height: 124px; }
-        .workflow-step .phase { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sky); margin-bottom: 8px; }
-        .workflow-step h3 { margin: 0 0 6px; font-size: 17px; }
-        .workflow-step p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
-        .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-        .pill { display: inline-flex; align-items: center; padding: 6px 9px; border-radius: 999px; background: var(--soft); color: var(--ink); font-size: 11px; font-weight: 700; }
-        .pill.good { background: var(--soft-mint); color: #1F5E3D; }
-        .bridge { background: linear-gradient(135deg, #FFFFFF, #FFF8EA); border: 1px solid var(--line); border-radius: 22px; padding: 24px; }
-        .bridge h3 { margin: 0 0 8px; font-family: 'Source Serif Pro', serif; font-size: 25px; }
-        .bridge p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
-        .section, .bridge { scroll-margin-top: 88px; }
-        @media (max-width: 1040px) { .page-layout { grid-template-columns: 1fr; } .toc { position: relative; top: auto; } }
-        @media (max-width: 960px) { .hero, .grid, .workflow, .mini-grid { grid-template-columns: 1fr; } .mini-board-head { flex-direction: column; align-items: flex-start; } }
-        @media (max-width: 720px) { .p-topbar { flex-direction: column; gap: 10px; align-items: flex-start; padding: 12px 20px; } .wrap { padding: 44px 20px 72px; } .hero-card h1 { font-size: 38px; } }
+        .hero-panel li::marker { color: var(--gold); }
+        .hero-tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(43,140,190,0.10);
+            color: var(--ink);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .section {
+            margin-bottom: 32px;
+            scroll-margin-top: 88px;
+        }
+        .section-shell {
+            padding: 30px;
+            border-radius: 30px;
+            border: 1px solid var(--line);
+        }
+        .section-head {
+            margin-bottom: 18px;
+        }
+        .section-head .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--sky);
+            margin-bottom: 8px;
+        }
+        .section-head h2 {
+            margin: 0 0 8px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 31px;
+            letter-spacing: -0.7px;
+        }
+        .section-head p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            max-width: 68ch;
+        }
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: var(--soft);
+            color: var(--ink);
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .pill.good {
+            background: rgba(56,161,105,0.12);
+            color: #1F5E3D;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #FFFFFF, #F8FCFB);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 16px;
+        }
+        .stat-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 28px;
+            line-height: 1.05;
+            color: var(--ink);
+            overflow-wrap: anywhere;
+        }
+        .stat-value.compact {
+            font-size: 21px;
+            line-height: 1.12;
+        }
+        .stat-note {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .feature-list {
+            list-style: none;
+            margin: 16px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 10px;
+        }
+        .feature-list li {
+            position: relative;
+            padding-left: 16px;
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+        .feature-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--sky);
+        }
+        .feature-list.warm li::before { background: var(--gold); }
+        .lanes-section {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F6FBFB 100%);
+            box-shadow: 0 18px 36px rgba(22,48,66,0.06);
+        }
+        .lane-map {
+            display: grid;
+            grid-template-columns: 0.84fr 1.16fr;
+            gap: 22px;
+            align-items: start;
+        }
+        .lane-intro {
+            background: linear-gradient(160deg, #163042 0%, #21556F 100%);
+            color: #FFFFFF;
+            border-radius: 24px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .lane-intro::after {
+            content: "";
+            position: absolute;
+            right: -40px;
+            bottom: -46px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,184,77,0.22), rgba(255,184,77,0));
+        }
+        .lane-intro h3 {
+            margin: 0 0 10px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 28px;
+            line-height: 1.1;
+        }
+        .lane-intro p {
+            margin: 0;
+            color: rgba(255,255,255,0.80);
+            font-size: 14px;
+        }
+        .lane-intro .pill-row { margin-top: 16px; }
+        .lane-intro .pill {
+            background: rgba(255,255,255,0.12);
+            color: #FFFFFF;
+        }
+        .lane-note {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,0.14);
+        }
+        .lane-note .label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: rgba(255,255,255,0.64);
+            margin-bottom: 8px;
+        }
+        .lane-list { display: grid; gap: 0; }
+        .lane-item {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 16px;
+            padding: 15px 0;
+            border-top: 1px solid var(--line);
+        }
+        .lane-item:first-child {
+            border-top: none;
+            padding-top: 0;
+        }
+        .lane-item:last-child { padding-bottom: 0; }
+        .lane-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #EDF7FA;
+            color: var(--sky);
+            font-family: 'Source Serif Pro', serif;
+            font-size: 19px;
+            font-weight: 700;
+        }
+        .lane-item h3 {
+            margin: 0 0 4px;
+            font-size: 18px;
+        }
+        .lane-item p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+        .dialogue-section {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F9FCFC 100%);
+        }
+        .dialogue-shell {
+            display: grid;
+            grid-template-columns: 0.92fr 1.08fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+        .dialogue-panel,
+        .thread {
+            border-radius: 24px;
+            border: 1px solid var(--line);
+            background: #FFFFFF;
+            padding: 22px;
+        }
+        .dialogue-panel h3,
+        .thread h3,
+        .note-panel h3,
+        .test-metrics h3,
+        .queue-summary h3,
+        .scenario-lead h3,
+        .manifesto-copy h3 {
+            margin: 0 0 10px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 26px;
+            letter-spacing: -0.4px;
+        }
+        .dialogue-panel p,
+        .thread p,
+        .note-panel p,
+        .test-metrics p,
+        .queue-summary p,
+        .scenario-lead p,
+        .manifesto-copy p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+        .thread {
+            background: linear-gradient(180deg, #F3FAFC 0%, #FFFFFF 100%);
+            display: grid;
+            gap: 12px;
+        }
+        .message {
+            max-width: 86%;
+            padding: 14px 16px;
+            border-radius: 18px;
+            font-size: 13.5px;
+            line-height: 1.5;
+        }
+        .message small {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 700;
+        }
+        .message.user {
+            background: #EDF7FA;
+            color: var(--ink);
+            border-bottom-left-radius: 6px;
+        }
+        .message.ai {
+            margin-left: auto;
+            background: #163042;
+            color: #FFFFFF;
+            border-bottom-right-radius: 6px;
+        }
+        .message.ai small { color: rgba(255,255,255,0.64); }
+        .pipeline-section {
+            background: linear-gradient(135deg, #EEF8F7 0%, #FFFFFF 100%);
+        }
+        .pipeline-track {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            position: relative;
+        }
+        .pipeline-track::before {
+            content: "";
+            position: absolute;
+            left: 6%;
+            right: 6%;
+            top: 38px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(43,140,190,0.30), rgba(56,161,105,0.30));
+        }
+        .pipeline-node {
+            position: relative;
+            background: #FFFFFF;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 24px 18px 18px;
+            min-height: 166px;
+            box-shadow: 0 10px 22px rgba(22,48,66,0.05);
+        }
+        .pipeline-node:nth-child(2n) {
+            transform: translateY(20px);
+            background: #F9FCFC;
+        }
+        .pipeline-node::before {
+            content: attr(data-step);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #EDF7FA;
+            color: var(--sky);
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .pipeline-node h3,
+        .relay-stop h3,
+        .studio-note h3,
+        .rank-row h3,
+        .scenario-card h3 {
+            margin: 0 0 6px;
+            font-size: 18px;
+        }
+        .pipeline-node p,
+        .relay-stop p,
+        .studio-note p,
+        .rank-row p,
+        .scenario-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.48;
+        }
+        .pipeline-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .note-panel {
+            background: rgba(255,255,255,0.88);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+        }
+        .note-panel ul {
+            margin: 14px 0 0;
+            padding-left: 18px;
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+        .note-panel li + li { margin-top: 8px; }
+        .studio-section {
+            background: linear-gradient(145deg, #163042 0%, #21556F 100%);
+            box-shadow: 0 22px 42px rgba(22,48,66,0.18);
+        }
+        .studio-section .section-head .eyebrow {
+            color: rgba(255,255,255,0.72);
+        }
+        .studio-section .section-head h2 {
+            color: #FFFFFF;
+        }
+        .studio-section .section-head p {
+            color: rgba(255,255,255,0.76);
+        }
+        .studio-board {
+            display: grid;
+            grid-template-columns: 0.94fr 1.06fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+        .studio-notes {
+            display: grid;
+            gap: 12px;
+        }
+        .studio-note {
+            border-radius: 22px;
+            padding: 18px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.08);
+        }
+        .studio-note h3 { color: #FFFFFF; }
+        .studio-note p { color: rgba(255,255,255,0.74); }
+        .test-metrics {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 22px;
+            border: 1px solid rgba(255,255,255,0.16);
+        }
+        .studio-section .stat-card {
+            background: linear-gradient(135deg, #FFFFFF, #F5FBFA);
+        }
+        .queue-section {
+            background: linear-gradient(135deg, #FFF8EC 0%, #FFFFFF 100%);
+            border-color: #F0DEBF;
+        }
+        .queue-layout {
+            display: grid;
+            grid-template-columns: 0.80fr 1.20fr;
+            gap: 18px;
+        }
+        .queue-summary {
+            background: #FFFDF8;
+            border: 1px dashed #E4D1B0;
+            border-radius: 24px;
+            padding: 22px;
+        }
+        .rank-list { display: grid; gap: 12px; }
+        .rank-row {
+            display: grid;
+            grid-template-columns: 56px 1fr 180px;
+            gap: 16px;
+            align-items: center;
+            background: #FFFFFF;
+            border: 1px solid #F0DEBF;
+            border-radius: 22px;
+            padding: 16px 18px;
+        }
+        .rank-index {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #FFF2D9;
+            color: #A36412;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .rank-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .rank-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 8px;
+            border-radius: 999px;
+            background: #FFF7E8;
+            color: #8A5B16;
+            font-size: 10.5px;
+            font-weight: 700;
+        }
+        .rank-score {
+            text-align: right;
+        }
+        .rank-score .value {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 30px;
+            line-height: 1;
+            color: var(--ink);
+        }
+        .rank-score .note {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 11.5px;
+        }
+        .scenario-section {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F1F8FB 100%);
+        }
+        .scenario-shell {
+            display: grid;
+            grid-template-columns: 0.76fr 1.24fr;
+            gap: 18px;
+        }
+        .scenario-lead {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(160deg, #163042 0%, #1D4F69 100%);
+            color: #FFFFFF;
+            border-radius: 24px;
+            padding: 24px;
+        }
+        .scenario-lead::after {
+            content: "";
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.14), rgba(255,255,255,0));
+        }
+        .scenario-lead p { color: rgba(255,255,255,0.80); }
+        .scenario-lead .pill-row { margin-top: 18px; }
+        .scenario-lead .pill {
+            background: rgba(255,255,255,0.12);
+            color: #FFFFFF;
+        }
+        .scenario-cases {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .scenario-card {
+            border-radius: 22px;
+            padding: 18px;
+            border: 1px solid var(--line);
+            background: #FFFFFF;
+            border-top: 4px solid var(--sky);
+        }
+        .scenario-card.upside { border-top-color: var(--mint); }
+        .scenario-card.downside { border-top-color: var(--gold); }
+        .scenario-card .label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .scenario-card .value {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 34px;
+            line-height: 1;
+            color: var(--ink);
+            margin-bottom: 10px;
+        }
+        .relay-section {
+            background: linear-gradient(135deg, #EEF8F7 0%, #FFFFFF 100%);
+        }
+        .relay-track {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            position: relative;
+        }
+        .relay-track::before {
+            content: "";
+            position: absolute;
+            left: 6%;
+            right: 6%;
+            top: 34px;
+            border-top: 2px dashed rgba(43,140,190,0.30);
+        }
+        .relay-stop {
+            position: relative;
+            min-height: 170px;
+            background: #FFFFFF;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 24px 16px 18px;
+            box-shadow: 0 10px 22px rgba(22,48,66,0.05);
+        }
+        .relay-stop::before {
+            content: "";
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--mint);
+            box-shadow: 0 0 0 5px rgba(56,161,105,0.12);
+        }
+        .relay-stop:nth-child(2n)::before {
+            background: var(--sky);
+            box-shadow: 0 0 0 5px rgba(43,140,190,0.12);
+        }
+        .relay-stop .pill-row { margin-top: 12px; }
+        .manifesto-section {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FCFB 100%);
+        }
+        .manifesto-layout {
+            display: grid;
+            grid-template-columns: 0.76fr 1.24fr;
+            gap: 18px;
+        }
+        .manifesto-copy {
+            background: linear-gradient(160deg, #163042 0%, #214A63 100%);
+            color: #FFFFFF;
+            border-radius: 24px;
+            padding: 24px;
+        }
+        .manifesto-copy p {
+            color: rgba(255,255,255,0.80);
+            margin-bottom: 14px;
+        }
+        .manifesto-copy p:last-child { margin-bottom: 0; }
+        .manifesto-highlight {
+            display: inline-block;
+            padding: 8px 10px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.10);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        .checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .check-item {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 14px;
+            align-items: start;
+            background: #FFFFFF;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 16px;
+        }
+        .check-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #EDF7FA;
+            color: var(--sky);
+            font-family: 'Source Serif Pro', serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .check-item strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 16px;
+            color: var(--ink);
+        }
+        .check-item p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+        .bridge {
+            background: linear-gradient(135deg, #FFFFFF, #FFF8EA);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 0 16px 32px rgba(22,48,66,0.08);
+        }
+        .bridge h3 {
+            margin: 0 0 8px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 25px;
+        }
+        .bridge p {
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+        @media (max-width: 1040px) {
+            .page-layout { grid-template-columns: 1fr; }
+            .toc { position: relative; top: auto; }
+        }
+        @media (max-width: 960px) {
+            .hero,
+            .lane-map,
+            .dialogue-shell,
+            .pipeline-columns,
+            .studio-board,
+            .queue-layout,
+            .scenario-shell,
+            .manifesto-layout {
+                grid-template-columns: 1fr;
+            }
+            .pipeline-track,
+            .relay-track,
+            .scenario-cases,
+            .stats-grid,
+            .checklist {
+                grid-template-columns: 1fr;
+            }
+            .pipeline-track::before,
+            .relay-track::before {
+                display: none;
+            }
+            .pipeline-node:nth-child(2n) {
+                transform: none;
+            }
+            .rank-row {
+                grid-template-columns: 1fr;
+                text-align: left;
+            }
+            .rank-score {
+                text-align: left;
+            }
+        }
+        @media (max-width: 720px) {
+            .p-topbar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+                padding: 12px 20px;
+            }
+            .wrap { padding: 44px 20px 72px; }
+            .hero-lead h1 { font-size: 38px; }
+            .section-shell { padding: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -110,10 +936,16 @@
         <div class="crumb"><a href="../index.html">Home</a> &nbsp;/&nbsp; <span>Marketing AI</span></div>
 
         <section class="hero">
-            <div class="hero-card">
+            <div class="hero-card hero-lead">
                 <div class="eyebrow">Marketing AI</div>
                 <h1>How I use AI in marketing: from dashboard interaction to fresher reporting and faster testing.</h1>
-                <p>I use AI where it shortens the distance between question and action. That includes asking follow-up questions of dashboards, extracting and reshaping messy data, cleaning and matching records, generating test ideas, prioritizing growth work, supporting statistical modeling, and pairing Python with automations so reporting stays as fresh as the source systems allow.</p>
+                <p>I use AI where it shortens the distance between question and action. That includes asking follow-up questions of dashboards, extracting and reshaping messy data, cleaning and matching records, generating test ideas, prioritizing growth work, supporting practical modeling, and pairing Python with automations so reporting stays as fresh as the source systems allow.</p>
+                <div class="hero-tag-row" aria-label="Marketing AI themes">
+                    <span class="hero-tag">Dashboard Q&amp;A</span>
+                    <span class="hero-tag">Data cleanup</span>
+                    <span class="hero-tag">Growth testing</span>
+                    <span class="hero-tag">Python refresh loops</span>
+                </div>
             </div>
             <aside class="hero-card hero-panel">
                 <h2>Working rules</h2>
@@ -143,302 +975,502 @@
             </aside>
             <div class="content-column">
 
-        <section class="section" id="where-ai-fits">
-            <div class="section-head">
-                <div class="eyebrow">Where AI Fits</div>
-                <h2>The marketing uses that are actually worth doing.</h2>
-                <p>The best fit is not â€œAI everywhere.â€ It is using AI in the places where marketing teams lose time, miss signal, or wait too long for an answer. These are the main lanes I would use it in today.</p>
-            </div>
-            <div class="grid">
-                <article class="card">
-                    <h3>Dashboard interaction</h3>
-                    <p>Use AI to answer the follow-up question dashboards usually miss: what changed, why it changed, and what needs attention next.</p>
-                </article>
-                <article class="card">
-                    <h3>Data extraction</h3>
-                    <p>Pull usable fields from exports, PDFs, spreadsheets, call logs, notes, and APIs without hand-cleaning every source from scratch.</p>
-                </article>
-                <article class="card">
-                    <h3>Data manipulation</h3>
-                    <p>Reshape, match, group, and standardize raw fields into reporting-ready tables that support scorecards, briefs, and models.</p>
-                </article>
-                <article class="card">
-                    <h3>Cleaning and QA</h3>
-                    <p>Flag duplicates, taxonomy drift, missing source tags, malformed dates, and suspicious outliers before they distort reporting.</p>
-                </article>
-                <article class="card">
-                    <h3>Growth testing and ideation</h3>
-                    <p>Generate hypotheses, summarize prior learnings, propose segments or offers, and draft test plans that the team can refine.</p>
-                </article>
-                <article class="card">
-                    <h3>Prioritization</h3>
-                    <p>Rank the backlog by likely impact, confidence, effort, and data readiness so the team is not guessing what to work on first.</p>
-                </article>
-                <article class="card">
-                    <h3>Statistical modeling</h3>
-                    <p>Support simple forecasting, seasonality analysis, response curves, anomaly detection, and scenario planning in plain language.</p>
-                </article>
-                <article class="card">
-                    <h3>Agents and automation</h3>
-                    <p>Use scheduled jobs, AI agents, and Python refresh loops to retrieve fresh data, validate it, and push summaries or alerts on a useful cadence.</p>
-                </article>
-                <article class="card">
-                    <h3>Recommended additions</h3>
-                    <p>Voice-of-customer summaries, call transcript clustering, weekly executive briefs, and martech taxonomy audits are all strong low-friction uses.</p>
-                </article>
-            </div>
-        </section>
+                <section class="section section-shell lanes-section" id="where-ai-fits">
+                    <div class="section-head">
+                        <div class="eyebrow">Where AI Fits</div>
+                        <h2>The marketing uses that are actually worth doing.</h2>
+                        <p>The best fit is not "AI everywhere." It is using AI in the places where marketing teams lose time, miss signal, or wait too long for an answer. These are the lanes where I think it adds real value now.</p>
+                    </div>
+                    <div class="lane-map">
+                        <div class="lane-intro">
+                            <h3>AI earns its place when it removes waiting time, hand-cleaning, or guesswork.</h3>
+                            <p>The strongest uses tend to be the unglamorous ones: better follow-up analysis, cleaner source data, quicker test readouts, and fresher reporting that leadership can act on.</p>
+                            <div class="pill-row">
+                                <span class="pill">Shorter time to answer</span>
+                                <span class="pill">Less manual cleanup</span>
+                                <span class="pill">Faster weekly action</span>
+                            </div>
+                            <div class="lane-note">
+                                <div class="label">Best near-term uses</div>
+                                <p>Dashboard follow-ups, messy data cleanup, prioritization, test synthesis, and executive briefs usually pay off sooner than flashy AI demos.</p>
+                            </div>
+                        </div>
+                        <div class="lane-list">
+                            <article class="lane-item">
+                                <span class="lane-num">01</span>
+                                <div>
+                                    <h3>Dashboard interaction</h3>
+                                    <p>Use AI to answer the follow-up question dashboards usually miss: what changed, why it changed, and what needs attention next.</p>
+                                </div>
+                            </article>
+                            <article class="lane-item">
+                                <span class="lane-num">02</span>
+                                <div>
+                                    <h3>Data extraction and cleaning</h3>
+                                    <p>Pull usable fields from exports, PDFs, spreadsheets, notes, call logs, and APIs without hand-cleaning every source from scratch.</p>
+                                </div>
+                            </article>
+                            <article class="lane-item">
+                                <span class="lane-num">03</span>
+                                <div>
+                                    <h3>Data shaping and QA</h3>
+                                    <p>Reshape, match, group, and standardize raw fields into reporting-ready tables while catching duplicates, drift, and missing source tags.</p>
+                                </div>
+                            </article>
+                            <article class="lane-item">
+                                <span class="lane-num">04</span>
+                                <div>
+                                    <h3>Growth testing</h3>
+                                    <p>Generate test ideas, summarize prior wins and losses, and turn results into a quick decision memo instead of a slow postmortem.</p>
+                                </div>
+                            </article>
+                            <article class="lane-item">
+                                <span class="lane-num">05</span>
+                                <div>
+                                    <h3>Prioritization</h3>
+                                    <p>Rank the backlog by likely impact, confidence, effort, and data readiness so the next few actions are obvious.</p>
+                                </div>
+                            </article>
+                            <article class="lane-item">
+                                <span class="lane-num">06</span>
+                                <div>
+                                    <h3>Forecasting and modeling</h3>
+                                    <p>Support simple forecasting, seasonality analysis, anomaly detection, and scenario planning in plain business language.</p>
+                                </div>
+                            </article>
+                            <article class="lane-item">
+                                <span class="lane-num">07</span>
+                                <div>
+                                    <h3>Agents and automation</h3>
+                                    <p>Use scheduled jobs, AI agents, and Python refresh loops to retrieve fresh data, validate it, and push useful summaries or alerts.</p>
+                                </div>
+                            </article>
+                            <article class="lane-item">
+                                <span class="lane-num">08</span>
+                                <div>
+                                    <h3>Executive briefs and voice-of-customer review</h3>
+                                    <p>Summarize call themes, cluster repeated friction points, and translate dense reporting into something a leader can scan quickly.</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
 
-        <section class="section" id="dashboard-interaction">
-            <div class="section-head">
-                <div class="eyebrow">Dashboard Interaction</div>
-                <h2>Dashboards answer the first question. AI is useful when the next question shows up.</h2>
-                <p>I like AI layered on top of a stable scorecard so it can explain movement, cut results by segment, compare periods, and answer plain-language questions without turning every follow-up into a new dashboard build.</p>
-            </div>
-            <div class="grid">
-                <article class="card">
-                    <h3>Natural-language analysis</h3>
-                    <p>Ask which channels drove booked jobs, which campaigns lost efficiency, or where cost per booked customer is rising.</p>
-                </article>
-                <article class="card">
-                    <h3>Disposable visuals</h3>
-                    <p>Generate a one-off chart, table, or variance breakdown for the question at hand, then promote it to a permanent scorecard only if it proves useful.</p>
-                </article>
-                <article class="card">
-                    <h3>Executive summaries</h3>
-                    <p>Turn a dense reporting view into a plain-language brief: what moved, why it matters, and what the team should do next.</p>
-                </article>
-            </div>
-            <div class="mini-board">
-                <div class="mini-board-head">
-                    <h3>Example AI-assisted dashboard brief</h3>
-                    <p>The strongest use is not a chatbot for its own sake. It is a faster path from a live scorecard to a practical recommendation.</p>
-                </div>
-                <div class="mini-grid">
-                    <div class="mini-card"><div class="label">Question</div><div class="value">Booked jobs by source?</div><div class="note">Plain-language follow-up on top of the scorecard</div></div>
-                    <div class="mini-card"><div class="label">Freshness</div><div class="value">2 hrs</div><div class="note">Useful only if the data is recent enough to act on</div></div>
-                    <div class="mini-card"><div class="label">What changed</div><div class="value">Search up 14%</div><div class="note">Local paid search produced the strongest week-over-week lift</div></div>
-                    <div class="mini-card"><div class="label">Risk flag</div><div class="value">Call-book rate down</div><div class="note">Demand is healthy, but intake conversion softened</div></div>
-                    <div class="mini-card"><div class="label">Next cut</div><div class="value">HVAC vs plumbing</div><div class="note">AI can suggest the next useful segment to inspect</div></div>
-                    <div class="mini-card"><div class="label">Action</div><div class="value">Scale + check routing</div><div class="note">Budget move plus a downstream handoff review</div></div>
-                </div>
-            </div>
-        </section>
+                <section class="section section-shell dialogue-section" id="dashboard-interaction">
+                    <div class="section-head">
+                        <div class="eyebrow">Dashboard Interaction</div>
+                        <h2>Dashboards answer the first question. AI is useful when the next question shows up.</h2>
+                        <p>I like AI layered on top of a stable scorecard so it can explain movement, cut results by segment, compare periods, and answer plain-language questions without turning every follow-up into a new dashboard build.</p>
+                    </div>
+                    <div class="dialogue-shell">
+                        <article class="dialogue-panel">
+                            <h3>What AI is doing here</h3>
+                            <p>The job is not to replace the dashboard. The job is to help the team move from numbers to interpretation and then to action.</p>
+                            <ul class="feature-list">
+                                <li>Explain movement in plain language.</li>
+                                <li>Surface the next useful segment or comparison.</li>
+                                <li>Turn a dense scorecard into a short executive brief.</li>
+                                <li>Separate demand movement from downstream intake issues.</li>
+                            </ul>
+                        </article>
+                        <article class="thread" aria-label="Example AI conversation">
+                            <div class="message user"><small>Question</small>Which sources drove booked jobs yesterday?</div>
+                            <div class="message ai"><small>AI response</small>Paid search produced the strongest lift, up 14% versus the prior day. Branded search held steady. Social volume increased, but booked-customer efficiency softened.</div>
+                            <div class="message user"><small>Follow-up</small>Is that a demand issue or an intake issue?</div>
+                            <div class="message ai"><small>Decision cue</small>Demand is healthy. The weak point is call-to-book conversion, so I would check routing and script adherence before pushing more budget.</div>
+                        </article>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Question</div>
+                            <div class="stat-value">Booked jobs by source?</div>
+                            <div class="stat-note">Plain-language follow-up on top of the scorecard.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Freshness</div>
+                            <div class="stat-value">2 hrs</div>
+                            <div class="stat-note">Useful only if the data is recent enough to act on.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Risk flag</div>
+                            <div class="stat-value">Call-book rate down</div>
+                            <div class="stat-note">Demand is healthy, but the intake handoff softened.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Action</div>
+                            <div class="stat-value">Scale + check routing</div>
+                            <div class="stat-note">Budget move plus a downstream handoff review.</div>
+                        </div>
+                    </div>
+                </section>
 
-        <section class="section" id="data-workflows">
-            <div class="section-head">
-                <div class="eyebrow">Data Workflows</div>
-                <h2>AI is just as useful before the dashboard as it is on top of it.</h2>
-                <p>Some of the best wins come from extraction, manipulation, and cleaning work. AI can help turn messy source data into something reporting can trust, especially when paired with Python for repeatable retrieval and transformation.</p>
-            </div>
-            <div class="workflow">
-                <article class="workflow-step"><span class="phase">Step 1</span><h3>Pull</h3><p>Retrieve source data from APIs, exports, spreadsheets, call systems, or PDFs.</p></article>
-                <article class="workflow-step"><span class="phase">Step 2</span><h3>Normalize</h3><p>Standardize date formats, field names, campaign names, source labels, and stage definitions.</p></article>
-                <article class="workflow-step"><span class="phase">Step 3</span><h3>Match</h3><p>Join spend, lead, call, booking, and revenue records into one operational view.</p></article>
-                <article class="workflow-step"><span class="phase">Step 4</span><h3>Validate</h3><p>Catch duplicates, nulls, taxonomy drift, and suspicious anomalies before publishing.</p></article>
-                <article class="workflow-step"><span class="phase">Step 5</span><h3>Publish</h3><p>Refresh dashboards, scorecards, or briefs on the cadence the team actually needs.</p></article>
-            </div>
-            <div class="mini-board">
-                <div class="mini-board-head">
-                    <h3>Example extraction and cleaning board</h3>
-                    <p>This is the layer that makes the downstream scorecards believable enough to use.</p>
-                </div>
-                <div class="mini-grid">
-                    <div class="mini-card"><div class="label">Source systems</div><div class="value">6</div><div class="note">Ad, CRM, call, booking, spreadsheet, and export inputs</div></div>
-                    <div class="mini-card"><div class="label">Rows normalized</div><div class="value">84K</div><div class="note">Records standardized into one reporting structure</div></div>
-                    <div class="mini-card"><div class="label">Match rate</div><div class="value">92%</div><div class="note">Spend and downstream outcomes tied together</div></div>
-                    <div class="mini-card"><div class="label">Duplicate removal</div><div class="value">1.8K</div><div class="note">Conflicting or repeated records removed before reporting</div></div>
-                    <div class="mini-card"><div class="label">Taxonomy flags</div><div class="value">4</div><div class="note">Naming drift caught before it breaks attribution</div></div>
-                    <div class="mini-card"><div class="label">Refresh cadence</div><div class="value">Hourly</div><div class="note">Near real-time where the source systems allow it</div></div>
-                </div>
-            </div>
-        </section>
+                <section class="section section-shell pipeline-section" id="data-workflows">
+                    <div class="section-head">
+                        <div class="eyebrow">Data Workflows</div>
+                        <h2>AI is just as useful before the dashboard as it is on top of it.</h2>
+                        <p>Some of the best wins come from extraction, manipulation, and cleaning work. AI can help turn messy source data into something reporting can trust, especially when paired with Python for repeatable retrieval and transformation.</p>
+                    </div>
+                    <div class="pipeline-track" aria-label="AI data workflow">
+                        <article class="pipeline-node" data-step="1">
+                            <h3>Pull</h3>
+                            <p>Retrieve source data from APIs, exports, spreadsheets, call systems, or PDFs.</p>
+                        </article>
+                        <article class="pipeline-node" data-step="2">
+                            <h3>Normalize</h3>
+                            <p>Standardize field names, date formats, source labels, and stage definitions so the same metric means the same thing everywhere.</p>
+                        </article>
+                        <article class="pipeline-node" data-step="3">
+                            <h3>Match</h3>
+                            <p>Join spend, lead, call, booking, and revenue records into one operating view.</p>
+                        </article>
+                        <article class="pipeline-node" data-step="4">
+                            <h3>Validate</h3>
+                            <p>Catch duplicates, nulls, taxonomy drift, and suspicious anomalies before publishing.</p>
+                        </article>
+                        <article class="pipeline-node" data-step="5">
+                            <h3>Publish</h3>
+                            <p>Refresh dashboards, scorecards, or briefs on the cadence the team actually needs.</p>
+                        </article>
+                    </div>
+                    <div class="pipeline-columns">
+                        <article class="note-panel">
+                            <h3>Where AI helps most</h3>
+                            <p>AI is strongest when the input is messy and the structure is inconsistent.</p>
+                            <ul>
+                                <li>Extract fields from exports, PDFs, notes, and call logs.</li>
+                                <li>Standardize names, tags, and stage labels.</li>
+                                <li>Flag duplicates, malformed dates, and missing source values.</li>
+                                <li>Cluster text patterns that are too tedious to sort manually.</li>
+                            </ul>
+                        </article>
+                        <article class="note-panel">
+                            <h3>Where Python keeps it durable</h3>
+                            <p>Python is what makes the workflow repeatable instead of a one-time cleanup sprint.</p>
+                            <ul>
+                                <li>Scheduled retrieval loops for ad, CRM, call, and booking systems.</li>
+                                <li>Repeatable joins and validation checks before refresh.</li>
+                                <li>Near real-time reporting where the source systems allow it.</li>
+                                <li>Reusable tables that feed dashboards, briefs, and alerts.</li>
+                            </ul>
+                        </article>
+                    </div>
+                </section>
 
-        <section class="section" id="growth-testing">
-            <div class="section-head">
-                <div class="eyebrow">Growth Testing</div>
-                <h2>AI is strong when the team needs more test ideas and faster readouts.</h2>
-                <p>Once the measurement layer is stable, AI can help the team move faster by drafting hypotheses, surfacing segment opportunities, clustering prior wins and losses, and summarizing test outcomes in a way leaders can scan quickly.</p>
-            </div>
-            <div class="grid">
-                <article class="card">
-                    <h3>Hypothesis generation</h3>
-                    <p>Draft ideas around channels, offers, landing pages, follow-up timing, and audience segments without waiting for a long planning cycle.</p>
-                </article>
-                <article class="card">
-                    <h3>Learning synthesis</h3>
-                    <p>Summarize what the last few tests suggest so the next experiment is informed by patterns instead of memory.</p>
-                </article>
-                <article class="card">
-                    <h3>Faster readouts</h3>
-                    <p>Turn a test result into a short decision memo: scale it, revise it, or stop it.</p>
-                </article>
-            </div>
-            <div class="mini-board">
-                <div class="mini-board-head">
-                    <h3>Example growth-testing board</h3>
-                    <p>The point is faster learning, not more experimentation theater.</p>
-                </div>
-                <div class="mini-grid">
-                    <div class="mini-card"><div class="label">Hypotheses queued</div><div class="value">9</div><div class="note">Drafted from recent funnel and segment movement</div></div>
-                    <div class="mini-card"><div class="label">Tests live</div><div class="value">3</div><div class="note">Enough focus to learn without overloading the team</div></div>
-                    <div class="mini-card"><div class="label">Winning test</div><div class="value">Offer framing</div><div class="note">Improved booked-customer rate in the target segment</div></div>
-                    <div class="mini-card"><div class="label">Stopped fast</div><div class="value">2</div><div class="note">Weak ideas ruled out before they absorbed more budget</div></div>
-                    <div class="mini-card"><div class="label">Decision speed</div><div class="value">4 days</div><div class="note">AI helps produce faster test readouts</div></div>
-                    <div class="mini-card"><div class="label">Next move</div><div class="value">Scale retargeting</div><div class="note">Roll the winner into the next sprint</div></div>
-                </div>
-            </div>
-        </section>
+                <section class="section section-shell studio-section" id="growth-testing">
+                    <div class="section-head">
+                        <div class="eyebrow">Growth Testing</div>
+                        <h2>AI is strong when the team needs more test ideas and faster readouts.</h2>
+                        <p>Once the measurement layer is stable, AI can help the team move faster by drafting hypotheses, surfacing segment opportunities, clustering prior wins and losses, and summarizing test outcomes in a way leaders can scan quickly.</p>
+                    </div>
+                    <div class="studio-board">
+                        <div class="studio-notes">
+                            <article class="studio-note">
+                                <h3>Hypothesis generation</h3>
+                                <p>Draft ideas around channels, offers, landing pages, follow-up timing, and audience segments without waiting for a long planning cycle.</p>
+                            </article>
+                            <article class="studio-note">
+                                <h3>Learning synthesis</h3>
+                                <p>Summarize what the last few tests suggest so the next experiment is informed by patterns instead of memory.</p>
+                            </article>
+                            <article class="studio-note">
+                                <h3>Faster readouts</h3>
+                                <p>Turn a result into a short decision memo: scale it, revise it, or stop it before weak ideas keep absorbing budget.</p>
+                            </article>
+                        </div>
+                        <article class="test-metrics">
+                            <h3>Example growth-testing board</h3>
+                            <p>The point is faster learning, not more experimentation theater.</p>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-label">Hypotheses queued</div>
+                                    <div class="stat-value">9</div>
+                                    <div class="stat-note">Drafted from recent funnel and segment movement.</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Tests live</div>
+                                    <div class="stat-value">3</div>
+                                    <div class="stat-note">Enough focus to learn without overloading the team.</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Stopped fast</div>
+                                    <div class="stat-value">2</div>
+                                    <div class="stat-note">Weak ideas ruled out before they absorbed more budget.</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Next move</div>
+                                    <div class="stat-value compact">Scale retargeting</div>
+                                    <div class="stat-note">Roll the strongest learning into the next sprint.</div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
 
-        <section class="section" id="prioritization">
-            <div class="section-head">
-                <div class="eyebrow">Prioritization</div>
-                <h2>One of the most useful AI jobs is helping sort the backlog.</h2>
-                <p>Marketing teams do not usually suffer from a lack of ideas. They suffer from too many ideas competing at once. AI can help rank work by likely impact, confidence, effort, and data readiness so the team focuses on what matters most.</p>
-            </div>
-            <div class="grid">
-                <article class="card">
-                    <h3>Impact</h3>
-                    <p>Estimate which ideas are most likely to move booked customers, ROAS, or funnel velocity.</p>
-                </article>
-                <article class="card">
-                    <h3>Confidence</h3>
-                    <p>Look for support from prior tests, segment behavior, historical seasonality, or repeated friction patterns.</p>
-                </article>
-                <article class="card">
-                    <h3>Effort and readiness</h3>
-                    <p>Account for dependencies, creative effort, implementation time, and whether the measurement layer is ready to judge the result.</p>
-                </article>
-            </div>
-            <div class="mini-board">
-                <div class="mini-board-head">
-                    <h3>Example prioritization queue</h3>
-                    <p>A useful queue should make the next few marketing actions obvious instead of leaving them up to whoever speaks first in the meeting.</p>
-                </div>
-                <div class="mini-grid">
-                    <div class="mini-card"><div class="label">Booking-flow fix</div><div class="value">8.7</div><div class="note">High impact, strong evidence, low implementation drag</div></div>
-                    <div class="mini-card"><div class="label">Review-request automation</div><div class="value">8.1</div><div class="note">Good downstream value and fast execution</div></div>
-                    <div class="mini-card"><div class="label">Referral offer test</div><div class="value">7.8</div><div class="note">Promising, but needs clean follow-up tracking</div></div>
-                    <div class="mini-card"><div class="label">Landing page rewrite</div><div class="value">7.3</div><div class="note">Worth testing, but effort is heavier than the top options</div></div>
-                    <div class="mini-card"><div class="label">Paid-social expansion</div><div class="value">6.9</div><div class="note">Potential upside, weaker confidence from history</div></div>
-                    <div class="mini-card"><div class="label">Immediate action</div><div class="value">Top 3</div><div class="note">Scale, test, and sequence the work instead of spreading thin</div></div>
-                </div>
-            </div>
-        </section>
+                <section class="section section-shell queue-section" id="prioritization">
+                    <div class="section-head">
+                        <div class="eyebrow">Prioritization</div>
+                        <h2>One of the most useful AI jobs is helping sort the backlog.</h2>
+                        <p>Marketing teams do not usually suffer from a lack of ideas. They suffer from too many ideas competing at once. AI can help rank work by likely impact, confidence, effort, and data readiness so the team focuses on what matters most.</p>
+                    </div>
+                    <div class="queue-layout">
+                        <article class="queue-summary">
+                            <h3>Good prioritization answers two questions.</h3>
+                            <p>What should we do next, and what should we leave alone for now?</p>
+                            <ul class="feature-list warm">
+                                <li>Estimate likely impact on booked customers, ROAS, or funnel velocity.</li>
+                                <li>Look for support from prior tests, segment behavior, or seasonality.</li>
+                                <li>Account for effort, dependencies, and measurement readiness.</li>
+                                <li>Keep the next few actions visible instead of ranking twenty things at once.</li>
+                            </ul>
+                        </article>
+                        <div class="rank-list" aria-label="Example prioritization queue">
+                            <article class="rank-row">
+                                <span class="rank-index">1</span>
+                                <div>
+                                    <h3>Booking-flow fix</h3>
+                                    <p>High impact, strong evidence, and low implementation drag.</p>
+                                    <div class="rank-meta">
+                                        <span class="rank-pill">Impact high</span>
+                                        <span class="rank-pill">Confidence strong</span>
+                                        <span class="rank-pill">Effort low</span>
+                                    </div>
+                                </div>
+                                <div class="rank-score">
+                                    <div class="value">8.7</div>
+                                    <div class="note">Top queue score</div>
+                                </div>
+                            </article>
+                            <article class="rank-row">
+                                <span class="rank-index">2</span>
+                                <div>
+                                    <h3>Review-request automation</h3>
+                                    <p>Good downstream value with a clean path to repeat and referral outcomes.</p>
+                                    <div class="rank-meta">
+                                        <span class="rank-pill">Impact medium-high</span>
+                                        <span class="rank-pill">Fast execution</span>
+                                    </div>
+                                </div>
+                                <div class="rank-score">
+                                    <div class="value">8.1</div>
+                                    <div class="note">Strong quick win</div>
+                                </div>
+                            </article>
+                            <article class="rank-row">
+                                <span class="rank-index">3</span>
+                                <div>
+                                    <h3>Referral offer test</h3>
+                                    <p>Promising upside, but it needs cleaner downstream follow-up tracking first.</p>
+                                    <div class="rank-meta">
+                                        <span class="rank-pill">Impact medium-high</span>
+                                        <span class="rank-pill">Needs tracking</span>
+                                    </div>
+                                </div>
+                                <div class="rank-score">
+                                    <div class="value">7.8</div>
+                                    <div class="note">Test after setup</div>
+                                </div>
+                            </article>
+                            <article class="rank-row">
+                                <span class="rank-index">4</span>
+                                <div>
+                                    <h3>Landing page rewrite</h3>
+                                    <p>Worth testing, but the creative effort is heavier than the top options.</p>
+                                    <div class="rank-meta">
+                                        <span class="rank-pill">Impact medium</span>
+                                        <span class="rank-pill">Effort higher</span>
+                                    </div>
+                                </div>
+                                <div class="rank-score">
+                                    <div class="value">7.3</div>
+                                    <div class="note">Later in queue</div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
 
-        <section class="section" id="modeling">
-            <div class="section-head">
-                <div class="eyebrow">Modeling</div>
-                <h2>AI is useful in modeling when it supports judgment instead of pretending to replace it.</h2>
-                <p>I think the strongest use is pragmatic: forecasting booked volume, mapping seasonality, spotting anomalies, comparing scenarios, and helping explain model outputs in plain language. It should support decisions, not become a black-box flex.</p>
-            </div>
-            <div class="grid">
-                <article class="card">
-                    <h3>Forecasting</h3>
-                    <p>Estimate likely booked customers, calls, or revenue by week so budget and staffing decisions are less reactive.</p>
-                </article>
-                <article class="card">
-                    <h3>Seasonality and response curves</h3>
-                    <p>Use prior movement to understand when demand normally rises, falls, or saturates.</p>
-                </article>
-                <article class="card">
-                    <h3>Explanation layer</h3>
-                    <p>Translate the model into simple business language: what the scenario means, what changed, and what to watch next.</p>
-                </article>
-            </div>
-            <div class="mini-board">
-                <div class="mini-board-head">
-                    <h3>Example forecast view</h3>
-                    <p>This kind of scenario board helps leadership see what the likely range looks like before committing budget or staffing changes.</p>
-                </div>
-                <div class="mini-grid">
-                    <div class="mini-card"><div class="label">Base case</div><div class="value">162</div><div class="note">Expected booked customers this month</div></div>
-                    <div class="mini-card"><div class="label">Upside case</div><div class="value">184</div><div class="note">If the strongest channels keep current pace</div></div>
-                    <div class="mini-card"><div class="label">Downside case</div><div class="value">149</div><div class="note">If call-book rate softens further</div></div>
-                    <div class="mini-card"><div class="label">Seasonal lift</div><div class="value">+12%</div><div class="note">Normal increase versus the prior period</div></div>
-                    <div class="mini-card"><div class="label">Expected ROAS</div><div class="value">4.1x</div><div class="note">Most likely return band under the base case</div></div>
-                    <div class="mini-card"><div class="label">Confidence</div><div class="value">Medium</div><div class="note">Useful decision aid, not a certainty claim</div></div>
-                </div>
-            </div>
-        </section>
+                <section class="section section-shell scenario-section" id="modeling">
+                    <div class="section-head">
+                        <div class="eyebrow">Modeling</div>
+                        <h2>AI is useful in modeling when it supports judgment instead of pretending to replace it.</h2>
+                        <p>I think the strongest use is pragmatic: forecasting booked volume, mapping seasonality, spotting anomalies, comparing scenarios, and helping explain model outputs in plain language. It should support decisions, not become a black-box flex.</p>
+                    </div>
+                    <div class="scenario-shell">
+                        <article class="scenario-lead">
+                            <h3>Use models to frame the range, not to pretend the future is fixed.</h3>
+                            <p>The strongest use here is planning. Show the likely band, explain what moved it, and help leadership understand what to watch next.</p>
+                            <div class="pill-row">
+                                <span class="pill">Forecasting</span>
+                                <span class="pill">Seasonality</span>
+                                <span class="pill">Scenarios</span>
+                                <span class="pill">Plain-language explanation</span>
+                            </div>
+                        </article>
+                        <div class="scenario-cases">
+                            <article class="scenario-card">
+                                <div class="label">Base case</div>
+                                <div class="value">162</div>
+                                <h3>Expected booked customers</h3>
+                                <p>The most likely monthly outcome if current efficiency holds.</p>
+                            </article>
+                            <article class="scenario-card upside">
+                                <div class="label">Upside case</div>
+                                <div class="value">184</div>
+                                <h3>Best likely outcome</h3>
+                                <p>If the strongest channels hold pace and follow-up stays clean.</p>
+                            </article>
+                            <article class="scenario-card downside">
+                                <div class="label">Downside case</div>
+                                <div class="value">149</div>
+                                <h3>Risk case</h3>
+                                <p>If call-to-book conversion softens or demand cools.</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
 
-        <section class="section" id="agents-automation">
-            <div class="section-head">
-                <div class="eyebrow">Agents &amp; Automation</div>
-                <h2>Python, agents, and automations are the best path to fresher reporting.</h2>
-                <p>If the goal is to keep reporting current, I would rather use Python retrieval loops, validation checks, and automated briefs than rebuild dashboards by hand. In the best version, the system pulls data, cleans it, refreshes the scorecard, and sends a short summary on a useful cadence.</p>
-            </div>
-            <div class="workflow">
-                <article class="workflow-step"><span class="phase">Agent 1</span><h3>Retrieve</h3><p>Python jobs or connectors pull fresh ad, CRM, call, and booking data.</p><div class="pill-row"><span class="pill">APIs</span><span class="pill">Exports</span></div></article>
-                <article class="workflow-step"><span class="phase">Agent 2</span><h3>Clean</h3><p>AI-assisted routines standardize fields, catch gaps, and flag suspicious records.</p><div class="pill-row"><span class="pill">Matching</span><span class="pill">QA</span></div></article>
-                <article class="workflow-step"><span class="phase">Agent 3</span><h3>Refresh</h3><p>Publish updated tables or dashboard inputs on the cadence the team needs.</p><div class="pill-row"><span class="pill">Hourly</span><span class="pill">Daily</span></div></article>
-                <article class="workflow-step"><span class="phase">Agent 4</span><h3>Explain</h3><p>Generate a short variance summary in plain language for leadership or channel owners.</p><div class="pill-row"><span class="pill">Brief</span><span class="pill">Alert</span></div></article>
-                <article class="workflow-step"><span class="phase">Agent 5</span><h3>Escalate</h3><p>Push exceptions, anomalies, or recommended actions when something needs attention.</p><div class="pill-row"><span class="pill good">Action</span><span class="pill good">Testing</span></div></article>
-            </div>
-            <div class="mini-board">
-                <div class="mini-board-head">
-                    <h3>Example fresh-reporting board</h3>
-                    <p>The objective is not â€œreal-timeâ€ as a slogan. It is reporting that is fresh enough to support the decision in front of the team.</p>
-                </div>
-                <div class="mini-grid">
-                    <div class="mini-card"><div class="label">API pulls</div><div class="value">5</div><div class="note">Ad, CRM, call, booking, and scorecard inputs</div></div>
-                    <div class="mini-card"><div class="label">Dashboard freshness</div><div class="value">65 min</div><div class="note">Current enough for daily budget moves</div></div>
-                    <div class="mini-card"><div class="label">Exception alerts</div><div class="value">4</div><div class="note">Triggered when conversion or booking metrics drift</div></div>
-                    <div class="mini-card"><div class="label">Daily brief</div><div class="value">7:15 AM</div><div class="note">Short summary delivered before the workday starts</div></div>
-                    <div class="mini-card"><div class="label">Manual hours saved</div><div class="value">8 / wk</div><div class="note">Time returned to analysis and test design</div></div>
-                    <div class="mini-card"><div class="label">Decision use</div><div class="value">Scale / Fix / Test</div><div class="note">Fresher data supports faster weekly action</div></div>
-                </div>
-            </div>
-        </section>
+                <section class="section section-shell relay-section" id="agents-automation">
+                    <div class="section-head">
+                        <div class="eyebrow">Agents &amp; Automation</div>
+                        <h2>Python, agents, and automations are the best path to fresher reporting.</h2>
+                        <p>If the goal is to keep reporting current, I would rather use Python retrieval loops, validation checks, and automated briefs than rebuild dashboards by hand. In the best version, the system pulls data, cleans it, refreshes the scorecard, and sends a short summary on a useful cadence.</p>
+                    </div>
+                    <div class="relay-track" aria-label="Automation relay">
+                        <article class="relay-stop">
+                            <h3>Retrieve</h3>
+                            <p>Python jobs or connectors pull fresh ad, CRM, call, and booking data.</p>
+                            <div class="pill-row">
+                                <span class="pill">APIs</span>
+                                <span class="pill">Exports</span>
+                            </div>
+                        </article>
+                        <article class="relay-stop">
+                            <h3>Clean</h3>
+                            <p>AI-assisted routines standardize fields, catch gaps, and flag suspicious records.</p>
+                            <div class="pill-row">
+                                <span class="pill">Matching</span>
+                                <span class="pill">QA</span>
+                            </div>
+                        </article>
+                        <article class="relay-stop">
+                            <h3>Refresh</h3>
+                            <p>Publish updated tables or dashboard inputs on the cadence the team needs.</p>
+                            <div class="pill-row">
+                                <span class="pill">Hourly</span>
+                                <span class="pill">Daily</span>
+                            </div>
+                        </article>
+                        <article class="relay-stop">
+                            <h3>Explain</h3>
+                            <p>Generate a short variance summary in plain language for leadership or channel owners.</p>
+                            <div class="pill-row">
+                                <span class="pill">Brief</span>
+                                <span class="pill">Alert</span>
+                            </div>
+                        </article>
+                        <article class="relay-stop">
+                            <h3>Escalate</h3>
+                            <p>Push exceptions, anomalies, or recommended actions when something needs attention.</p>
+                            <div class="pill-row">
+                                <span class="pill good">Action</span>
+                                <span class="pill good">Testing</span>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">API pulls</div>
+                            <div class="stat-value">5</div>
+                            <div class="stat-note">Ad, CRM, call, booking, and scorecard inputs.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Dashboard freshness</div>
+                            <div class="stat-value">65 min</div>
+                            <div class="stat-note">Current enough for daily budget moves.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Daily brief</div>
+                            <div class="stat-value">7:15 AM</div>
+                            <div class="stat-note">Short summary delivered before the workday starts.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Decision use</div>
+                            <div class="stat-value">Scale / Fix / Test</div>
+                            <div class="stat-note">Fresher data supports faster weekly action.</div>
+                        </div>
+                    </div>
+                </section>
 
-        <section class="section" id="guardrails">
-            <div class="section-head">
-                <div class="eyebrow">Guardrails</div>
-                <h2>The value of AI depends on the discipline around it.</h2>
-                <p>AI becomes useful when the team is clear about definitions, data confidence, privacy, and where human review still matters. These are the rules I would want in place around any marketing AI workflow.</p>
-            </div>
-            <div class="grid">
-                <article class="card">
-                    <h3>Trusted source first</h3>
-                    <p>AI should sit on top of source systems and documented definitions, not invent the metric layer from scratch.</p>
-                </article>
-                <article class="card">
-                    <h3>Human review on spend decisions</h3>
-                    <p>Budget moves, attribution interpretation, and revenue claims still need human judgment and context.</p>
-                </article>
-                <article class="card">
-                    <h3>Document the logic</h3>
-                    <p>Prompting, transformation rules, metric definitions, and automation steps should be easy to inspect and update.</p>
-                </article>
-                <article class="card">
-                    <h3>Keep confidence visible</h3>
-                    <p>If match rates are weak or a source system is delayed, the AI output should surface that instead of hiding it.</p>
-                </article>
-                <article class="card">
-                    <h3>Use the right cadence</h3>
-                    <p>Not every workflow needs to be instant. Fresh enough is usually the better target than performative real-time.</p>
-                </article>
-                <article class="card">
-                    <h3>Promote the durable answers</h3>
-                    <p>When the same AI question keeps coming back, it should graduate into a stable scorecard, monitor, or recurring brief.</p>
-                </article>
-            </div>
-        </section>
+                <section class="section section-shell manifesto-section" id="guardrails">
+                    <div class="section-head">
+                        <div class="eyebrow">Guardrails</div>
+                        <h2>The value of AI depends on the discipline around it.</h2>
+                        <p>AI becomes useful when the team is clear about definitions, data confidence, privacy, and where human review still matters. These are the rules I would want in place around any marketing AI workflow.</p>
+                    </div>
+                    <div class="manifesto-layout">
+                        <article class="manifesto-copy">
+                            <h3>The output has to stay inspectable.</h3>
+                            <p>AI is only useful if the team can see what it touched, what the confidence is, and where a person still needs to review the result. Otherwise it creates speed without trust.</p>
+                            <p class="manifesto-highlight">The goal is faster decisions without weaker discipline.</p>
+                        </article>
+                        <div class="checklist">
+                            <article class="check-item">
+                                <span class="check-num">01</span>
+                                <div>
+                                    <strong>Trusted source first</strong>
+                                    <p>AI should sit on top of source systems and documented definitions, not invent the metric layer from scratch.</p>
+                                </div>
+                            </article>
+                            <article class="check-item">
+                                <span class="check-num">02</span>
+                                <div>
+                                    <strong>Human review on spend decisions</strong>
+                                    <p>Budget moves, attribution interpretation, and revenue claims still need judgment and context.</p>
+                                </div>
+                            </article>
+                            <article class="check-item">
+                                <span class="check-num">03</span>
+                                <div>
+                                    <strong>Document the logic</strong>
+                                    <p>Prompting, transformation rules, metric definitions, and automation steps should be easy to inspect and update.</p>
+                                </div>
+                            </article>
+                            <article class="check-item">
+                                <span class="check-num">04</span>
+                                <div>
+                                    <strong>Keep confidence visible</strong>
+                                    <p>If match rates are weak or a source system is delayed, the output should surface that instead of hiding it.</p>
+                                </div>
+                            </article>
+                            <article class="check-item">
+                                <span class="check-num">05</span>
+                                <div>
+                                    <strong>Use the right cadence</strong>
+                                    <p>Not every workflow needs to be instant. Fresh enough is usually the better target than performative real-time.</p>
+                                </div>
+                            </article>
+                            <article class="check-item">
+                                <span class="check-num">06</span>
+                                <div>
+                                    <strong>Promote the durable answers</strong>
+                                    <p>When the same AI question keeps coming back, it should graduate into a stable scorecard, monitor, or recurring brief.</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
 
-        <section class="section bridge" id="supporting-pages">
-            <h3>Best supporting pages</h3>
-            <p>If you want to see the operating context around this page, the strongest next reads are How I Work, the dashboards, and the examples where the measurement layer drove real decisions.</p>
-            <div class="action-row">
-                <a class="action-link" href="../MOps/index.html">Open How I Work</a>
-                <a class="action-link secondary" href="../Dashboards/index.html">Open Dashboards</a>
-                <a class="action-link secondary" href="../CaseStudies/index.html">Open Examples</a>
-            </div>
-        </section>
+                <section class="section bridge" id="supporting-pages">
+                    <h3>Best supporting pages</h3>
+                    <p>If you want to see the operating context around this page, the strongest next reads are How I Work, the dashboards, and the examples where the measurement layer drove real decisions.</p>
+                    <div class="action-row">
+                        <a class="action-link" href="../MOps/index.html">Open How I Work</a>
+                        <a class="action-link secondary" href="../Dashboards/index.html">Open Dashboards</a>
+                        <a class="action-link secondary" href="../CaseStudies/index.html">Open Examples</a>
+                    </div>
+                </section>
             </div>
         </div>
     </main>
 </body>
 </html>
-
-
-
