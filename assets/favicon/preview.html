@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favicon Preview</title>
+    <style>
+        :root {
+            --navy: #0B1422;
+            --paper: #F6F4EE;
+            --line: #DCE6F0;
+            --muted: #5B6678;
+            --gold: #FFD77A;
+            --coastal: #2B8CBE;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Inter, Arial, sans-serif;
+            background: linear-gradient(180deg, #f8fbfd 0%, var(--paper) 100%);
+            color: var(--navy);
+        }
+        h1 {
+            margin: 0 0 10px;
+            font-family: "Source Serif Pro", Georgia, serif;
+            font-size: 38px;
+            letter-spacing: -0.8px;
+        }
+        p {
+            margin: 0 0 28px;
+            color: var(--muted);
+            max-width: 720px;
+            line-height: 1.6;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 22px;
+        }
+        .card {
+            background: rgba(255,255,255,0.88);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 0 18px 48px rgba(11, 20, 34, 0.08);
+        }
+        .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--coastal);
+            margin-bottom: 8px;
+        }
+        .name {
+            font-family: "Source Serif Pro", Georgia, serif;
+            font-size: 28px;
+            margin: 0 0 16px;
+        }
+        .preview-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+        .preview-row img {
+            display: block;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--line);
+            padding: 6px;
+        }
+        ul {
+            margin: 0 0 18px 18px;
+            padding: 0;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+        a {
+            color: var(--navy);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        a:hover { color: var(--coastal); }
+    </style>
+</head>
+<body>
+    <h1>Favicon Drafts</h1>
+    <p>Three lightweight favicon directions based on the current site palette. Each one is previewed at small sizes so it is easier to judge what will still read well in a browser tab.</p>
+
+    <div class="grid">
+        <section class="card">
+            <div class="eyebrow">Option A</div>
+            <h2 class="name">Serif S on Navy</h2>
+            <div class="preview-row">
+                <img src="favicon-option-a.svg" alt="Option A at 16 pixels" width="16" height="16">
+                <img src="favicon-option-a.svg" alt="Option A at 32 pixels" width="32" height="32">
+                <img src="favicon-option-a.svg" alt="Option A at 48 pixels" width="48" height="48">
+            </div>
+            <ul>
+                <li>Closest to the current site header and type style.</li>
+                <li>Simple enough to stay readable at small sizes.</li>
+                <li>The gold dot gives it a small signature accent.</li>
+            </ul>
+            <a href="favicon-option-a.svg">Open SVG</a>
+        </section>
+
+        <section class="card">
+            <div class="eyebrow">Option B</div>
+            <h2 class="name">Light Coastal Badge</h2>
+            <div class="preview-row">
+                <img src="favicon-option-b.svg" alt="Option B at 16 pixels" width="16" height="16">
+                <img src="favicon-option-b.svg" alt="Option B at 32 pixels" width="32" height="32">
+                <img src="favicon-option-b.svg" alt="Option B at 48 pixels" width="48" height="48">
+            </div>
+            <ul>
+                <li>Brighter and a little friendlier in the browser tab.</li>
+                <li>Fits the coastal palette you liked elsewhere on the site.</li>
+                <li>The gold underline keeps a subtle editorial feel.</li>
+            </ul>
+            <a href="favicon-option-b.svg">Open SVG</a>
+        </section>
+
+        <section class="card">
+            <div class="eyebrow">Option C</div>
+            <h2 class="name">Monogram SH</h2>
+            <div class="preview-row">
+                <img src="favicon-option-c.svg" alt="Option C at 16 pixels" width="16" height="16">
+                <img src="favicon-option-c.svg" alt="Option C at 32 pixels" width="32" height="32">
+                <img src="favicon-option-c.svg" alt="Option C at 48 pixels" width="48" height="48">
+            </div>
+            <ul>
+                <li>Feels more like a personal mark than a typographic initial.</li>
+                <li>Works better at 32px and up than at the tiniest sizes.</li>
+                <li>Good if you want the favicon to feel more branded than editorial.</li>
+            </ul>
+            <a href="favicon-option-c.svg">Open SVG</a>
+        </section>
+    </div>
+</body>
+</html>
