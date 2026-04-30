@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IHS Round 3 Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+Pro:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0F2A44;
+      --navy-2: #163A58;
+      --sky: #2B8CBE;
+      --gold: #D8A94B;
+      --paper: #F5FAFA;
+      --surface: #FFFFFF;
+      --line: #DCE9E8;
+      --ink: #163042;
+      --muted: #5D7180;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, sans-serif;
+      background: radial-gradient(circle at top right, rgba(43, 140, 190, 0.16), transparent 32%), var(--paper);
+      color: var(--ink);
+    }
+    .topbar {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 28px;
+      background: #071621;
+      color: #FFFFFF;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .brand { display: grid; gap: 2px; }
+    .brand strong {
+      font-family: 'Source Serif Pro', serif;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .brand span {
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .nav { display: flex; flex-wrap: wrap; gap: 10px; }
+    .nav a {
+      color: rgba(255, 255, 255, 0.76);
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .nav a:hover { color: #FFFFFF; border-color: rgba(255, 255, 255, 0.34); }
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 20px;
+      width: min(1480px, 100%);
+      margin: 0 auto;
+      padding: 20px 24px 28px;
+    }
+    .rail {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 14px 32px rgba(22, 48, 66, 0.08);
+      backdrop-filter: blur(12px);
+    }
+    .rail-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 2px 2px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--sky);
+      text-transform: uppercase;
+    }
+    .thumbs { display: grid; gap: 10px; }
+    .thumb {
+      width: 100%;
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(22, 48, 66, 0.08);
+    }
+    .thumb img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+    .thumb.active { border-color: var(--gold); }
+    .viewer {
+      display: grid;
+      gap: 14px;
+      min-width: 0;
+    }
+    .stage {
+      background: #081723;
+      border: 1px solid rgba(7, 22, 33, 0.24);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 22px 50px rgba(15, 42, 68, 0.22);
+    }
+    .stage img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      background: #FFFFFF;
+      border-radius: 12px;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: 0 12px 28px rgba(22, 48, 66, 0.07);
+    }
+    .slide-count {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .button-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--navy);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    button.secondary { background: var(--sky); }
+    button:hover { background: var(--navy-2); }
+    button.secondary:hover { background: #2279A5; }
+    @media (max-width: 920px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .shell { grid-template-columns: 1fr; padding: 16px; }
+      .rail {
+        position: relative;
+        top: auto;
+        max-height: none;
+        overflow: hidden;
+      }
+      .thumbs {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 132px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+    }
+    @media print {
+      .topbar, .rail, .controls { display: none; }
+      body { background: #FFFFFF; }
+      .shell, .stage { display: block; padding: 0; margin: 0; width: 100%; box-shadow: none; border: 0; background: #FFFFFF; }
+      .stage img { border-radius: 0; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <strong>IHS Round 3 Presentation</strong>
+      <span>Steve Hill · Marketing Operations Analytics</span>
+    </div>
+    <nav class="nav" aria-label="Presentation links">
+      <a href="plan.html">120-Day Plan</a>
+      <a href="marketing-dashboard.html">Interactive Dashboard</a>
+      <a href="../index.html">Portfolio</a>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <aside class="rail" aria-label="Slide thumbnails">
+      <div class="rail-title"><span>Slides</span><span id="railCount">23</span></div>
+      <div class="thumbs" id="thumbs"></div>
+    </aside>
+
+    <section class="viewer" aria-label="Slide viewer">
+      <div class="stage" id="stage">
+        <img id="mainSlide" src="round3-presentation-assets/slide01.png" alt="IHS Round 3 presentation slide 1">
+      </div>
+      <div class="controls">
+        <div class="slide-count" id="slideCount">Slide 1 of 23</div>
+        <div class="button-row">
+          <button type="button" id="prevBtn">Previous</button>
+          <button type="button" class="secondary" id="nextBtn">Next</button>
+          <button type="button" id="fullBtn">Full Screen</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const totalSlides = 23;
+    let currentSlide = 1;
+    const mainSlide = document.getElementById('mainSlide');
+    const slideCount = document.getElementById('slideCount');
+    const thumbs = document.getElementById('thumbs');
+
+    function slidePath(index) {
+      return `round3-presentation-assets/slide${String(index).padStart(2, '0')}.png`;
+    }
+
+    function setSlide(index) {
+      currentSlide = Math.min(Math.max(index, 1), totalSlides);
+      mainSlide.src = slidePath(currentSlide);
+      mainSlide.alt = `IHS Round 3 presentation slide ${currentSlide}`;
+      slideCount.textContent = `Slide ${currentSlide} of ${totalSlides}`;
+      document.querySelectorAll('.thumb').forEach((button, idx) => {
+        button.classList.toggle('active', idx + 1 === currentSlide);
+        button.setAttribute('aria-current', idx + 1 === currentSlide ? 'true' : 'false');
+      });
+    }
+
+    for (let index = 1; index <= totalSlides; index += 1) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'thumb';
+      button.setAttribute('aria-label', `Open slide ${index}`);
+      button.innerHTML = `<img src="${slidePath(index)}" alt="">`;
+      button.addEventListener('click', () => setSlide(index));
+      thumbs.appendChild(button);
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => setSlide(currentSlide - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => setSlide(currentSlide + 1));
+    document.getElementById('fullBtn').addEventListener('click', () => {
+      const target = document.getElementById('stage');
+      if (!document.fullscreenElement) target.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') setSlide(currentSlide + 1);
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') setSlide(currentSlide - 1);
+      if (event.key === 'Home') setSlide(1);
+      if (event.key === 'End') setSlide(totalSlides);
+    });
+    setSlide(1);
+  </script>
+</body>
+</html>
