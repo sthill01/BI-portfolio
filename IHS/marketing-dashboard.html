@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IHS - Marketing Operations Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy:      #0F2A44;
+    --navy-2:    #1A3D5E;
+    --navy-3:    #2F4D6E;
+    --steel:     #2D6BA0;
+    --steel-2:   #3E8AC7;
+    --gold:      #D8A94B;
+    --gold-dark: #B58A2C;
+    --gold-soft: #FBF2DC;
+    --white:     #FFFFFF;
+    --paper:     #F7F9FB;
+    --grey-lt:   #E2E6EA;
+    --grey-mid:  #7A8898;
+    --grey-dark: #4A5B70;
+    --ink:       #1A1A1A;
+    --green:     #4FA58F;
+    --green-soft:#E4F1EC;
+    --red:       #C8553D;
+    --red-soft:  #F7E5E1;
+    --amber:     #D8A94B;
+    --amber-soft:#FBF2DC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%; overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    font-size: 13px;
+  }
+  /* === SHELL === */
+  .shell { display: grid; grid-template-columns: 240px 1fr; grid-template-rows: 56px 1fr; height: 100vh; }
+  .sidebar { background: var(--navy); color: var(--white); grid-row: 1 / span 2; padding: 18px 0; overflow-y: auto; }
+  .topbar { background: var(--white); border-bottom: 1px solid var(--grey-lt); display: flex; align-items: center; padding: 0 24px; gap: 14px; }
+  .content { padding: 22px 28px; overflow-y: auto; background: var(--paper); }
+
+  /* === SIDEBAR === */
+  .sb-brand { padding: 0 18px 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 14px; }
+  .sb-logo { display: flex; align-items: center; gap: 10px; }
+  .sb-logo .mark { background: var(--white); width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; color: var(--navy); font-weight: 900; font-size: 14px; letter-spacing: -0.5px; }
+  .sb-logo .mark .gold { color: var(--gold); }
+  .sb-logo .nm { font-size: 13px; font-weight: 700; line-height: 1.1; }
+  .sb-logo .sub { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; color: var(--gold); letter-spacing: 1.2px; margin-top: 2px; }
+  .sb-section-h {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold);
+    padding: 8px 18px 6px 18px;
+  }
+  .sb-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 18px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.72);
+    border-left: 3px solid transparent;
+    font-size: 13px;
+    line-height: 1.3;
+    transition: all 0.15s;
+  }
+  .sb-item:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+  .sb-item.active { background: rgba(216,169,75,0.1); border-left-color: var(--gold); color: var(--white); font-weight: 600; }
+  .sb-item .ico { width: 18px; opacity: 0.85; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; }
+  .sb-item .label { flex: 1; }
+  .sb-item .lvl-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--gold); letter-spacing: 1px; opacity: 0.7;
+  }
+
+  /* === TOPBAR / BREADCRUMB === */
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--grey-mid); }
+  .breadcrumb a { color: var(--steel); text-decoration: none; cursor: pointer; }
+  .breadcrumb a:hover { color: var(--navy); text-decoration: underline; }
+  .breadcrumb .sep { color: var(--grey-lt); }
+  .breadcrumb .current { color: var(--navy); font-weight: 600; }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .topbar-right .filter {
+    background: var(--paper); border: 1px solid var(--grey-lt);
+    padding: 6px 12px; font-size: 12px; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace; color: var(--navy);
+  }
+  .topbar-right .refresh {
+    background: var(--gold); color: var(--navy); border: none;
+    padding: 6px 14px; font-size: 11px; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;
+    cursor: pointer; text-transform: uppercase;
+  }
+
+  /* === VIEW === */
+  .view { display: none; }
+  .view.active { display: block; animation: fadein 0.18s; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .view-h { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--gold); }
+  .view-h h1 { font-size: 24px; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; }
+  .view-h .sub { font-size: 13px; color: var(--grey-dark); margin-top: 2px; }
+  .view-h .meta-r { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--grey-mid); letter-spacing: 1px; }
+  .view-h .meta-r .stamp { background: var(--gold); color: #3A2B0F; padding: 2px 7px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; display: inline-block; margin-bottom: 3px; font-size: 9px; }
+
+  /* === KPI TILES === */
+  .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
+  .kpi-row.r4 { grid-template-columns: repeat(4, 1fr); }
+  .kpi-row.r3 { grid-template-columns: repeat(3, 1fr); }
+  .kpi {
+    background: var(--white); border: 1px solid var(--grey-lt);
+    border-top: 3px solid var(--gold); padding: 14px 16px;
+  }
+  .kpi .l { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--grey-mid); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; font-weight: 700; }
+  .kpi .v { font-size: 26px; font-weight: 800; color: var(--navy); letter-spacing: -0.6px; line-height: 1; }
+  .kpi .v .unit { font-size: 14px; color: var(--grey-dark); font-weight: 500; }
+  .kpi .delta { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; margin-top: 6px; font-weight: 700; }
+  .kpi .delta.up { color: var(--green); }
+  .kpi .delta.down { color: var(--red); }
+  .kpi .delta.flat { color: var(--grey-mid); }
+  .kpi .conf { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .kpi .conf.green { background: var(--green); }
+  .kpi .conf.amber { background: var(--amber); }
+  .kpi .conf.red { background: var(--red); }
+
+  /* === PANELS === */
+  .panel { background: var(--white); border: 1px solid var(--grey-lt); padding: 16px 18px; margin-bottom: 16px; }
+  .panel.gold-top { border-top: 3px solid var(--gold); }
+  .panel-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--grey-lt); }
+  .panel-h h2 { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .panel-h .sub { font-size: 11px; color: var(--grey-mid); font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-2-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+  /* === TABLES === */
+  table.dt { width: 100%; border-collapse: collapse; }
+  table.dt th {
+    background: var(--navy); color: var(--gold);
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;
+    text-align: left; padding: 9px 10px; border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  table.dt th:last-child { border-right: none; }
+  table.dt th.r { text-align: right; }
+  table.dt td { padding: 9px 10px; border-bottom: 1px solid var(--grey-lt); font-size: 12px; }
+  table.dt td.r { text-align: right; font-family: 'JetBrains Mono', monospace; }
+  table.dt tr:nth-child(even) td { background: var(--paper); }
+  table.dt tr.clickable { cursor: pointer; }
+  table.dt tr.clickable:hover td { background: var(--gold-soft); }
+  table.dt td .cell-strong { font-weight: 700; color: var(--navy); }
+  table.dt td .cell-mono { font-family: 'JetBrains Mono', monospace; }
+  table.dt td .cell-conf { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  table.dt td .cell-conf.green { background: var(--green); }
+  table.dt td .cell-conf.amber { background: var(--amber); }
+  table.dt td .cell-conf.red { background: var(--red); }
+  .pill {
+    display: inline-block; padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    border-radius: 0;
+  }
+  .pill.scale { background: var(--green-soft); color: var(--green); }
+  .pill.test { background: var(--amber-soft); color: var(--gold-dark); }
+  .pill.fix { background: var(--red-soft); color: var(--red); }
+  .pill.hold { background: var(--paper); color: var(--grey-dark); }
+  .arrow { color: var(--gold); font-family: 'JetBrains Mono', monospace; font-weight: 700; padding-left: 6px; }
+
+  /* === FUNNEL === */
+  .funnel-wrap { padding: 6px 0; }
+  .funnel-stage { display: grid; grid-template-columns: 220px 1fr 200px; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--grey-lt); cursor: pointer; }
+  .funnel-stage:last-child { border-bottom: none; }
+  .funnel-stage:hover { background: var(--gold-soft); }
+  .funnel-stage .lbl { font-weight: 700; color: var(--navy); display: flex; flex-direction: column; }
+  .funnel-stage .lbl .nm { font-size: 13px; }
+  .funnel-stage .lbl .ct { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--grey-mid); margin-top: 2px; font-weight: 500; letter-spacing: 0.6px; }
+  .funnel-bar-wrap { display: flex; align-items: center; gap: 12px; }
+  .funnel-bar { background: var(--grey-lt); height: 24px; flex: 1; overflow: hidden; }
+  .funnel-bar > div { background: linear-gradient(90deg, var(--steel), var(--steel-2)); height: 100%; }
+  .funnel-stage.s1 .funnel-bar > div { background: var(--steel); }
+  .funnel-stage.s2 .funnel-bar > div { background: var(--steel-2); }
+  .funnel-stage.s3 .funnel-bar > div { background: var(--gold); }
+  .funnel-stage.s4 .funnel-bar > div { background: #B58A2C; }
+  .funnel-stage.s5 .funnel-bar > div { background: var(--green); }
+  .funnel-stage.s6 .funnel-bar > div { background: var(--navy); }
+  .funnel-vol { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy); width: 80px; text-align: right; font-size: 13px; }
+  .funnel-stage .conv { font-size: 11px; color: var(--grey-dark); text-align: right; font-family: 'JetBrains Mono', monospace; line-height: 1.3; }
+  .funnel-stage .conv .pct { color: var(--gold-dark); font-weight: 700; font-size: 13px; }
+  .funnel-stage .conv .leak { color: var(--red); font-size: 10px; }
+
+  /* === CHARTS === */
+  .chart-box { position: relative; height: 200px; }
+  .chart-box.tall { height: 240px; }
+
+  /* === LEAKAGE === */
+  .leakage-row { display: grid; grid-template-columns: 200px 60px 1fr 80px; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--grey-lt); }
+  .leakage-row:last-child { border-bottom: none; }
+  .leakage-row .stage { font-weight: 700; color: var(--navy); font-size: 13px; }
+  .leakage-row .stage .when { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--grey-mid); margin-top: 1px; font-weight: 500; }
+  .leakage-row .severity { display: flex; gap: 2px; }
+  .leakage-row .sev-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--grey-lt); }
+  .leakage-row .sev-dot.on { background: var(--red); }
+  .leakage-row.medium .sev-dot.on { background: var(--amber); }
+  .leakage-row.low .sev-dot.on { background: var(--green); }
+  .leakage-row .desc { font-size: 12px; color: var(--ink); line-height: 1.4; }
+  .leakage-row .desc strong { color: var(--navy); }
+  .leakage-row .impact { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--red); font-weight: 700; text-align: right; }
+  .leakage-row.medium .impact { color: var(--gold-dark); }
+  .leakage-row.low .impact { color: var(--green); }
+
+  /* === BUDGET BOARD === */
+  .move-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.6fr 100px 90px; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--grey-lt); align-items: center; }
+  .move-row:first-child { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--gold); background: var(--navy); padding: 9px 10px; margin: 0 -10px 0 -10px; padding-left: 14px; padding-right: 14px; border-bottom: none; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .move-row .desc strong { color: var(--navy); }
+  .move-row .amt { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy); font-size: 13px; }
+  .move-row .exp { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); font-weight: 700; }
+  .move-row .review { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--grey-dark); text-align: center; }
+
+  /* === TEST CARDS === */
+  .test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .test-card { background: var(--white); border: 1px solid var(--grey-lt); border-left: 4px solid var(--gold); padding: 12px 16px; }
+  .test-card.winning { border-left-color: var(--green); }
+  .test-card.losing { border-left-color: var(--red); }
+  .test-card.running { border-left-color: var(--gold); }
+  .test-card .test-h { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .test-card .test-name { font-weight: 700; color: var(--navy); font-size: 13px; }
+  .test-card .test-status { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; padding: 2px 7px; }
+  .test-card.winning .test-status { background: var(--green-soft); color: var(--green); }
+  .test-card.losing .test-status { background: var(--red-soft); color: var(--red); }
+  .test-card.running .test-status { background: var(--amber-soft); color: var(--gold-dark); }
+  .test-card .test-hyp { font-size: 11.5px; color: var(--grey-dark); line-height: 1.4; margin-bottom: 8px; }
+  .test-card .test-meta { display: flex; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+  .test-card .test-meta .m-l { color: var(--grey-mid); margin-right: 4px; }
+  .test-card .test-meta .m-v { color: var(--navy); font-weight: 700; }
+
+  /* === BRAND TILES (Portfolio view) === */
+  .brand-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+  .brand-tile {
+    background: var(--white); border: 1px solid var(--grey-lt);
+    border-top: 3px solid var(--steel);
+    padding: 12px 14px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .brand-tile:hover { border-top-color: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+  .brand-tile.pilot { border-top-color: var(--gold); background: var(--gold-soft); }
+  .brand-tile.pilot::before { content: 'PILOT'; display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 8.5px; color: var(--gold-dark); letter-spacing: 1.2px; font-weight: 700; margin-bottom: 4px; }
+  .brand-tile .b-nm { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .brand-tile .b-row { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--grey-dark); margin-bottom: 2px; }
+  .brand-tile .b-row .n { font-family: 'JetBrains Mono', monospace; color: var(--navy); font-weight: 700; }
+
+  /* === FORECASTING VIEW === */
+  .forecast-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 14px; margin-bottom: 14px; }
+  .forecast-stack { display: grid; gap: 10px; }
+  .formula-chain {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--grey-lt);
+    background: var(--white);
+  }
+  .formula-chain .cell {
+    padding: 10px 12px;
+    border-right: 1px solid var(--grey-lt);
+    border-bottom: 1px solid var(--grey-lt);
+    min-height: 72px;
+  }
+  .formula-chain .cell:nth-child(4n) { border-right: 0; }
+  .formula-chain .h {
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    min-height: 0;
+  }
+  .formula-chain .label { font-size: 10px; color: var(--grey-mid); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .formula-chain .value { font-family: 'JetBrains Mono', monospace; color: var(--navy); font-size: 14px; font-weight: 700; }
+  .formula-chain .note { margin-top: 4px; font-size: 10.5px; color: var(--grey-dark); line-height: 1.35; }
+  .forecast-pill {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--amber-soft);
+    color: var(--gold-dark);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+  }
+  .owner-row {
+    display: grid;
+    grid-template-columns: 118px 1fr 96px;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--grey-lt);
+    align-items: start;
+  }
+  .owner-row:last-child { border-bottom: 0; }
+  .owner-row .team {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--steel);
+    text-transform: uppercase;
+  }
+  .owner-row .work { font-size: 11.5px; color: var(--ink); line-height: 1.4; }
+  .owner-row .load { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--navy); font-weight: 700; text-align: right; }
+  .goal-tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .goal-tier {
+    border: 1px solid var(--grey-lt);
+    background: var(--white);
+    border-top: 4px solid var(--grey-mid);
+    padding: 13px 14px;
+  }
+  .goal-tier.moderate { border-top-color: var(--gold); background: var(--gold-soft); }
+  .goal-tier.aggressive { border-top-color: var(--green); }
+  .goal-tier .tier-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .goal-tier .tier-name { font-weight: 800; color: var(--navy); font-size: 14px; }
+  .goal-tier .tier-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: var(--grey-mid); text-transform: uppercase; letter-spacing: 0.8px; }
+  .goal-tier .tier-num { font-size: 22px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .goal-tier .tier-sub { font-size: 10.5px; color: var(--grey-dark); margin-top: 4px; line-height: 1.35; }
+  .mini-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; margin-top: 11px; }
+  .mini-metric { border-top: 1px dashed var(--grey-lt); padding-top: 7px; }
+  .mini-metric .m-label { font-family: 'JetBrains Mono', monospace; color: var(--grey-mid); font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.7px; }
+  .mini-metric .m-val { font-family: 'JetBrains Mono', monospace; color: var(--navy); font-size: 12px; font-weight: 700; margin-top: 2px; }
+  .compare-table .metric { font-weight: 700; color: var(--navy); }
+  .compare-table .small-note { font-size: 10px; color: var(--grey-mid); line-height: 1.25; margin-top: 2px; }
+  .trend-chip {
+    display: inline-block;
+    min-width: 54px;
+    padding: 2px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .trend-chip.up { background: var(--green-soft); color: var(--green); }
+  .trend-chip.down { background: var(--red-soft); color: var(--red); }
+  .trend-chip.flat { background: var(--paper); color: var(--grey-dark); }
+  .seasonality-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .formula-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .formula-card { border: 1px solid var(--grey-lt); background: var(--paper); padding: 12px; }
+  .formula-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 13px; }
+  .formula-card code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--navy); background: var(--white); border: 1px solid var(--grey-lt); padding: 8px; line-height: 1.45; white-space: normal; }
+  .formula-card p { margin: 8px 0 0; font-size: 11px; color: var(--grey-dark); line-height: 1.4; }
+
+  /* === SCROLLBAR === */
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+  .content::-webkit-scrollbar { width: 8px; }
+  .content::-webkit-scrollbar-thumb { background: var(--grey-lt); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">
+        <span class="mark">IH<span class="gold">S</span></span>
+        <div>
+          <div class="nm">Marketing Ops</div>
+          <div class="sub">PILOT · BEEHIVE PLUMBING</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-section-h">Drill-down</div>
+    <div class="sb-item active" data-view="portfolio"><span class="lvl-num">L1</span><span class="label">Portfolio</span></div>
+    <div class="sb-item" data-view="brand"><span class="lvl-num">L2</span><span class="label">Brand · Beehive Plumbing</span></div>
+    <div class="sb-item" data-view="funnel"><span class="lvl-num">L3</span><span class="label">Funnel by Stage</span></div>
+    <div class="sb-item" data-view="channel"><span class="lvl-num">L4</span><span class="label">Channel Performance</span></div>
+    <div class="sb-item" data-view="campaign"><span class="lvl-num">L5</span><span class="label">Campaign Performance</span></div>
+
+    <div class="sb-section-h">Diagnostics</div>
+    <div class="sb-item" data-view="leakage"><span class="ico">L</span><span class="label">Leakage Diagnostic</span></div>
+    <div class="sb-item" data-view="test"><span class="ico">T</span><span class="label">Test Framework</span></div>
+    <div class="sb-item" data-view="budget"><span class="ico">B</span><span class="label">Budget Move Board</span></div>
+    <div class="sb-item" data-view="forecast"><span class="ico">F</span><span class="label">Forecasting Model</span></div>
+
+    <div class="sb-section-h">Confidence</div>
+    <div style="padding: 8px 18px; font-size: 10.5px; color: rgba(255,255,255,0.6); line-height: 1.5;">
+      <div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:6px;"></span>High — source verified</div>
+      <div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amber);margin-right:6px;"></span>Medium — directional</div>
+      <div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:6px;"></span>Low — gap flagged</div>
+    </div>
+  </aside>
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="topbar">
+    <div class="breadcrumb" id="breadcrumb">
+      <span class="current">Portfolio Scorecard</span>
+    </div>
+    <div class="topbar-right">
+      <div class="filter">Last 30 days ▾</div>
+      <div class="filter">All channels ▾</div>
+      <button class="refresh">REFRESH</button>
+    </div>
+  </header>
+
+  <!-- ============ CONTENT ============ -->
+  <main class="content">
+
+    <!-- =============== L1 — PORTFOLIO =============== -->
+    <div class="view active" id="view-portfolio">
+      <div class="view-h">
+        <div>
+          <h1>Portfolio Scorecard — All 10 Brands</h1>
+          <div class="sub">Cross-brand visibility · Last 30 days · Confidence ratings on every metric</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">DAY 30 OUTPUT</div>
+          <div>updated 2026-04-27 06:00</div>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="l">Portfolio Spend</div>
+          <div class="v">$<span id="x">427</span><span class="unit">K /mo</span></div>
+          <div class="delta up">▲ 3.2% vs prior 30d</div>
+          <div style="margin-top: 4px; font-size: 10px; color: var(--grey-mid);"><span class="conf green"></span>High confidence</div>
+        </div>
+        <div class="kpi">
+          <div class="l">Services Booked / day</div>
+          <div class="v">312</div>
+          <div class="delta up">▲ 5.1%</div>
+          <div style="margin-top: 4px; font-size: 10px; color: var(--grey-mid);"><span class="conf green"></span>ServiceTitan-verified</div>
+        </div>
+        <div class="kpi">
+          <div class="l">Portfolio CAC</div>
+          <div class="v">$<span>211</span></div>
+          <div class="delta down">▼ 4.6%</div>
+          <div style="margin-top: 4px; font-size: 10px; color: var(--grey-mid);"><span class="conf amber"></span>Brands 4–10 partial</div>
+        </div>
+        <div class="kpi">
+          <div class="l">Portfolio ROAS</div>
+          <div class="v">4.18<span class="unit">x</span></div>
+          <div class="delta up">▲ 0.22x</div>
+          <div style="margin-top: 4px; font-size: 10px; color: var(--grey-mid);"><span class="conf amber"></span>Pilot-grade only on B-1</div>
+        </div>
+        <div class="kpi">
+          <div class="l">Attribution Coverage</div>
+          <div class="v">73<span class="unit">%</span></div>
+          <div class="delta up">▲ 11pp</div>
+          <div style="margin-top: 4px; font-size: 10px; color: var(--grey-mid);"><span class="conf amber"></span>Target: 95% by D90</div>
+        </div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h">
+          <h2>Brand-by-brand snapshot</h2>
+          <span class="sub">Click a brand to drill in</span>
+        </div>
+        <div class="brand-grid">
+          <div class="brand-tile pilot" onclick="navigateTo('brand')">
+            <div class="b-nm">Beehive Plumbing</div>
+            <div class="b-row"><span>Spend</span><span class="n">$58K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">31</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$192</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">4.6x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span class="conf green" style="display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:4px;"></span>High</span><span class="n" style="color:var(--gold-dark);">95% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">Comfort Solutions</div>
+            <div class="b-row"><span>Spend</span><span class="n">$71K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">42</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$226</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">3.9x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50%;margin-right:4px;"></span>Med</span><span class="n">68% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">Diamond</div>
+            <div class="b-row"><span>Spend</span><span class="n">$48K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">29</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$201</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">4.3x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50%;margin-right:4px;"></span>Med</span><span class="n">72% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">Master Rooter</div>
+            <div class="b-row"><span>Spend</span><span class="n">$36K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">25</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$185</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">4.5x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50%;margin-right:4px;"></span>Med</span><span class="n">78% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">SameDay</div>
+            <div class="b-row"><span>Spend</span><span class="n">$52K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">38</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$178</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">4.7x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50%;margin-right:4px;"></span>Med</span><span class="n">81% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">Superior Water &amp; Air</div>
+            <div class="b-row"><span>Spend</span><span class="n">$44K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">28</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$245</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">3.7x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--red);border-radius:50%;margin-right:4px;"></span>Low</span><span class="n">54% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">Walker / St. George</div>
+            <div class="b-row"><span>Spend</span><span class="n">$31K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">21</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$219</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">4.0x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--red);border-radius:50%;margin-right:4px;"></span>Low</span><span class="n">61% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">Craig's Services</div>
+            <div class="b-row"><span>Spend</span><span class="n">$27K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">19</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$232</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">3.8x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--red);border-radius:50%;margin-right:4px;"></span>Low</span><span class="n">58% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">Lee's</div>
+            <div class="b-row"><span>Spend</span><span class="n">$33K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">22</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$208</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">4.2x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50%;margin-right:4px;"></span>Med</span><span class="n">76% cov.</span></div>
+          </div>
+          <div class="brand-tile">
+            <div class="b-nm">My Buddy the Plumber</div>
+            <div class="b-row"><span>Spend</span><span class="n">$28K</span></div>
+            <div class="b-row"><span>Bookings/d</span><span class="n">17</span></div>
+            <div class="b-row"><span>CAC</span><span class="n">$214</span></div>
+            <div class="b-row"><span>ROAS</span><span class="n">4.1x</span></div>
+            <div class="b-row" style="margin-top:6px;"><span><span style="display:inline-block;width:6px;height:6px;background:var(--red);border-radius:50%;margin-right:4px;"></span>Low</span><span class="n">52% cov.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-h"><h2>Services booked / day · last 30 days</h2><span class="sub">Portfolio total</span></div>
+          <div class="chart-box"><canvas id="ch-portfolio-trend"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h2>Spend mix by brand</h2><span class="sub">% of portfolio paid spend</span></div>
+          <div class="chart-box"><canvas id="ch-portfolio-mix"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== L2 — BEEHIVE BRAND =============== -->
+    <div class="view" id="view-brand">
+      <div class="view-h">
+        <div>
+          <h1>Beehive Plumbing — Brand Scorecard</h1>
+          <div class="sub">Pilot brand · Phase 2 stabilized · Daily refresh · CMO + GM dashboard</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">PILOT · LIVE</div>
+          <div>updated 2026-04-27 06:00</div>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="l">Spend (MTD)</div><div class="v">$58<span class="unit">K</span></div><div class="delta up">▲ 4.1%</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf green"></span>Verified</div></div>
+        <div class="kpi"><div class="l">Calls / day</div><div class="v">94</div><div class="delta up">▲ 8 vs avg</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf green"></span>CallRail</div></div>
+        <div class="kpi"><div class="l">Services Booked / day</div><div class="v">31</div><div class="delta up">▲ 6.9%</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf green"></span>ServiceTitan</div></div>
+        <div class="kpi"><div class="l">CAC</div><div class="v">$192</div><div class="delta down">▼ 8.6%</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf green"></span>Closed-loop</div></div>
+        <div class="kpi"><div class="l">ROAS</div><div class="v">4.6<span class="unit">x</span></div><div class="delta up">▲ 0.4x</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf green"></span>Daily</div></div>
+      </div>
+
+      <div class="grid-2-2-1">
+        <div class="panel">
+          <div class="panel-h"><h2>Calls + bookings · last 30 days</h2><span class="sub">Daily, by source</span></div>
+          <div class="chart-box tall"><canvas id="ch-brand-trend"></canvas></div>
+        </div>
+        <div class="panel gold-top">
+          <div class="panel-h"><h2>Funnel snapshot</h2><span class="sub" onclick="navigateTo('funnel')" style="cursor:pointer;color:var(--steel);">Drill in →</span></div>
+          <div style="padding: 4px 0;">
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--grey-lt);"><span style="font-size:11.5px;color:var(--grey-dark);">Impressions</span><span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy);">1.2M</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--grey-lt);"><span style="font-size:11.5px;color:var(--grey-dark);">Clicks/calls</span><span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy);">8,420</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--grey-lt);"><span style="font-size:11.5px;color:var(--grey-dark);">Leads</span><span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy);">2,820</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--grey-lt);"><span style="font-size:11.5px;color:var(--grey-dark);">Booked jobs</span><span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy);">930</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--grey-lt);"><span style="font-size:11.5px;color:var(--grey-dark);">Completed</span><span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy);">868</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span style="font-size:11.5px;color:var(--grey-dark);">Repeat (90d)</span><span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--gold-dark);">142</span></div>
+          </div>
+          <div style="margin-top: 10px; padding: 8px 10px; background: var(--red-soft); border-left: 3px solid var(--red);">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--red); font-weight: 700; letter-spacing: 1px;">LEAKAGE FLAG</div>
+            <div style="font-size: 11px; color: var(--ink); margin-top: 3px;">Lead → Booking conversion below baseline (33% vs 38%). <a onclick="navigateTo('leakage')" style="color: var(--steel); cursor: pointer;">View leakage diagnostic →</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>Channel mix · click to drill into channel performance</h2><span class="sub">CAC, ROAS, leads per channel</span></div>
+        <table class="dt">
+          <tr><th>Channel</th><th class="r">Spend</th><th class="r">Leads</th><th class="r">CPL</th><th class="r">CAC</th><th class="r">ROAS</th><th class="r">Conv.</th><th>Confidence</th><th>Status</th></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">Google Ads</span></td><td class="r">$22,400</td><td class="r">1,040</td><td class="r">$21.50</td><td class="r">$182</td><td class="r">4.8x</td><td class="r">39%</td><td><span class="cell-conf green"></span>High</td><td><span class="pill scale">Scale</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">LSAs (Google Local)</span></td><td class="r">$11,800</td><td class="r">512</td><td class="r">$23.04</td><td class="r">$163</td><td class="r">5.4x</td><td class="r">42%</td><td><span class="cell-conf green"></span>High</td><td><span class="pill scale">Scale</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">Meta Ads</span></td><td class="r">$8,200</td><td class="r">388</td><td class="r">$21.13</td><td class="r">$224</td><td class="r">3.9x</td><td class="r">33%</td><td><span class="cell-conf amber"></span>Medium</td><td><span class="pill test">Test</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">SEO / Organic</span></td><td class="r">$3,400</td><td class="r">468</td><td class="r">$7.26</td><td class="r">$78</td><td class="r">11.2x</td><td class="r">36%</td><td><span class="cell-conf amber"></span>Medium</td><td><span class="pill scale">Scale</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">Yelp / Angi</span></td><td class="r">$5,800</td><td class="r">142</td><td class="r">$40.85</td><td class="r">$362</td><td class="r">2.4x</td><td class="r">28%</td><td><span class="cell-conf amber"></span>Medium</td><td><span class="pill fix">Fix</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">Direct / Referral</span></td><td class="r">$1,200</td><td class="r">198</td><td class="r">$6.06</td><td class="r">$54</td><td class="r">14.8x</td><td class="r">44%</td><td><span class="cell-conf green"></span>High</td><td><span class="pill hold">Hold</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">Email / SMS (lifecycle)</span></td><td class="r">$2,100</td><td class="r">52</td><td class="r">$40.38</td><td class="r">$98</td><td class="r">8.4x</td><td class="r">52%</td><td><span class="cell-conf green"></span>High</td><td><span class="pill test">Test</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('channel')"><td><span class="cell-strong">Microsoft / Bing</span></td><td class="r">$3,100</td><td class="r">78</td><td class="r">$39.74</td><td class="r">$291</td><td class="r">3.0x</td><td class="r">31%</td><td><span class="cell-conf red"></span>Low</td><td><span class="pill fix">Fix</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- =============== L3 — FUNNEL =============== -->
+    <div class="view" id="view-funnel">
+      <div class="view-h">
+        <div>
+          <h1>Beehive — Funnel by Stage</h1>
+          <div class="sub">Stage volume · conversion rate · leakage flags · click a stage to see channels feeding it</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">CLOSED LOOP · LIVE</div>
+          <div>30-day window</div>
+        </div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>Stage volume + conversion + leakage</h2><span class="sub">Hover for benchmark · click to drill</span></div>
+        <div class="funnel-wrap">
+          <div class="funnel-stage s1" onclick="navigateTo('channel')">
+            <div class="lbl"><div class="nm">1 · Impressions</div><div class="ct">awareness · top of funnel</div></div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar"><div style="width: 100%;"></div></div><div class="funnel-vol">1.2M</div></div>
+            <div class="conv"><div class="pct">0.7% CTR</div><div>baseline 0.6%</div></div>
+          </div>
+          <div class="funnel-stage s2" onclick="navigateTo('channel')">
+            <div class="lbl"><div class="nm">2 · Clicks / Calls</div><div class="ct">consideration · engagement</div></div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar"><div style="width: 86%;"></div></div><div class="funnel-vol">8,420</div></div>
+            <div class="conv"><div class="pct">33.5%</div><div>click-to-lead</div></div>
+          </div>
+          <div class="funnel-stage s3" onclick="navigateTo('channel')">
+            <div class="lbl"><div class="nm">3 · Leads</div><div class="ct">form fill · phone · chat</div></div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar"><div style="width: 64%;"></div></div><div class="funnel-vol">2,820</div></div>
+            <div class="conv"><div class="pct">33.0%</div><div class="leak">▼ baseline 38% · LEAK</div></div>
+          </div>
+          <div class="funnel-stage s4" onclick="navigateTo('channel')">
+            <div class="lbl"><div class="nm">4 · Booked Jobs</div><div class="ct">CSR confirmation · scheduled</div></div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar"><div style="width: 38%;"></div></div><div class="funnel-vol">930</div></div>
+            <div class="conv"><div class="pct">93.3%</div><div>booking-to-completion</div></div>
+          </div>
+          <div class="funnel-stage s5" onclick="navigateTo('channel')">
+            <div class="lbl"><div class="nm">5 · Completed Services</div><div class="ct">field tech · paid invoice</div></div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar"><div style="width: 35%;"></div></div><div class="funnel-vol">868</div></div>
+            <div class="conv"><div class="pct">$1,743 AOV</div><div>$1.51M revenue</div></div>
+          </div>
+          <div class="funnel-stage s6" onclick="navigateTo('channel')">
+            <div class="lbl"><div class="nm">6 · Repeat Customer (90d)</div><div class="ct">membership · win-back</div></div>
+            <div class="funnel-bar-wrap"><div class="funnel-bar"><div style="width: 14%;"></div></div><div class="funnel-vol">142</div></div>
+            <div class="conv"><div class="pct">16.4%</div><div>repeat rate · target 22%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-h"><h2>Funnel conversion · 90-day trend</h2><span class="sub">Each stage's conversion rate</span></div>
+          <div class="chart-box"><canvas id="ch-funnel-trend"></canvas></div>
+        </div>
+        <div class="panel gold-top">
+          <div class="panel-h"><h2>Where this stage breaks down</h2><span class="sub">Lead → Booking diagnostic</span></div>
+          <div style="padding: 6px 0;">
+            <div style="display: grid; grid-template-columns: 1fr 80px; gap: 8px; padding: 10px 0; border-bottom: 1px dashed var(--grey-lt);">
+              <div>
+                <div style="font-weight: 700; color: var(--navy); font-size: 12.5px;">CSR speed-to-answer</div>
+                <div style="font-size: 11px; color: var(--grey-dark); margin-top: 2px;">Avg 14s · target 8s · 22% of calls roll to voicemail</div>
+              </div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--red); text-align: right;">−4.2%</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 80px; gap: 8px; padding: 10px 0; border-bottom: 1px dashed var(--grey-lt);">
+              <div>
+                <div style="font-weight: 700; color: var(--navy); font-size: 12.5px;">Out-of-area inbound (Yelp)</div>
+                <div style="font-size: 11px; color: var(--grey-dark); margin-top: 2px;">15% of Yelp leads disqualified · trade-area mismatch</div>
+              </div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--red); text-align: right;">−1.8%</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 80px; gap: 8px; padding: 10px 0; border-bottom: 1px dashed var(--grey-lt);">
+              <div>
+                <div style="font-weight: 700; color: var(--navy); font-size: 12.5px;">After-hours leads</div>
+                <div style="font-size: 11px; color: var(--grey-dark); margin-top: 2px;">28% of leads after 6pm · no warm transfer</div>
+              </div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--red); text-align: right;">−1.1%</div>
+            </div>
+          </div>
+          <div style="margin-top: 8px; font-size: 11px; color: var(--grey-dark);">
+            <a onclick="navigateTo('leakage')" style="color: var(--steel); cursor: pointer; text-decoration: none; font-weight: 600;">View full leakage diagnostic →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== L4 — CHANNEL =============== -->
+    <div class="view" id="view-channel">
+      <div class="view-h">
+        <div>
+          <h1>Channel Performance — Beehive Plumbing</h1>
+          <div class="sub">Online + offline media · Spend · CAC · ROAS · attribution coverage · click a channel to see campaigns</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">SCALE / FIX / TEST</div>
+          <div>30-day window</div>
+        </div>
+      </div>
+
+      <div class="kpi-row r4">
+        <div class="kpi"><div class="l">Total channel spend</div><div class="v">$113<span class="unit">K</span></div><div class="delta flat">tracked + modeled media</div></div>
+        <div class="kpi"><div class="l">Offline spend mix</div><div class="v">49<span class="unit">%</span></div><div class="delta flat" style="font-size:10.5px;">mailers · billboards · radio · TV</div></div>
+        <div class="kpi"><div class="l">Best CAC channel</div><div class="v" style="font-size:18px;">Direct/Referral</div><div class="delta up" style="font-size:10.5px;">$54 CAC · 14.8x ROAS</div></div>
+        <div class="kpi"><div class="l">Attribution coverage</div><div class="v">78<span class="unit">%</span></div><div class="delta flat">offline modeled until validated</div></div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>All channels · sortable · click for campaigns</h2><span class="sub">Digital, mailers, billboards, radio, and TV · CAC vs. ROAS quadrant ↓ + table ↓</span></div>
+        <div class="grid-2" style="margin-bottom: 16px;">
+          <div class="chart-box tall"><canvas id="ch-channel-quad"></canvas></div>
+          <div class="chart-box tall"><canvas id="ch-channel-bars"></canvas></div>
+        </div>
+        <table class="dt">
+          <tr><th>Channel</th><th class="r">Spend</th><th class="r">Impressions</th><th class="r">Clicks/Calls</th><th class="r">Leads</th><th class="r">CPL</th><th class="r">Booked</th><th class="r">CAC</th><th class="r">Revenue</th><th class="r">ROAS</th><th>Status</th></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Google Ads</span></td><td class="r">$22,400</td><td class="r">412K</td><td class="r">3,420</td><td class="r">1,040</td><td class="r">$21.50</td><td class="r">388</td><td class="r">$182</td><td class="r">$107K</td><td class="r"><span class="cell-strong" style="color:var(--green);">4.8x</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">LSAs (Google Local)</span></td><td class="r">$11,800</td><td class="r">98K</td><td class="r">1,420</td><td class="r">512</td><td class="r">$23.04</td><td class="r">216</td><td class="r">$163</td><td class="r">$64K</td><td class="r"><span class="cell-strong" style="color:var(--green);">5.4x</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Meta Ads</span></td><td class="r">$8,200</td><td class="r">628K</td><td class="r">1,180</td><td class="r">388</td><td class="r">$21.13</td><td class="r">128</td><td class="r">$224</td><td class="r">$32K</td><td class="r">3.9x</td><td><span class="pill test">Test</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">SEO / Organic</span></td><td class="r">$3,400</td><td class="r">88K</td><td class="r">1,310</td><td class="r">468</td><td class="r">$7.26</td><td class="r">168</td><td class="r">$78</td><td class="r">$38K</td><td class="r"><span class="cell-strong" style="color:var(--green);">11.2x</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Yelp / Angi</span></td><td class="r">$5,800</td><td class="r">42K</td><td class="r">390</td><td class="r">142</td><td class="r">$40.85</td><td class="r">40</td><td class="r">$362</td><td class="r">$14K</td><td class="r"><span class="cell-strong" style="color:var(--red);">2.4x</span></td><td><span class="pill fix">Fix</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Direct / Referral</span></td><td class="r">$1,200</td><td class="r">—</td><td class="r">412</td><td class="r">198</td><td class="r">$6.06</td><td class="r">87</td><td class="r">$54</td><td class="r">$18K</td><td class="r"><span class="cell-strong" style="color:var(--green);">14.8x</span></td><td><span class="pill hold">Hold</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Email / SMS</span></td><td class="r">$2,100</td><td class="r">—</td><td class="r">2,840</td><td class="r">52</td><td class="r">$40.38</td><td class="r">27</td><td class="r">$98</td><td class="r">$18K</td><td class="r"><span class="cell-strong" style="color:var(--green);">8.4x</span></td><td><span class="pill test">Test</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Microsoft / Bing</span></td><td class="r">$3,100</td><td class="r">68K</td><td class="r">340</td><td class="r">78</td><td class="r">$39.74</td><td class="r">24</td><td class="r">$291</td><td class="r">$9K</td><td class="r">3.0x</td><td><span class="pill fix">Fix</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Direct Mail / Mailers</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">QR · vanity URL · tracked phone</div></td><td class="r">$14,200</td><td class="r">18K homes</td><td class="r">286</td><td class="r">132</td><td class="r">$107.58</td><td class="r">54</td><td class="r">$263</td><td class="r">$39K</td><td class="r">2.7x</td><td><span class="pill test">Test</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Billboards / OOH</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">vanity URL · location lift window</div></td><td class="r">$9,600</td><td class="r">410K est.</td><td class="r">118</td><td class="r">64</td><td class="r">$150.00</td><td class="r">21</td><td class="r">$457</td><td class="r">$18K</td><td class="r"><span class="cell-strong" style="color:var(--red);">1.9x</span></td><td><span class="pill fix">Fix</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">Radio</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">unique number · daypart · offer code</div></td><td class="r">$12,800</td><td class="r">—</td><td class="r">232</td><td class="r">128</td><td class="r">$100.00</td><td class="r">49</td><td class="r">$261</td><td class="r">$42K</td><td class="r">3.3x</td><td><span class="pill test">Test</span></td></tr>
+          <tr class="clickable" onclick="navigateTo('campaign')"><td><span class="cell-strong">TV / CTV</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">linear + CTV · geo/time lift model</div></td><td class="r">$18,400</td><td class="r">260K est.</td><td class="r">174</td><td class="r">88</td><td class="r">$209.09</td><td class="r">31</td><td class="r">$594</td><td class="r">$29K</td><td class="r"><span class="cell-strong" style="color:var(--red);">1.6x</span></td><td><span class="pill test">Test</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- =============== L5 — CAMPAIGN =============== -->
+    <div class="view" id="view-campaign">
+      <div class="view-h">
+        <div>
+          <h1>Campaign Performance — Online + Offline / Beehive</h1>
+          <div class="sub">Campaign-level spend · leads · CAC · ROAS · test status · digital, mailer, billboard, radio, and TV performance</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">FRIDAY GROWTH REVIEW</div>
+          <div>showing 16 active campaigns</div>
+        </div>
+      </div>
+
+      <div class="kpi-row r4">
+        <div class="kpi"><div class="l">Active campaigns</div><div class="v">16</div><div class="delta flat">12 digital · 4 offline</div></div>
+        <div class="kpi"><div class="l">Offline campaigns</div><div class="v">4</div><div class="delta flat" style="font-size:10.5px;">mailer · OOH · radio · TV</div></div>
+        <div class="kpi"><div class="l">Top campaign · ROAS</div><div class="v" style="font-size:18px;">Drain Cleaning · SLC</div><div class="delta up" style="font-size:10.5px;">7.2x · $148 CAC</div></div>
+        <div class="kpi"><div class="l">Biggest offline question</div><div class="v" style="font-size:18px;">TV attribution</div><div class="delta flat" style="font-size:10.5px;">modeled lift until validated</div></div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>All campaigns · sortable</h2><span class="sub">Sorted by ROAS · top to bottom</span></div>
+        <table class="dt">
+          <tr><th>Campaign</th><th class="r">Spend</th><th class="r">Impr.</th><th class="r">Clicks</th><th class="r">CTR</th><th class="r">Leads</th><th class="r">CPL</th><th class="r">Booked</th><th class="r">CAC</th><th class="r">ROAS</th><th>Test</th><th>Status</th></tr>
+          <tr><td><span class="cell-strong">Drain Cleaning · SLC Metro</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Exact + Phrase</div></td><td class="r">$3,420</td><td class="r">68K</td><td class="r">872</td><td class="r">1.28%</td><td class="r">214</td><td class="r">$15.98</td><td class="r">98</td><td class="r"><span class="cell-strong" style="color:var(--green);">$148</span></td><td class="r"><span class="cell-strong" style="color:var(--green);">7.2x</span></td><td><span class="pill scale">Win +18%</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr><td><span class="cell-strong">Water Heater · Repair</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Exact</div></td><td class="r">$2,840</td><td class="r">42K</td><td class="r">624</td><td class="r">1.49%</td><td class="r">168</td><td class="r">$16.90</td><td class="r">68</td><td class="r"><span class="cell-strong" style="color:var(--green);">$165</span></td><td class="r"><span class="cell-strong" style="color:var(--green);">6.4x</span></td><td><span class="pill hold">—</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr><td><span class="cell-strong">Sewer Backup · Emergency</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Exact</div></td><td class="r">$2,120</td><td class="r">28K</td><td class="r">412</td><td class="r">1.47%</td><td class="r">98</td><td class="r">$21.63</td><td class="r">42</td><td class="r">$167</td><td class="r"><span class="cell-strong" style="color:var(--green);">5.8x</span></td><td><span class="pill scale">Win +12%</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr><td><span class="cell-strong">Plumber Near Me · Brand</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Brand</div></td><td class="r">$1,940</td><td class="r">22K</td><td class="r">468</td><td class="r">2.13%</td><td class="r">142</td><td class="r">$13.66</td><td class="r">62</td><td class="r"><span class="cell-strong" style="color:var(--green);">$98</span></td><td class="r"><span class="cell-strong" style="color:var(--green);">5.6x</span></td><td><span class="pill hold">—</span></td><td><span class="pill hold">Hold</span></td></tr>
+          <tr><td><span class="cell-strong">Garbage Disposal · SLC</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Exact + DSA</div></td><td class="r">$1,680</td><td class="r">38K</td><td class="r">412</td><td class="r">1.08%</td><td class="r">88</td><td class="r">$19.09</td><td class="r">36</td><td class="r">$184</td><td class="r"><span class="cell-strong" style="color:var(--green);">5.1x</span></td><td><span class="pill test">Running</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr><td><span class="cell-strong">Pipe Repair · West Jordan</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Exact</div></td><td class="r">$1,420</td><td class="r">31K</td><td class="r">298</td><td class="r">0.96%</td><td class="r">68</td><td class="r">$20.88</td><td class="r">26</td><td class="r">$209</td><td class="r">4.7x</td><td><span class="pill hold">—</span></td><td><span class="pill hold">Hold</span></td></tr>
+          <tr><td><span class="cell-strong">Toilet Repair / Install</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Phrase</div></td><td class="r">$1,820</td><td class="r">42K</td><td class="r">298</td><td class="r">0.71%</td><td class="r">52</td><td class="r">$35.00</td><td class="r">19</td><td class="r">$291</td><td class="r">3.6x</td><td><span class="pill test">Running</span></td><td><span class="pill test">Test</span></td></tr>
+          <tr><td><span class="cell-strong">Plumbing Inspection</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Broad+</div></td><td class="r">$1,260</td><td class="r">52K</td><td class="r">196</td><td class="r">0.38%</td><td class="r">38</td><td class="r">$33.16</td><td class="r">12</td><td class="r">$310</td><td class="r">3.2x</td><td><span class="pill test">Running</span></td><td><span class="pill test">Test</span></td></tr>
+          <tr><td><span class="cell-strong">Performance Max · Plumbing</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">PMax</div></td><td class="r">$2,440</td><td class="r">128K</td><td class="r">412</td><td class="r">0.32%</td><td class="r">82</td><td class="r">$29.76</td><td class="r">29</td><td class="r">$282</td><td class="r">3.4x</td><td><span class="pill test">Running</span></td><td><span class="pill test">Test</span></td></tr>
+          <tr><td><span class="cell-strong">Tankless · Broad</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Broad</div></td><td class="r">$1,580</td><td class="r">38K</td><td class="r">218</td><td class="r">0.57%</td><td class="r">28</td><td class="r">$56.43</td><td class="r">9</td><td class="r"><span class="cell-strong" style="color:var(--red);">$418</span></td><td class="r"><span class="cell-strong" style="color:var(--red);">2.1x</span></td><td><span class="pill fix">Lose −9%</span></td><td><span class="pill fix">Pause</span></td></tr>
+          <tr><td><span class="cell-strong">Hydro Jetting · DSA</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">DSA</div></td><td class="r">$1,140</td><td class="r">31K</td><td class="r">182</td><td class="r">0.59%</td><td class="r">42</td><td class="r">$27.14</td><td class="r">14</td><td class="r">$226</td><td class="r">4.0x</td><td><span class="pill scale">Win +6%</span></td><td><span class="pill hold">Hold</span></td></tr>
+          <tr><td><span class="cell-strong">Drain Snake / Augur</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Search · Exact</div></td><td class="r">$740</td><td class="r">12K</td><td class="r">218</td><td class="r">1.82%</td><td class="r">52</td><td class="r">$14.23</td><td class="r">23</td><td class="r"><span class="cell-strong" style="color:var(--green);">$161</span></td><td class="r"><span class="cell-strong" style="color:var(--green);">5.9x</span></td><td><span class="pill scale">Win +14%</span></td><td><span class="pill scale">Scale</span></td></tr>
+          <tr><td><span class="cell-strong">Spring Water Heater Mailer</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Direct Mail · QR + tracked number</div></td><td class="r">$7,200</td><td class="r">9.5K homes</td><td class="r">—</td><td class="r">—</td><td class="r">74</td><td class="r">$97.30</td><td class="r">31</td><td class="r">$232</td><td class="r">3.4x</td><td><span class="pill test">Offer A/B</span></td><td><span class="pill test">Test</span></td></tr>
+          <tr><td><span class="cell-strong">I-15 Southbound Billboard</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">OOH · vanity URL + lift window</div></td><td class="r">$5,100</td><td class="r">230K est.</td><td class="r">—</td><td class="r">—</td><td class="r">34</td><td class="r">$150.00</td><td class="r">12</td><td class="r">$425</td><td class="r"><span class="cell-strong" style="color:var(--red);">1.8x</span></td><td><span class="pill test">Geo lift</span></td><td><span class="pill fix">Fix</span></td></tr>
+          <tr><td><span class="cell-strong">Morning Drive Radio</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">Radio · daypart + unique number</div></td><td class="r">$6,800</td><td class="r">—</td><td class="r">138</td><td class="r">—</td><td class="r">76</td><td class="r">$89.47</td><td class="r">30</td><td class="r">$227</td><td class="r">3.6x</td><td><span class="pill test">Daypart</span></td><td><span class="pill test">Test</span></td></tr>
+          <tr><td><span class="cell-strong">Evening News TV</span><div style="font-size:10px;color:var(--grey-mid);font-family:'JetBrains Mono',monospace;margin-top:2px;">TV · linear + geo/time lift model</div></td><td class="r">$11,000</td><td class="r">160K est.</td><td class="r">104</td><td class="r">—</td><td class="r">54</td><td class="r">$203.70</td><td class="r">18</td><td class="r">$611</td><td class="r"><span class="cell-strong" style="color:var(--red);">1.5x</span></td><td><span class="pill test">Lift model</span></td><td><span class="pill test">Test</span></td></tr>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel gold-top">
+          <div class="panel-h"><h2>Campaign-level recommendations</h2><span class="sub">From Friday Growth Review</span></div>
+          <div style="padding: 6px 0;">
+            <div style="padding: 8px 0; border-bottom: 1px dashed var(--grey-lt);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span style="font-weight: 700; color: var(--navy); font-size: 12px;">Scale Drain Cleaning + Drain Snake</span><span class="pill scale">+$2.4K</span></div>
+              <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.4;">Both winning tests with strong CTR. Increase budget 30%; review week of May 12.</div>
+            </div>
+            <div style="padding: 8px 0; border-bottom: 1px dashed var(--grey-lt);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span style="font-weight: 700; color: var(--navy); font-size: 12px;">Pause Tankless · Broad</span><span class="pill fix">−$1.6K</span></div>
+              <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.4;">Lost test. CAC 2.5x portfolio. Reallocate to Drain campaigns.</div>
+            </div>
+            <div style="padding: 8px 0;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span style="font-weight: 700; color: var(--navy); font-size: 12px;">Continue testing PMax + Toilet</span><span class="pill test">Hold</span></div>
+              <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.4;">Both still in stat-sig collection window. Decision next Friday.</div>
+            </div>
+            <div style="padding: 8px 0; border-top: 1px dashed var(--grey-lt);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span style="font-weight: 700; color: var(--navy); font-size: 12px;">Instrument offline campaigns</span><span class="pill test">Validate</span></div>
+              <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.4;">Assign unique numbers, vanity URLs, QR codes, promo codes, and flight windows before comparing offline CAC to digital.</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h2>Campaign performance distribution</h2><span class="sub">CAC vs ROAS scatter</span></div>
+          <div class="chart-box tall"><canvas id="ch-campaign-scatter"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== LEAKAGE DIAGNOSTIC =============== -->
+    <div class="view" id="view-leakage">
+      <div class="view-h">
+        <div>
+          <h1>Leakage Diagnostic — Beehive Plumbing</h1>
+          <div class="sub">Where qualified demand exits the funnel · the four-condition agreement in action</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">PHASE 3 OUTPUT</div>
+          <div>30-day window</div>
+        </div>
+      </div>
+
+      <div class="kpi-row r4">
+        <div class="kpi"><div class="l">Total leakage cost</div><div class="v">$<span>34</span><span class="unit">K /mo</span></div><div class="delta down">▼ $11K vs baseline</div></div>
+        <div class="kpi"><div class="l">Lead → booking rate</div><div class="v">33<span class="unit">%</span></div><div class="delta down">▼ 5pp vs target</div></div>
+        <div class="kpi"><div class="l">Worst stage</div><div class="v" style="font-size:18px;">Lead → Booking</div><div class="delta flat">CSR speed-to-answer</div></div>
+        <div class="kpi"><div class="l">Recoverable revenue</div><div class="v">$<span>148</span><span class="unit">K /yr</span></div><div class="delta up">if all flagged items fix</div></div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>Stage-by-stage diagnosis</h2><span class="sub">Severity · description · monthly impact</span></div>
+        <div style="padding: 4px 0;">
+          <div class="leakage-row low">
+            <div class="stage">1 · Impressions → Click<div class="when">awareness · CTR vs benchmark</div></div>
+            <div class="severity"><div class="sev-dot on"></div><div class="sev-dot"></div><div class="sev-dot"></div><div class="sev-dot"></div><div class="sev-dot"></div></div>
+            <div class="desc"><strong>Healthy.</strong> CTR 0.7% vs portfolio benchmark 0.6%. Display + Search creative refresh in last 30 days lifted CTR 12%.</div>
+            <div class="impact">+$2.1K</div>
+          </div>
+          <div class="leakage-row low">
+            <div class="stage">2 · Click → Lead<div class="when">landing page conv · forms</div></div>
+            <div class="severity"><div class="sev-dot on"></div><div class="sev-dot on"></div><div class="sev-dot"></div><div class="sev-dot"></div><div class="sev-dot"></div></div>
+            <div class="desc"><strong>Solid.</strong> 33.5% click-to-lead. Form fill + phone-tap split: 62%/38%. Mobile lead form A/B test running — early winner +8% lift.</div>
+            <div class="impact">−$1.8K</div>
+          </div>
+          <div class="leakage-row">
+            <div class="stage">3 · Lead → Booking<div class="when">CSR intake · qualification</div></div>
+            <div class="severity"><div class="sev-dot on"></div><div class="sev-dot on"></div><div class="sev-dot on"></div><div class="sev-dot on"></div><div class="sev-dot"></div></div>
+            <div class="desc"><strong>Primary leak.</strong> 33% rate vs 38% target. CSR speed-to-answer averaging 14s (target 8s). 22% of inbound calls roll to voicemail. After-hours leads (28% of total) lack warm transfer. Yelp inbound 15% out-of-area disqualified.</div>
+            <div class="impact">−$18.4K</div>
+          </div>
+          <div class="leakage-row medium">
+            <div class="stage">4 · Booking → Completion<div class="when">dispatch · technician · job</div></div>
+            <div class="severity"><div class="sev-dot on"></div><div class="sev-dot on"></div><div class="sev-dot on"></div><div class="sev-dot"></div><div class="sev-dot"></div></div>
+            <div class="desc"><strong>Some friction.</strong> 93% completion vs 96% target. 6.7% no-show / cancellation rate. Same-day rescheduling needed for 4% of jobs.</div>
+            <div class="impact">−$8.2K</div>
+          </div>
+          <div class="leakage-row medium">
+            <div class="stage">5 · Completion → Repeat (90d)<div class="when">membership · win-back</div></div>
+            <div class="severity"><div class="sev-dot on"></div><div class="sev-dot on"></div><div class="sev-dot"></div><div class="sev-dot"></div><div class="sev-dot"></div></div>
+            <div class="desc"><strong>Below target.</strong> 16.4% repeat rate vs 22% target. Membership pitch attached to 41% of jobs (target 65%). Email follow-up sequence dormant on 38% of customers.</div>
+            <div class="impact">−$11.6K</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-h"><h2>Leakage trend · 90-day</h2><span class="sub">Improving since closed-loop went live</span></div>
+          <div class="chart-box"><canvas id="ch-leakage-trend"></canvas></div>
+        </div>
+        <div class="panel gold-top">
+          <div class="panel-h"><h2>Lane assignment</h2><span class="sub">What I own vs. observe-only</span></div>
+          <div style="padding: 4px 0;">
+            <div style="padding: 9px 0; border-bottom: 1px dashed var(--grey-lt); display: grid; grid-template-columns: 100px 1fr; gap: 10px;"><div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--green); font-weight: 700;">MARKETING</div><div style="font-size: 11.5px; line-height: 1.4;">Stage 1–2 (Impressions → Click → Lead): I own. UTM, GTM, landing pages, ad creative, channel mix.</div></div>
+            <div style="padding: 9px 0; border-bottom: 1px dashed var(--grey-lt); display: grid; grid-template-columns: 100px 1fr; gap: 10px;"><div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--gold-dark); font-weight: 700;">CS / OPS</div><div style="font-size: 11.5px; line-height: 1.4;">Stage 3 (Lead → Booking): Call Center owns. I report the metric, flag the issue, hand to CSR lead with scope-accountability framing.</div></div>
+            <div style="padding: 9px 0; border-bottom: 1px dashed var(--grey-lt); display: grid; grid-template-columns: 100px 1fr; gap: 10px;"><div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--gold-dark); font-weight: 700;">FIELD OPS</div><div style="font-size: 11.5px; line-height: 1.4;">Stage 4 (Booking → Completion): Dispatch + Field. Observed only.</div></div>
+            <div style="padding: 9px 0; display: grid; grid-template-columns: 100px 1fr; gap: 10px;"><div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--steel); font-weight: 700;">SHARED</div><div style="font-size: 11.5px; line-height: 1.4;">Stage 5 (Completion → Repeat): Marketing + Membership / CX. I own email/SMS lifecycle; CX owns NPS &amp; on-job pitch.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== TEST FRAMEWORK =============== -->
+    <div class="view" id="view-test">
+      <div class="view-h">
+        <div>
+          <h1>Test Framework — Beehive Plumbing</h1>
+          <div class="sub">Active tests · win/loss readouts · scale/fix/test queue · cumulative learning rate</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">SCALE / FIX / TEST</div>
+          <div>weekly cadence</div>
+        </div>
+      </div>
+
+      <div class="kpi-row r4">
+        <div class="kpi"><div class="l">Active tests</div><div class="v">8</div><div class="delta flat">3 in stat-sig window</div></div>
+        <div class="kpi"><div class="l">Wins shipped (90d)</div><div class="v">5</div><div class="delta up">▲ 2 vs prior 90d</div></div>
+        <div class="kpi"><div class="l">Avg lift on winners</div><div class="v">+13<span class="unit">%</span></div><div class="delta up">conv-rate average</div></div>
+        <div class="kpi"><div class="l">Time-to-readout</div><div class="v">12<span class="unit"> days</span></div><div class="delta down">▼ from 28 days</div></div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>Active tests</h2><span class="sub">Click for full readout</span></div>
+        <div class="test-grid">
+          <div class="test-card winning">
+            <div class="test-h"><span class="test-name">Mobile lead form: 3-field vs 6-field</span><span class="test-status">WIN +18%</span></div>
+            <div class="test-hyp">Hypothesis: Reducing form fields from 6 to 3 improves mobile conversion without hurting lead quality.</div>
+            <div class="test-meta"><span><span class="m-l">Channel</span><span class="m-v">Google Ads</span></span><span><span class="m-l">Days</span><span class="m-v">14 / 14</span></span><span><span class="m-l">Sig</span><span class="m-v">99%</span></span></div>
+          </div>
+          <div class="test-card winning">
+            <div class="test-h"><span class="test-name">Drain Cleaning · CTA wording test</span><span class="test-status">WIN +12%</span></div>
+            <div class="test-hyp">Hypothesis: "Same-Day Service" CTA outperforms "Get a Free Quote" for emergency drain queries.</div>
+            <div class="test-meta"><span><span class="m-l">Channel</span><span class="m-v">Google Ads</span></span><span><span class="m-l">Days</span><span class="m-v">10 / 10</span></span><span><span class="m-l">Sig</span><span class="m-v">96%</span></span></div>
+          </div>
+          <div class="test-card running">
+            <div class="test-h"><span class="test-name">PMax · creative refresh</span><span class="test-status">RUNNING</span></div>
+            <div class="test-hyp">Hypothesis: New thumbnail set with technician faces drives stronger CTR than current product-only creative.</div>
+            <div class="test-meta"><span><span class="m-l">Channel</span><span class="m-v">Google PMax</span></span><span><span class="m-l">Days</span><span class="m-v">8 / 14</span></span><span><span class="m-l">Sig</span><span class="m-v">62%</span></span></div>
+          </div>
+          <div class="test-card running">
+            <div class="test-h"><span class="test-name">Toilet Repair · landing page hero</span><span class="test-status">RUNNING</span></div>
+            <div class="test-hyp">Hypothesis: Showing pricing transparency above the fold improves form-fill rate vs hidden pricing.</div>
+            <div class="test-meta"><span><span class="m-l">Channel</span><span class="m-v">Google Ads</span></span><span><span class="m-l">Days</span><span class="m-v">6 / 14</span></span><span><span class="m-l">Sig</span><span class="m-v">48%</span></span></div>
+          </div>
+          <div class="test-card running">
+            <div class="test-h"><span class="test-name">Email · membership win-back subject line</span><span class="test-status">RUNNING</span></div>
+            <div class="test-hyp">Hypothesis: First-name personalization in subject line beats generic "Time for a Check-up" for lapsed customers.</div>
+            <div class="test-meta"><span><span class="m-l">Channel</span><span class="m-v">Email/SMS</span></span><span><span class="m-l">Days</span><span class="m-v">11 / 14</span></span><span><span class="m-l">Sig</span><span class="m-v">88%</span></span></div>
+          </div>
+          <div class="test-card losing">
+            <div class="test-h"><span class="test-name">Tankless · Broad-match keyword expansion</span><span class="test-status">LOSE −9%</span></div>
+            <div class="test-hyp">Hypothesis: Broad-match expansion would unlock high-intent volume above current Exact-match baseline.</div>
+            <div class="test-meta"><span><span class="m-l">Channel</span><span class="m-v">Google Ads</span></span><span><span class="m-l">Days</span><span class="m-v">14 / 14</span></span><span><span class="m-l">Sig</span><span class="m-v">94%</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><h2>Cumulative learning · last 90 days</h2><span class="sub">Compounding lift from shipped winners</span></div>
+        <div class="chart-box"><canvas id="ch-test-cumulative"></canvas></div>
+      </div>
+    </div>
+
+    <!-- =============== BUDGET MOVE BOARD =============== -->
+    <div class="view" id="view-budget">
+      <div class="view-h">
+        <div>
+          <h1>Budget Move Board — Beehive Plumbing</h1>
+          <div class="sub">Reversible · measured · named · every move has an expected outcome and review date</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">DAY 120 OUTPUT</div>
+          <div>signed off CMO + GM</div>
+        </div>
+      </div>
+
+      <div class="kpi-row r4">
+        <div class="kpi"><div class="l">Total monthly spend</div><div class="v">$58<span class="unit">K</span></div><div class="delta flat">unchanged total</div></div>
+        <div class="kpi"><div class="l">Net reallocation</div><div class="v" style="color:var(--green);">$8.2<span class="unit">K</span></div><div class="delta up">14% of total</div></div>
+        <div class="kpi"><div class="l">Expected ROAS lift</div><div class="v" style="color:var(--green);">+0.6<span class="unit">x</span></div><div class="delta up">to 5.2x blended</div></div>
+        <div class="kpi"><div class="l">Review window</div><div class="v" style="font-size:18px;">4 weeks</div><div class="delta flat">decision May 25</div></div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>Proposed budget moves · this 30-day cycle</h2><span class="sub">Each move is reversible · stop/continue criteria attached</span></div>
+        <div style="background: var(--navy); color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 9px 14px; letter-spacing: 1px; text-transform: uppercase; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.6fr 100px 90px; gap: 10px;">
+          <div>Move</div><div>Amount</div><div>Source → To</div><div>Evidence</div><div>Expected</div><div>Review</div>
+        </div>
+        <div style="padding: 0 0;">
+          <div class="move-row" style="padding: 11px 14px;">
+            <div class="desc"><strong>Scale Drain Cleaning campaigns</strong><div style="font-size: 11px; color: var(--grey-mid); margin-top: 2px;">SLC Metro + Drain Snake — both shipped winners</div></div>
+            <div class="amt">+$2,400</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink); line-height: 1.3;">Tankless Broad → Drain campaigns</div>
+            <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.3;">SLC Metro: 7.2x ROAS, +18% test win. Drain Snake: 5.9x ROAS, +14%.</div>
+            <div class="exp">+$11K rev<br>−$32 CAC</div>
+            <div class="review">May 25</div>
+          </div>
+          <div class="move-row" style="padding: 11px 14px;">
+            <div class="desc"><strong>Pause Tankless Broad campaign</strong><div style="font-size: 11px; color: var(--grey-mid); margin-top: 2px;">Failed test, 2.5x portfolio CAC</div></div>
+            <div class="amt" style="color: var(--red);">−$1,580</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink); line-height: 1.3;">Pause · reallocate above</div>
+            <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.3;">Lost test 9% under control. CAC $418 vs portfolio $192.</div>
+            <div class="exp">−$3K loss<br>avoided</div>
+            <div class="review">June 22</div>
+          </div>
+          <div class="move-row" style="padding: 11px 14px;">
+            <div class="desc"><strong>Increase LSAs spend</strong><div style="font-size: 11px; color: var(--grey-mid); margin-top: 2px;">Best CAC channel · headroom on call volume</div></div>
+            <div class="amt">+$3,200</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink); line-height: 1.3;">Yelp/Angi → LSAs</div>
+            <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.3;">LSAs: $163 CAC, 5.4x ROAS. Yelp: $362 CAC, 2.4x ROAS.</div>
+            <div class="exp">+$15K rev<br>−$8 blended CAC</div>
+            <div class="review">May 25</div>
+          </div>
+          <div class="move-row" style="padding: 11px 14px;">
+            <div class="desc"><strong>Trim Yelp/Angi spend</strong><div style="font-size: 11px; color: var(--grey-mid); margin-top: 2px;">15% of leads are out-of-area · CAC 88% over portfolio</div></div>
+            <div class="amt" style="color: var(--red);">−$3,200</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink); line-height: 1.3;">Reallocate to LSAs</div>
+            <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.3;">Out-of-area lead pattern from Yelp not improving with negative-keyword work; rolling back.</div>
+            <div class="exp">−$3K spend<br>+$0.8x ROAS</div>
+            <div class="review">May 25</div>
+          </div>
+          <div class="move-row" style="padding: 11px 14px;">
+            <div class="desc"><strong>Test Email/SMS lifecycle expansion</strong><div style="font-size: 11px; color: var(--grey-mid); margin-top: 2px;">8.4x ROAS · room to scale to dormant 38%</div></div>
+            <div class="amt">+$1,200</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink); line-height: 1.3;">From: Microsoft/Bing (underperforming)</div>
+            <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.3;">Email/SMS at 8.4x ROAS. Win-back sequence currently dormant on 38% of past customers.</div>
+            <div class="exp">+$8K rev<br>+1.4pp repeat</div>
+            <div class="review">June 8</div>
+          </div>
+          <div class="move-row" style="padding: 11px 14px;">
+            <div class="desc"><strong>Trim Microsoft / Bing</strong><div style="font-size: 11px; color: var(--grey-mid); margin-top: 2px;">$291 CAC, 3.0x ROAS, low coverage</div></div>
+            <div class="amt" style="color: var(--red);">−$1,200</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink); line-height: 1.3;">Reallocate to Email/SMS</div>
+            <div style="font-size: 11px; color: var(--grey-dark); line-height: 1.3;">Underperforming all other paid channels. Pixels last validated 2 months ago.</div>
+            <div class="exp">−$1K spend<br>opportunity cost</div>
+            <div class="review">June 8</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><h2>30-day reallocation summary</h2><span class="sub">Net moves by channel</span></div>
+        <div class="chart-box"><canvas id="ch-budget-summary"></canvas></div>
+      </div>
+    </div>
+
+    <!-- =============== FORECASTING MODEL =============== -->
+    <div class="view" id="view-forecast">
+      <div class="view-h">
+        <div>
+          <h1>Forecasting Model - Marketing Goal Tiers</h1>
+          <div class="sub">Conservative, moderate, and aggressive goals with MoM, YoY, seasonality, funnel impact, leakage, and marketing ROI</div>
+        </div>
+        <div class="meta-r">
+          <div class="stamp">DAY 120 OUTPUT</div>
+          <div>example model - To Validate</div>
+        </div>
+      </div>
+
+      <div class="kpi-row r4">
+        <div class="kpi"><div class="l">Model Confidence</div><div class="v">78<span class="unit">%</span></div><div class="delta up">MoM +6pp / YoY new model</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf amber"></span>Needs 90 days accepted data</div></div>
+        <div class="kpi"><div class="l">Moderate Revenue Goal</div><div class="v">$1.28<span class="unit">M</span></div><div class="delta up">MoM +8.5% / YoY +14.0%</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf amber"></span>Finance input, marketing target</div></div>
+        <div class="kpi"><div class="l">Booked Jobs Needed</div><div class="v">1,420</div><div class="delta up">MoM +16.4% / YoY +12.7%</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf amber"></span>Capacity check</div></div>
+        <div class="kpi"><div class="l">Marketing ROI Goal</div><div class="v">4.7<span class="unit">x</span></div><div class="delta up">MoM +0.5x / YoY +0.8x</div><div style="margin-top:4px;font-size:10px;color:var(--grey-mid);"><span class="conf amber"></span>Completed revenue basis</div></div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>Goal tiers - choose the operating target</h2><span class="sub">Conservative · moderate · aggressive</span></div>
+        <div class="goal-tier-grid">
+          <div class="goal-tier">
+            <div class="tier-h"><span class="tier-name">Conservative</span><span class="tier-tag">protect plan</span></div>
+            <div class="tier-num">$1.20M</div>
+            <div class="tier-sub">Use when seasonality, call capacity, or attribution confidence is still uneven.</div>
+            <div class="mini-metrics">
+              <div class="mini-metric"><div class="m-label">Bookings</div><div class="m-val">1,330 / mo</div></div>
+              <div class="mini-metric"><div class="m-label">Qualified demand</div><div class="m-val">4,030</div></div>
+              <div class="mini-metric"><div class="m-label">Marketing ROI</div><div class="m-val">4.3x</div></div>
+              <div class="mini-metric"><div class="m-label">Leakage change</div><div class="m-val">-8%</div></div>
+            </div>
+          </div>
+          <div class="goal-tier moderate">
+            <div class="tier-h"><span class="tier-name">Moderate</span><span class="tier-tag">recommended</span></div>
+            <div class="tier-num">$1.28M</div>
+            <div class="tier-sub">Primary scorecard target after data flow, definitions, and source confidence are accepted.</div>
+            <div class="mini-metrics">
+              <div class="mini-metric"><div class="m-label">Bookings</div><div class="m-val">1,420 / mo</div></div>
+              <div class="mini-metric"><div class="m-label">Qualified demand</div><div class="m-val">4,300</div></div>
+              <div class="mini-metric"><div class="m-label">Marketing ROI</div><div class="m-val">4.7x</div></div>
+              <div class="mini-metric"><div class="m-label">Leakage change</div><div class="m-val">-18%</div></div>
+            </div>
+          </div>
+          <div class="goal-tier aggressive">
+            <div class="tier-h"><span class="tier-name">Aggressive</span><span class="tier-tag">capacity gated</span></div>
+            <div class="tier-num">$1.40M</div>
+            <div class="tier-sub">Use only when demand quality, call handling, dispatch, and technician capacity can support the lift.</div>
+            <div class="mini-metrics">
+              <div class="mini-metric"><div class="m-label">Bookings</div><div class="m-val">1,555 / mo</div></div>
+              <div class="mini-metric"><div class="m-label">Qualified demand</div><div class="m-val">4,710</div></div>
+              <div class="mini-metric"><div class="m-label">Marketing ROI</div><div class="m-val">5.1x</div></div>
+              <div class="mini-metric"><div class="m-label">Leakage change</div><div class="m-val">-28%</div></div>
+            </div>
+          </div>
+        </div>
+        <table class="dt compare-table">
+          <tr><th>Marketing metric</th><th class="r">Current</th><th class="r">MoM</th><th class="r">YoY</th><th class="r">Conservative</th><th class="r">Moderate</th><th class="r">Aggressive</th><th>Owner / action</th></tr>
+          <tr><td><div class="metric">Qualified demand</div><div class="small-note">High-intent calls, forms, chats after source rules</div></td><td class="r">3,720</td><td class="r"><span class="trend-chip up">+6.2%</span></td><td class="r"><span class="trend-chip up">+10.8%</span></td><td class="r">4,030</td><td class="r">4,300</td><td class="r">4,710</td><td>Marketing Ops + Call Center: validate disposition rules.</td></tr>
+          <tr><td><div class="metric">Lead to booking rate</div><div class="small-note">Funnel conversion most tied to call handling and fit</div></td><td class="r">33.0%</td><td class="r"><span class="trend-chip down">-1.2pp</span></td><td class="r"><span class="trend-chip flat">+0.4pp</span></td><td class="r">33.0%</td><td class="r">35.0%</td><td class="r">37.0%</td><td>Call Center: speed-to-answer and after-hours handling.</td></tr>
+          <tr><td><div class="metric">Booked jobs</div><div class="small-note">Primary operational target created by marketing demand</div></td><td class="r">1,220</td><td class="r"><span class="trend-chip up">+5.9%</span></td><td class="r"><span class="trend-chip up">+9.4%</span></td><td class="r">1,330</td><td class="r">1,420</td><td class="r">1,555</td><td>Brand GM + Call Center: confirm capacity before scaling.</td></tr>
+          <tr><td><div class="metric">Booking to completion rate</div><div class="small-note">Operational leakage after the marketing handoff</div></td><td class="r">93.4%</td><td class="r"><span class="trend-chip up">+0.6pp</span></td><td class="r"><span class="trend-chip up">+1.1pp</span></td><td class="r">93.5%</td><td class="r">94.0%</td><td class="r">95.0%</td><td>Ops: use as constraint, not a marketing-only KPI.</td></tr>
+          <tr><td><div class="metric">Leakage cost</div><div class="small-note">Modeled recoverable value from funnel gaps</div></td><td class="r">$34K</td><td class="r"><span class="trend-chip up">-$11K</span></td><td class="r"><span class="trend-chip up">-$19K</span></td><td class="r">$31K</td><td class="r">$28K</td><td class="r">$24K</td><td>Marketing Ops: assign source, call, booking, and completion owners.</td></tr>
+          <tr><td><div class="metric">Cost per booking</div><div class="small-note">Marketing spend divided by booked jobs</div></td><td class="r">$211</td><td class="r"><span class="trend-chip up">-4.6%</span></td><td class="r"><span class="trend-chip up">-7.8%</span></td><td class="r">$204</td><td class="r">$192</td><td class="r">$181</td><td>Performance Marketing: budget shift and campaign quality.</td></tr>
+          <tr><td><div class="metric">Marketing ROI</div><div class="small-note">Completed revenue attributed to marketing / spend</div></td><td class="r">4.18x</td><td class="r"><span class="trend-chip up">+0.22x</span></td><td class="r"><span class="trend-chip up">+0.54x</span></td><td class="r">4.3x</td><td class="r">4.7x</td><td class="r">5.1x</td><td>CMO + Marketing Ops: compare against channel mix and confidence.</td></tr>
+          <tr><td><div class="metric">Attribution coverage</div><div class="small-note">Share of completed jobs tied to a usable source</div></td><td class="r">73%</td><td class="r"><span class="trend-chip up">+11pp</span></td><td class="r"><span class="trend-chip up">+24pp</span></td><td class="r">85%</td><td class="r">90%</td><td class="r">95%</td><td>IT/Data + Marketing Ops: close source capture gaps.</td></tr>
+        </table>
+      </div>
+
+      <div class="forecast-grid">
+        <div class="panel">
+          <div class="panel-h"><h2>Required volume by funnel stage</h2><span class="sub">Current vs goal tier requirements</span></div>
+          <div class="chart-box tall"><canvas id="ch-forecast-reverse"></canvas></div>
+        </div>
+        <div class="forecast-stack">
+          <div class="panel gold-top">
+            <div class="panel-h"><h2>Scorecard goal rules</h2><span class="sub">How goals get set</span></div>
+            <div style="font-size: 11.5px; line-height: 1.45; color: var(--ink);">
+              <p><span class="forecast-pill">Rule 1</span> Use CFO-approved revenue and AOV inputs, but keep the dashboard focused on marketing demand, conversion, leakage, and ROI.</p>
+              <p><span class="forecast-pill">Rule 2</span> Every metric shows actual, target, MoM movement, YoY movement, owner, and next action.</p>
+              <p><span class="forecast-pill">Rule 3</span> Forecasts use conservative/moderate/aggressive ranges until 90 days of accepted data are stable.</p>
+              <p><span class="forecast-pill">Rule 4</span> Home services seasonality and capacity constraints can override a pure spend-based target.</p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-h"><h2>Goal-setting outputs</h2><span class="sub">End-of-120-day deliverable</span></div>
+            <div style="font-size: 11.5px; color: var(--ink); line-height: 1.45;">
+              <div style="padding:7px 0;border-bottom:1px dashed var(--grey-lt);"><strong>Executive scorecard:</strong> selected goal tier, marketing ROI, forecast variance, confidence, and decision queue.</div>
+              <div style="padding:7px 0;border-bottom:1px dashed var(--grey-lt);"><strong>Director scorecard:</strong> funnel targets, channel mix, leakage trend, test plan, and budget movement rules.</div>
+              <div style="padding:7px 0;"><strong>Manager scorecard:</strong> source quality, conversion rate, call outcomes, booking gaps, completion gaps, and owner actions.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="seasonality-grid">
+        <div class="panel">
+          <div class="panel-h"><h2>Scenario forecast - marketing ROI</h2><span class="sub">Conservative, moderate, and aggressive planning ranges</span></div>
+          <div class="chart-box"><canvas id="ch-forecast-scenarios"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h2>Seasonality index - home services demand</h2><span class="sub">Same month prior year normalized to 100</span></div>
+          <div class="chart-box"><canvas id="ch-forecast-seasonality"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-h"><h2>Year-over-year marketing KPI trend</h2><span class="sub">Month-by-month comparison for scorecards</span></div>
+          <div class="chart-box"><canvas id="ch-forecast-yoy"></canvas></div>
+        </div>
+        <div class="panel gold-top">
+          <div class="panel-h"><h2>Cross-functional validation load</h2><span class="sub">Marketing-focused, with Finance inputs</span></div>
+          <div>
+            <div class="owner-row"><div class="team">Finance / CFO</div><div class="work">Provide approved revenue, AOV, margin, refund, and seasonality inputs. Marketing Ops should not invent financial truth.</div><div class="load">1-2 hr / wk</div></div>
+            <div class="owner-row"><div class="team">Marketing</div><div class="work">Own demand targets, channel mix, campaign ROI, source quality, and spend-to-booking assumptions.</div><div class="load">2-3 hr / wk</div></div>
+            <div class="owner-row"><div class="team">Call Center</div><div class="work">Validate lead disposition, answer rates, booking rate, missed-call leakage, and after-hours handling.</div><div class="load">2-3 hr / wk</div></div>
+            <div class="owner-row"><div class="team">IT / Data</div><div class="work">Keep ServiceTitan, call tracking, ad platforms, and warehouse refreshes stable enough for MoM and YoY comparison.</div><div class="load">2 hr / wk</div></div>
+            <div class="owner-row"><div class="team">Brand / GM</div><div class="work">Validate seasonality, service mix, crew capacity, market constraints, and whether aggressive targets are operationally realistic.</div><div class="load">1 hr / wk</div></div>
+            <div class="owner-row"><div class="team">Marketing Ops</div><div class="work">Own model refresh, variance readout, confidence notes, and Friday Growth Review decisions.</div><div class="load">4-6 hr / wk</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel gold-top">
+        <div class="panel-h"><h2>Forecast formula notes</h2><span class="sub">Bottom-line logic for how goals are calculated</span></div>
+        <div class="formula-card-grid">
+          <div class="formula-card">
+            <h3>1. Seasonally adjusted baseline</h3>
+            <code>Baseline demand = prior-year same-month demand * seasonality index * source-confidence factor</code>
+            <p>Home services demand moves by weather, emergency patterns, local seasonality, and service mix. The forecast should compare April to last April, not only March to April.</p>
+          </div>
+          <div class="formula-card">
+            <h3>2. Reverse-funnel volume</h3>
+            <code>Completed jobs required = revenue goal / AOV<br>Booked jobs required = completed jobs / completion rate<br>Qualified demand required = booked jobs / lead-to-booking rate</code>
+            <p>This keeps goals connected to the stages marketing can influence and the stages operations must be able to support.</p>
+          </div>
+          <div class="formula-card">
+            <h3>3. Marketing ROI and spend</h3>
+            <code>Marketing ROI = attributed completed revenue / marketing spend<br>Spend target = booked jobs required * cost per booking range</code>
+            <p>The CFO supplies approved financial inputs. Marketing uses those inputs to manage source quality, conversion, leakage, budget movement, and ROI.</p>
+          </div>
+          <div class="formula-card">
+            <h3>4. Leakage opportunity</h3>
+            <code>Leakage value = (target conversion - actual conversion) * stage volume * AOV * recoverability factor</code>
+            <p>This prevents the dashboard from treating every lost lead as recoverable. Only gaps with an owner and plausible fix path should enter the scorecard.</p>
+          </div>
+          <div class="formula-card">
+            <h3>5. Scenario tiers</h3>
+            <code>Conservative = baseline + protected lift<br>Moderate = baseline + expected lift<br>Aggressive = baseline + expected lift + capacity-approved stretch</code>
+            <p>The selected tier should change only when source confidence, capacity, and conversion trends support it.</p>
+          </div>
+          <div class="formula-card">
+            <h3>6. Scorecard comparison</h3>
+            <code>MoM = (current month - prior month) / prior month<br>YoY = (current month - same month prior year) / same month prior year</code>
+            <p>Each KPI should show current, goal tier, MoM, YoY, confidence, owner, and next action so the forecast becomes an operating rhythm.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ============ NAVIGATION ============
+const VIEWS = {
+  portfolio: { title: 'Portfolio Scorecard', breadcrumb: ['Portfolio Scorecard'] },
+  brand:     { title: 'Brand · Beehive Plumbing', breadcrumb: ['Portfolio', 'Beehive Plumbing'] },
+  funnel:    { title: 'Funnel by Stage', breadcrumb: ['Portfolio', 'Beehive Plumbing', 'Funnel'] },
+  channel:   { title: 'Channel Performance', breadcrumb: ['Portfolio', 'Beehive Plumbing', 'Funnel', 'Channels'] },
+  campaign:  { title: 'Campaign Performance', breadcrumb: ['Portfolio', 'Beehive Plumbing', 'Funnel', 'Channels', 'Campaigns'] },
+  leakage:   { title: 'Leakage Diagnostic', breadcrumb: ['Beehive Plumbing', 'Leakage Diagnostic'] },
+  test:      { title: 'Test Framework', breadcrumb: ['Beehive Plumbing', 'Test Framework'] },
+  budget:    { title: 'Budget Move Board', breadcrumb: ['Beehive Plumbing', 'Budget Move Board'] },
+  forecast:  { title: 'Forecasting Model', breadcrumb: ['Beehive Plumbing', 'Forecasting Model'] },
+};
+
+const drillTargets = ['portfolio', 'brand', 'funnel', 'channel', 'campaign'];
+
+function navigateTo(viewKey) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('view-' + viewKey).classList.add('active');
+  const sbItem = document.querySelector('.sb-item[data-view="' + viewKey + '"]');
+  if (sbItem) sbItem.classList.add('active');
+  const bc = VIEWS[viewKey].breadcrumb;
+  const bcEl = document.getElementById('breadcrumb');
+  bcEl.innerHTML = bc.map((label, i) => {
+    if (i === bc.length - 1) return '<span class="current">' + label + '</span>';
+    let target = drillTargets[i] || 'portfolio';
+    return '<a onclick="navigateTo(\'' + target + '\')">' + label + '</a><span class="sep">›</span>';
+  }).join(' ');
+  document.querySelector('.content').scrollTop = 0;
+  setTimeout(initCharts, 50);
+}
+
+document.querySelectorAll('.sb-item').forEach(item => {
+  item.addEventListener('click', () => navigateTo(item.dataset.view));
+});
+
+// ============ CHARTS ============
+const NAVY = '#0F2A44', GOLD = '#D8A94B', STEEL = '#2D6BA0', STEEL2 = '#3E8AC7',
+      GREEN = '#4FA58F', RED = '#C8553D', GREY = '#7A8898', GREYLT = '#E2E6EA';
+
+const charts = {};
+
+function makeChart(id, type, data, options) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  if (charts[id]) charts[id].destroy();
+  charts[id] = new Chart(ctx, { type, data, options });
+}
+
+function days(n) {
+  const out = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(2026, 3, 27);
+    d.setDate(d.getDate() - i);
+    out.push((d.getMonth() + 1) + '/' + d.getDate());
+  }
+  return out;
+}
+
+const initialized = {};
+
+function initCharts() {
+  // Portfolio
+  if (!initialized.portfolio && document.getElementById('view-portfolio').classList.contains('active')) {
+    makeChart('ch-portfolio-trend', 'line', {
+      labels: days(30),
+      datasets: [{
+        label: 'Services booked / day',
+        data: [275,288,294,278,302,288,310,298,304,318,295,308,322,315,328,316,302,310,328,335,318,308,322,330,326,338,318,324,334,312],
+        borderColor: GOLD, backgroundColor: 'rgba(216,169,75,0.12)', tension: 0.35, fill: true, borderWidth: 2.5, pointRadius: 0
+      }]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}, scales: { x: { grid: { display: false }}, y: { beginAtZero: false, grid: { color: GREYLT }}}});
+
+    makeChart('ch-portfolio-mix', 'doughnut', {
+      labels: ['Beehive', 'Comfort Solutions', 'SameDay', 'Diamond', 'Superior W&A', 'Master Rooter', 'Lee\'s', 'Walker', 'My Buddy', 'Craig\'s'],
+      datasets: [{ data: [58,71,52,48,44,36,33,31,28,27], backgroundColor: [GOLD, STEEL, STEEL2, '#5BA3D8', NAVY, '#1F5B8A', '#7A8898', '#4A5B70', '#2F4D6E', '#D8A94B'] }]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 10 }}}});
+    initialized.portfolio = true;
+  }
+
+  // Brand
+  if (!initialized.brand && document.getElementById('view-brand').classList.contains('active')) {
+    makeChart('ch-brand-trend', 'bar', {
+      labels: days(30),
+      datasets: [
+        { label: 'Calls', data: [82,86,91,78,94,88,96,89,98,102,93,99,107,103,108,101,94,99,109,114,103,98,107,110,108,113,99,103,111,94], backgroundColor: STEEL, stack: 's' },
+        { label: 'Booked jobs', data: [27,28,30,25,31,29,33,31,32,35,30,32,36,34,36,33,30,32,37,38,33,31,35,36,35,38,32,33,37,31], backgroundColor: GOLD, stack: 's2' }
+      ]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', align: 'end', labels: { font: { size: 10 }, boxWidth: 10 }}}, scales: { x: { stacked: false, grid: { display: false }}, y: { beginAtZero: true, grid: { color: GREYLT }}}});
+    initialized.brand = true;
+  }
+
+  // Funnel
+  if (!initialized.funnel && document.getElementById('view-funnel').classList.contains('active')) {
+    makeChart('ch-funnel-trend', 'line', {
+      labels: ['Day -90', 'Day -60', 'Day -30', 'Day 0'],
+      datasets: [
+        { label: 'Click→Lead', data: [29.2, 31.4, 32.8, 33.5], borderColor: STEEL2, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4 },
+        { label: 'Lead→Booking', data: [38.1, 36.4, 34.2, 33.0], borderColor: RED, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4 },
+        { label: 'Booking→Completion', data: [91.4, 92.1, 92.8, 93.3], borderColor: GREEN, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4 }
+      ]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', align: 'end', labels: { font: { size: 10 }, boxWidth: 10 }}}, scales: { x: { grid: { display: false }}, y: { beginAtZero: false, ticks: { callback: v => v + '%' }, grid: { color: GREYLT }}}});
+    initialized.funnel = true;
+  }
+
+  // Channel
+  if (!initialized.channel && document.getElementById('view-channel').classList.contains('active')) {
+    makeChart('ch-channel-quad', 'scatter', {
+      datasets: [{
+        label: 'Channel',
+        data: [
+          { x: 182, y: 4.8, r: 14, label: 'Google Ads' },
+          { x: 163, y: 5.4, r: 10, label: 'LSAs' },
+          { x: 224, y: 3.9, r: 8, label: 'Meta' },
+          { x: 78,  y: 11.2, r: 6, label: 'SEO' },
+          { x: 362, y: 2.4, r: 7, label: 'Yelp/Angi' },
+          { x: 54,  y: 14.8, r: 5, label: 'Direct' },
+          { x: 98,  y: 8.4, r: 4, label: 'Email/SMS' },
+          { x: 291, y: 3.0, r: 5, label: 'Bing' },
+          { x: 263, y: 2.7, r: 9, label: 'Direct Mail' },
+          { x: 457, y: 1.9, r: 8, label: 'Billboards/OOH' },
+          { x: 261, y: 3.3, r: 9, label: 'Radio' },
+          { x: 594, y: 1.6, r: 10, label: 'TV/CTV' }
+        ],
+        backgroundColor: ['rgba(216,169,75,0.7)','rgba(45,107,160,0.7)','rgba(62,138,199,0.7)','rgba(79,165,143,0.7)','rgba(200,85,61,0.7)','rgba(15,42,68,0.7)','rgba(216,169,75,0.5)','rgba(122,136,152,0.7)','rgba(153,119,60,0.72)','rgba(95,110,126,0.72)','rgba(62,138,199,0.62)','rgba(200,85,61,0.62)']
+      }]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.raw.label + ': $' + ctx.raw.x + ' CAC, ' + ctx.raw.y + 'x ROAS' }}}, scales: { x: { title: { display: true, text: 'CAC ($)', font: { size: 10 }}, grid: { color: GREYLT }}, y: { title: { display: true, text: 'ROAS (x)', font: { size: 10 }}, grid: { color: GREYLT }}}});
+
+    makeChart('ch-channel-bars', 'bar', {
+      labels: ['Google Ads', 'LSAs', 'Meta', 'SEO', 'Yelp', 'Direct', 'Email', 'Bing', 'Mailers', 'OOH', 'Radio', 'TV'],
+      datasets: [
+        { label: 'Spend ($K)', data: [22.4, 11.8, 8.2, 3.4, 5.8, 1.2, 2.1, 3.1, 14.2, 9.6, 12.8, 18.4], backgroundColor: STEEL, yAxisID: 'y' },
+        { label: 'ROAS (x)', data: [4.8, 5.4, 3.9, 11.2, 2.4, 14.8, 8.4, 3.0, 2.7, 1.9, 3.3, 1.6], backgroundColor: GOLD, yAxisID: 'y1', type: 'line', borderColor: GOLD, borderWidth: 2, tension: 0.3 }
+      ]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', align: 'end', labels: { font: { size: 10 }, boxWidth: 10 }}}, scales: { x: { grid: { display: false }, ticks: { font: { size: 9 }}}, y: { beginAtZero: true, grid: { color: GREYLT }, position: 'left', title: { display: true, text: 'Spend ($K)', font: { size: 10 }}}, y1: { beginAtZero: true, position: 'right', grid: { display: false }, title: { display: true, text: 'ROAS (x)', font: { size: 10 }}}}});
+    initialized.channel = true;
+  }
+
+  // Campaign
+  if (!initialized.campaign && document.getElementById('view-campaign').classList.contains('active')) {
+    makeChart('ch-campaign-scatter', 'scatter', {
+      datasets: [{
+        label: 'Campaign', data: [
+          { x: 148, y: 7.2, label: 'Drain Cleaning SLC' },
+          { x: 165, y: 6.4, label: 'Water Heater Repair' },
+          { x: 167, y: 5.8, label: 'Sewer Backup' },
+          { x: 98,  y: 5.6, label: 'Plumber Brand' },
+          { x: 184, y: 5.1, label: 'Garbage Disposal' },
+          { x: 209, y: 4.7, label: 'Pipe Repair' },
+          { x: 291, y: 3.6, label: 'Toilet Repair' },
+          { x: 310, y: 3.2, label: 'Plumbing Inspection' },
+          { x: 282, y: 3.4, label: 'PMax' },
+          { x: 418, y: 2.1, label: 'Tankless Broad' },
+          { x: 226, y: 4.0, label: 'Hydro Jetting' },
+          { x: 161, y: 5.9, label: 'Drain Snake' },
+          { x: 232, y: 3.4, label: 'Spring Water Heater Mailer' },
+          { x: 425, y: 1.8, label: 'I-15 Southbound Billboard' },
+          { x: 227, y: 3.6, label: 'Morning Drive Radio' },
+          { x: 611, y: 1.5, label: 'Evening News TV' }
+        ],
+        backgroundColor: ctx => {
+          const r = ctx.raw && ctx.raw.y;
+          if (r >= 5) return 'rgba(79,165,143,0.7)';
+          if (r >= 3.5) return 'rgba(216,169,75,0.7)';
+          return 'rgba(200,85,61,0.7)';
+        },
+        pointRadius: 7
+      }]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.raw.label + ': $' + ctx.raw.x + ' CAC, ' + ctx.raw.y + 'x ROAS' }}}, scales: { x: { title: { display: true, text: 'CAC ($)', font: { size: 10 }}, grid: { color: GREYLT }}, y: { title: { display: true, text: 'ROAS (x)', font: { size: 10 }}, grid: { color: GREYLT }}}});
+    initialized.campaign = true;
+  }
+
+  // Leakage
+  if (!initialized.leakage && document.getElementById('view-leakage').classList.contains('active')) {
+    makeChart('ch-leakage-trend', 'line', {
+      labels: ['Day -90', 'Day -60', 'Day -30', 'Day 0'],
+      datasets: [{
+        label: 'Monthly leakage cost ($K)',
+        data: [56, 49, 42, 34], borderColor: GOLD, backgroundColor: 'rgba(216,169,75,0.15)', tension: 0.3, fill: true, borderWidth: 2.5, pointRadius: 5
+      }]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}, scales: { x: { grid: { display: false }}, y: { beginAtZero: true, ticks: { callback: v => '$' + v + 'K' }, grid: { color: GREYLT }}}});
+    initialized.leakage = true;
+  }
+
+  // Test cumulative
+  if (!initialized.test && document.getElementById('view-test').classList.contains('active')) {
+    makeChart('ch-test-cumulative', 'line', {
+      labels: days(90).filter((_, i) => i % 7 === 0),
+      datasets: [{
+        label: 'Cumulative blended lift (%)',
+        data: [0, 0, 1.2, 2.8, 2.8, 4.4, 6.1, 6.1, 7.8, 9.6, 11.4, 11.4, 13.2],
+        borderColor: GOLD, backgroundColor: 'rgba(216,169,75,0.15)', tension: 0.3, fill: true, borderWidth: 2.5, pointRadius: 4
+      }]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}, scales: { x: { grid: { display: false }}, y: { beginAtZero: true, ticks: { callback: v => '+' + v + '%' }, grid: { color: GREYLT }}}});
+    initialized.test = true;
+  }
+
+  // Budget
+  if (!initialized.budget && document.getElementById('view-budget').classList.contains('active')) {
+    makeChart('ch-budget-summary', 'bar', {
+      labels: ['Drain Campaigns', 'LSAs', 'Email/SMS', 'Tankless Broad', 'Yelp/Angi', 'Microsoft/Bing'],
+      datasets: [{
+        label: 'Net change ($)',
+        data: [2400, 3200, 1200, -1580, -3200, -1200],
+        backgroundColor: ctx => ctx.raw >= 0 ? 'rgba(79,165,143,0.8)' : 'rgba(200,85,61,0.8)'
+      }]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}, scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }}}, y: { ticks: { callback: v => '$' + v }, grid: { color: GREYLT }}}});
+    initialized.budget = true;
+  }
+
+  // Forecasting
+  if (!initialized.forecast && document.getElementById('view-forecast').classList.contains('active')) {
+    makeChart('ch-forecast-reverse', 'bar', {
+      labels: ['Qualified demand', 'Booked jobs', 'Completed jobs'],
+      datasets: [
+        { label: 'Current run rate', data: [3720, 1220, 1138], backgroundColor: 'rgba(122,136,152,0.65)' },
+        { label: 'Conservative', data: [4030, 1330, 1244], backgroundColor: 'rgba(45,107,160,0.66)' },
+        { label: 'Moderate', data: [4300, 1420, 1326], backgroundColor: 'rgba(216,169,75,0.82)' },
+        { label: 'Aggressive', data: [4710, 1555, 1477], backgroundColor: 'rgba(79,165,143,0.78)' }
+      ]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', align: 'end', labels: { font: { size: 10 }, boxWidth: 10 }}}, scales: { x: { grid: { display: false }}, y: { beginAtZero: true, grid: { color: GREYLT }}}});
+
+    makeChart('ch-forecast-scenarios', 'line', {
+      labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'],
+      datasets: [
+        { label: 'Conservative ROI', data: [4.18, 4.22, 4.26, 4.30, 4.34, 4.38], borderColor: GREY, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4 },
+        { label: 'Moderate ROI', data: [4.18, 4.32, 4.48, 4.70, 4.82, 4.90], borderColor: GOLD, backgroundColor: 'rgba(216,169,75,0.12)', tension: 0.3, borderWidth: 2.5, pointRadius: 4, fill: true },
+        { label: 'Aggressive ROI', data: [4.18, 4.42, 4.68, 5.10, 5.22, 5.34], borderColor: GREEN, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4 }
+      ]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', align: 'end', labels: { font: { size: 10 }, boxWidth: 10 }}}, scales: { x: { grid: { display: false }}, y: { ticks: { callback: v => v.toFixed(1) + 'x' }, grid: { color: GREYLT }}}});
+
+    makeChart('ch-forecast-seasonality', 'bar', {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [
+        { label: 'Demand index', data: [82, 86, 94, 100, 112, 128, 135, 126, 108, 99, 88, 84], backgroundColor: 'rgba(45,107,160,0.72)' },
+        { label: 'Marketing ROI index', data: [91, 93, 98, 100, 106, 111, 113, 110, 103, 99, 94, 92], type: 'line', borderColor: GOLD, backgroundColor: 'transparent', tension: 0.25, borderWidth: 2.5, pointRadius: 3 }
+      ]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', align: 'end', labels: { font: { size: 10 }, boxWidth: 10 }}}, scales: { x: { grid: { display: false }}, y: { ticks: { callback: v => v }, grid: { color: GREYLT }}}});
+
+    makeChart('ch-forecast-yoy', 'line', {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [
+        { label: 'Bookings this year', data: [1060, 1095, 1152, 1220, 1330, 1420], borderColor: GOLD, backgroundColor: 'rgba(216,169,75,0.12)', tension: 0.3, fill: true, borderWidth: 2.5, pointRadius: 4 },
+        { label: 'Bookings prior year', data: [1005, 1034, 1088, 1115, 1192, 1260], borderColor: GREY, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4 },
+        { label: 'Marketing ROI this year', data: [3.86, 3.94, 4.03, 4.18, 4.42, 4.70], borderColor: GREEN, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 3, yAxisID: 'y1' }
+      ]
+    }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', align: 'end', labels: { font: { size: 10 }, boxWidth: 10 }}}, scales: { x: { grid: { display: false }}, y: { beginAtZero: false, grid: { color: GREYLT }, title: { display: true, text: 'Booked jobs', font: { size: 10 }}}, y1: { beginAtZero: false, position: 'right', grid: { display: false }, ticks: { callback: v => v.toFixed(1) + 'x' }, title: { display: true, text: 'ROI', font: { size: 10 }}}}});
+    initialized.forecast = true;
+  }
+}
+
+// Init on first load
+initCharts();
+</script>
+
+</body>
+</html>

@@ -69,6 +69,11 @@
         .hero .stamp-card .v { font-family: 'Source Serif Pro', serif; font-size: 18px; }
         .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 26px; box-shadow: 0 14px 30px rgba(22,48,66,0.06); margin-bottom: 24px; }
         .bottom-line { border-left: 4px solid var(--gold); background: linear-gradient(135deg, #FFFFFF, #FFF7E9); }
+        .dashboard-preview { border-left: 4px solid var(--sky); background: linear-gradient(135deg, #FFFFFF, #EFF8FC); }
+        .dashboard-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 18px; }
+        .dashboard-button { display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; background: var(--navy); color: #FFFFFF; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+        .dashboard-button:hover { background: var(--navy-2); }
+        .dashboard-note { color: var(--muted); font-size: 12.5px; font-weight: 600; }
         .panel .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sky); margin-bottom: 8px; }
         .panel h2 { margin: 0 0 10px; font-family: 'Source Serif Pro', serif; font-size: 30px; letter-spacing: -0.7px; }
         .panel p { margin: 0; color: var(--muted); font-size: 14.5px; }
@@ -181,6 +186,7 @@
                 <div class="toc-label">On This Page</div>
                 <nav>
                     <a href="#bottom-line">Bottom Line</a>
+                    <a href="#dashboard-preview">Dashboard Preview</a>
                     <a href="#needs-matrix">Needs Matrix</a>
                     <a href="#brand-portfolio">Brand Portfolio</a>
                     <a href="#lifecycle-map">Lifecycle Map</a>
@@ -195,6 +201,16 @@
             <div class="eyebrow">Bottom Line</div>
             <h2>The goal is not only reporting clarity. It is a framework for growth testing.</h2>
             <p>By the end of 120 days, Jacqueline should have one trustworthy scorecard, one shared language for source and funnel stages, one practical testing rhythm, and a clearer view of where to standardize first. Once the systems are instrumented cleanly, the team can run tests faster, see impact sooner, rule out weak ideas quickly, and scale strong ideas across brands with more confidence.</p>
+        </section>
+
+        <section class="panel dashboard-preview" id="dashboard-preview">
+            <div class="eyebrow">Interactive Dashboard</div>
+            <h2>Marketing Operations Dashboard Preview</h2>
+            <p>This working example shows how the 120-day plan can turn into an operating view: portfolio health, Beehive pilot drilldown, funnel leakage, channel and campaign performance, offline media attribution, testing priorities, budget moves, and forecasting. Values are illustrative until IHS source systems are validated.</p>
+            <div class="dashboard-actions">
+                <a class="dashboard-button" href="marketing-dashboard.html">Open interactive dashboard</a>
+                <span class="dashboard-note">Example structure only. Final metrics should be validated against ServiceTitan, call tracking, ad platforms, and finance inputs.</span>
+            </div>
         </section>
 
         <section class="section" id="needs-matrix">
