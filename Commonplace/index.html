@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Commonplace is Steve Hill's working knowledge pipeline: capture useful sources, review them, synthesize the insight, and publish what is ready to reuse.">
+    <meta property="og:title" content="Commonplace — Knowledge in motion">
+    <meta property="og:description" content="A working knowledge pipeline designed and built by Steve Hill.">
+    <meta property="og:image" content="https://stevehill.work/Commonplace/og.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://stevehill.work/Commonplace/">
+    <title>Commonplace — Knowledge in motion | Steve Hill</title>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #15152a;
+            --paper: #f2efe5;
+            --paper-deep: #e6e1d3;
+            --lime: #d8ff57;
+            --coral: #ff765f;
+            --lavender: #a99bff;
+            --cyan: #7be6db;
+            --muted: #77778a;
+            --line: rgba(21, 21, 42, 0.16);
+            --sans: "DM Sans", Arial, sans-serif;
+            --serif: "Playfair Display", Georgia, serif;
+            --mono: "DM Mono", monospace;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; background: var(--ink); color: var(--ink); font-family: var(--sans); }
+        button, input, textarea, select { font: inherit; }
+        button { cursor: pointer; }
+        button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, a:focus-visible {
+            outline: 3px solid var(--lime);
+            outline-offset: 3px;
+        }
+        .skip-link {
+            position: fixed; left: 16px; top: -60px; z-index: 100;
+            padding: 10px 14px; background: var(--lime); color: var(--ink);
+            font-size: 12px; font-weight: 700; text-decoration: none;
+        }
+        .skip-link:focus { top: 16px; }
+        .app-shell {
+            min-height: 100vh;
+            background: radial-gradient(circle at 88% 1%, rgba(169,155,255,.2), transparent 27rem), var(--ink);
+        }
+        .topbar {
+            min-height: 72px; padding: 0 clamp(20px, 4vw, 64px);
+            display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+            color: white; border-bottom: 1px solid rgba(255,255,255,.13);
+        }
+        .brand {
+            color: white; display: inline-flex; align-items: center; gap: 11px;
+            width: fit-content; text-decoration: none; font-size: 12px;
+            font-weight: 700; letter-spacing: .18em;
+        }
+        .brand-mark {
+            width: 30px; height: 30px; display: grid; place-items: center;
+            background: var(--lime); color: var(--ink); border-radius: 50% 50% 8px 50%;
+            font-family: var(--serif); font-size: 18px; letter-spacing: 0;
+        }
+        .main-nav { display: flex; align-items: center; gap: 32px; }
+        .main-nav a {
+            color: rgba(255,255,255,.56); text-decoration: none; font-size: 13px;
+            position: relative;
+        }
+        .main-nav a:hover, .main-nav a.active { color: white; }
+        .main-nav a.active::after {
+            content: ""; position: absolute; height: 2px; background: var(--lime);
+            left: 0; right: 0; bottom: -25px;
+        }
+        .portfolio-link {
+            justify-self: end; color: rgba(255,255,255,.72); text-decoration: none;
+            font-size: 11px; border: 1px solid rgba(255,255,255,.2); padding: 9px 12px;
+        }
+        .portfolio-link:hover { color: var(--lime); border-color: var(--lime); }
+        .hero {
+            padding: 62px clamp(20px,5vw,80px) 52px; max-width: 1600px; margin: auto;
+            display: flex; align-items: end; justify-content: space-between; gap: 40px; color: white;
+        }
+        .eyebrow {
+            margin: 0 0 17px; color: var(--lime); font-family: var(--mono);
+            font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .18em;
+        }
+        .hero h1 {
+            margin: 0; max-width: 820px; font-family: var(--serif);
+            font-size: clamp(50px,6.6vw,96px); font-weight: 500; line-height: .92;
+            letter-spacing: -.055em;
+        }
+        .hero h1 em { color: var(--lime); font-weight: 500; }
+        .hero-copy { max-width: 480px; margin: 26px 0 0; color: rgba(255,255,255,.62); font-size: 16px; line-height: 1.6; }
+        .capture-button {
+            border: 0; background: var(--lime); color: var(--ink); padding: 17px 20px;
+            font-weight: 700; box-shadow: 7px 7px 0 var(--lavender);
+            transition: transform .18s, box-shadow .18s; white-space: nowrap;
+        }
+        .capture-button:hover { transform: translate(3px,3px); box-shadow: 4px 4px 0 var(--lavender); }
+        .capture-button b { margin-right: 10px; font-size: 18px; }
+        kbd { border: 1px solid currentColor; border-radius: 3px; padding: 2px 5px; font: 9px var(--mono); opacity: .55; margin-left: 14px; }
+        .context-band {
+            max-width: 1600px; margin: 0 auto; padding: 0 clamp(20px,5vw,80px) 38px;
+            display: grid; grid-template-columns: 1.2fr repeat(3,1fr); color: white;
+        }
+        .context-intro, .metric {
+            min-height: 88px; padding: 15px 22px; border-left: 1px solid rgba(255,255,255,.16);
+        }
+        .context-intro { display: flex; flex-direction: column; justify-content: center; color: rgba(255,255,255,.56); font-size: 10px; line-height: 1.5; }
+        .context-intro strong { color: white; font-size: 12px; margin-bottom: 4px; }
+        .context-intro a { color: var(--lime); }
+        .metric { display: flex; align-items: center; gap: 14px; }
+        .metric:last-child { border-right: 1px solid rgba(255,255,255,.16); }
+        .metric-number { color: var(--lime); font: 38px var(--serif); }
+        .metric-label { color: rgba(255,255,255,.5); font-size: 10px; line-height: 1.5; }
+        .metric-label strong { display: block; color: white; font-size: 11px; }
+        .workspace { background: var(--paper); border-radius: 28px 28px 0 0; min-height: 670px; overflow: hidden; }
+        .workspace-toolbar {
+            min-height: 76px; padding: 14px clamp(18px,4vw,64px);
+            display: grid; grid-template-columns: minmax(210px,290px) 1fr auto;
+            align-items: center; gap: 14px; border-bottom: 1px solid var(--line);
+        }
+        .search-wrap {
+            height: 42px; display: flex; align-items: center; background: white;
+            border: 1px solid var(--line); padding: 0 12px;
+        }
+        .search-wrap input { width: 100%; border: 0; outline: 0; background: transparent; padding: 0 9px; font-size: 12px; }
+        .search-wrap kbd { margin-left: 0; }
+        .topic-filter { display: flex; align-items: center; gap: 10px; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+        .topic-filter select { min-width: 150px; border: 1px solid var(--line); background: white; color: var(--ink); padding: 10px 12px; font-size: 11px; }
+        .reset-button { border: 1px solid var(--line); background: transparent; color: var(--muted); padding: 10px 12px; font-size: 10px; }
+        .reset-button:hover { color: var(--ink); background: white; }
+        .notice {
+            width: min(620px,calc(100% - 40px)); margin: 14px auto 0; border: 1px solid var(--line);
+            background: var(--lime); padding: 10px 14px; display: none; justify-content: space-between;
+            font-size: 11px;
+        }
+        .notice.visible { display: flex; }
+        .board {
+            max-width: 1600px; min-height: 580px; margin: 0 auto;
+            padding: 32px clamp(18px,4vw,64px) 70px; display: grid;
+            grid-template-columns: repeat(4,minmax(230px,1fr)); gap: 18px;
+        }
+        .board-column { min-width: 0; }
+        .column-header {
+            display: grid; grid-template-columns: 1fr auto; align-items: center;
+            min-height: 72px; padding-bottom: 16px; border-bottom: 2px solid var(--ink);
+        }
+        .column-header > div { display: flex; align-items: center; gap: 10px; }
+        .column-header h2 { margin: 0; font: 500 22px var(--serif); }
+        .column-header p { grid-column: 1/-1; margin: 7px 0 0; color: var(--muted); font-size: 10px; }
+        .stage-index { width: 27px; height: 27px; display: grid; place-items: center; border-radius: 50%; font: 500 9px var(--mono); }
+        .stage-inbox { background: var(--lavender); }
+        .stage-review { background: var(--coral); }
+        .stage-synthesis { background: var(--cyan); }
+        .stage-published { background: var(--lime); }
+        .column-count { font: 9px var(--mono); border: 1px solid var(--line); padding: 4px 7px; border-radius: 99px; }
+        .column-items { display: grid; gap: 12px; padding-top: 14px; }
+        .knowledge-card {
+            padding: 17px; min-height: 212px; display: flex; flex-direction: column;
+            background: white; border: 1px solid rgba(21,21,42,.12); box-shadow: 0 2px 0 rgba(21,21,42,.08);
+            transition: transform .16s, box-shadow .16s; cursor: pointer;
+        }
+        .knowledge-card:hover { transform: translateY(-3px); box-shadow: 0 7px 0 rgba(21,21,42,.09); }
+        .card-topline { display: flex; align-items: center; gap: 7px; }
+        .source-icon { width: 22px; height: 22px; display: grid; place-items: center; background: var(--paper-deep); border-radius: 4px; font: 700 11px var(--serif); }
+        .source-research { background: var(--lavender); }
+        .source-podcast { background: var(--coral); }
+        .source-video { background: var(--cyan); }
+        .source-notion { background: var(--lime); }
+        .source-label, .card-age { color: var(--muted); font: 8px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+        .card-age { margin-left: auto; text-transform: none; }
+        .priority-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); }
+        .knowledge-card h3 { margin: 14px 0 8px; font: 500 18px/1.14 var(--serif); letter-spacing: -.02em; }
+        .knowledge-card > p { margin: 0; color: #696875; font-size: 10px; line-height: 1.55; }
+        .tag-row { margin-top: 13px; display: flex; gap: 5px; flex-wrap: wrap; }
+        .tag { padding: 4px 7px; background: var(--paper); color: #6d6c78; font-size: 8px; text-transform: uppercase; letter-spacing: .05em; }
+        .card-footer { margin-top: auto; padding-top: 14px; display: flex; align-items: center; gap: 8px; border-top: 1px solid rgba(21,21,42,.08); }
+        .notes-count, .published-mark { color: var(--muted); font-size: 8px; }
+        .published-mark { color: #4b6b17; margin-left: auto; font-weight: 700; text-transform: uppercase; }
+        .advance-button { border: 0; margin-left: auto; padding: 2px; color: var(--ink); background: transparent; font-size: 8px; font-weight: 700; }
+        .advance-button span { color: var(--coral); }
+        .empty-state {
+            min-height: 145px; display: grid; place-items: center; align-content: center;
+            border: 1px dashed rgba(21,21,42,.2); color: var(--muted); text-align: center;
+        }
+        .empty-state b { font-size: 22px; color: #aaa7b3; }
+        .empty-state p { margin: 8px 0 0; font-size: 10px; }
+        .site-footer {
+            min-height: 76px; padding: 0 clamp(20px,5vw,80px); display: flex;
+            align-items: center; justify-content: space-between; color: rgba(255,255,255,.45);
+            font: 9px var(--mono); letter-spacing: .08em;
+        }
+        .site-footer a { color: var(--lime); text-decoration: none; }
+        .modal-backdrop {
+            position: fixed; inset: 0; z-index: 20; display: none; justify-content: flex-end;
+            background: rgba(9,9,23,.72); backdrop-filter: blur(6px);
+        }
+        .modal-backdrop.open { display: flex; }
+        .panel {
+            width: min(560px,100%); height: 100%; overflow-y: auto;
+            padding: clamp(28px,4vw,52px); background: var(--paper);
+            box-shadow: -20px 0 70px rgba(0,0,0,.22); animation: slide-in .25s ease-out;
+        }
+        @keyframes slide-in { from { transform: translateX(100%); } }
+        .panel-heading { display: flex; justify-content: space-between; gap: 18px; border-bottom: 2px solid var(--ink); padding-bottom: 24px; }
+        .panel-heading h2, .detail-panel h2 { margin: 0; font: 500 clamp(34px,4vw,48px)/1 var(--serif); letter-spacing: -.04em; }
+        .panel-heading .eyebrow, .detail-panel .eyebrow { color: #6a5bed; }
+        .close-button { width: 36px; height: 36px; border: 1px solid var(--line); background: transparent; font-size: 21px; flex: 0 0 auto; }
+        .capture-form { display: grid; gap: 17px; padding-top: 25px; }
+        .capture-form label { display: grid; gap: 7px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+        .capture-form input, .capture-form textarea, .capture-form select {
+            width: 100%; border: 1px solid var(--line); border-radius: 0; outline: 0;
+            background: white; padding: 13px 14px; color: var(--ink); font-size: 12px;
+            text-transform: none; letter-spacing: 0; resize: vertical;
+        }
+        .capture-form input:focus, .capture-form textarea:focus, .capture-form select:focus { border-color: #6a5bed; box-shadow: 0 0 0 2px rgba(106,91,237,.13); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-note { margin: -4px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; text-transform: none; letter-spacing: 0; }
+        .form-actions { padding-top: 8px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+        .form-actions span { color: var(--muted); font-size: 9px; }
+        .form-actions button, .detail-actions button { border: 0; background: var(--ink); color: white; padding: 13px 16px; font-weight: 700; font-size: 11px; }
+        .detail-panel { position: relative; padding-top: 78px; }
+        .detail-panel .close-button { position: absolute; top: 30px; right: 30px; }
+        .detail-summary { margin: 24px 0 32px; font-size: 17px; line-height: 1.65; color: #545361; }
+        .detail-section { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); padding: 23px 0; }
+        .detail-section > span { font: 700 9px var(--mono); letter-spacing: .13em; }
+        .detail-section p { margin: 12px 0 0; font: 500 20px/1.5 var(--serif); }
+        .detail-actions { margin-top: 34px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .detail-actions a { color: var(--ink); font-size: 11px; font-weight: 700; }
+        .detail-actions a[hidden] { display: none; }
+        @media (max-width: 1050px) {
+            .board { grid-template-columns: repeat(2,minmax(250px,1fr)); }
+            .context-band { grid-template-columns: repeat(2,1fr); }
+            .context-intro, .metric:nth-child(2) { border-right: 1px solid rgba(255,255,255,.16); }
+        }
+        @media (max-width: 720px) {
+            .topbar { grid-template-columns: 1fr auto; }
+            .main-nav { display: none; }
+            .portfolio-link { font-size: 0; }
+            .portfolio-link::after { content: "Portfolio ↗"; font-size: 10px; }
+            .hero { align-items: flex-start; flex-direction: column; padding-top: 46px; }
+            .hero h1 { font-size: clamp(47px,14vw,74px); }
+            .capture-button { margin-top: 28px; }
+            .context-band { grid-template-columns: 1fr 1fr; padding-top: 6px; }
+            .context-intro, .metric { padding: 12px 10px; }
+            .workspace { border-radius: 18px 18px 0 0; }
+            .workspace-toolbar { grid-template-columns: 1fr auto; }
+            .topic-filter { grid-row: 2; grid-column: 1/-1; }
+            .board { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-right: 18px; }
+            .board-column { min-width: min(84vw,340px); scroll-snap-align: start; }
+            .site-footer { align-items: flex-start; flex-direction: column; justify-content: center; gap: 7px; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#pipeline">Skip to pipeline</a>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="./" aria-label="Commonplace home"><span class="brand-mark">C</span><span>COMMONPLACE</span></a>
+            <nav class="main-nav" aria-label="Application navigation">
+                <a class="active" href="#pipeline">Pipeline</a>
+                <a href="#about">About the build</a>
+            </nav>
+            <a class="portfolio-link" href="../index.html">Steve Hill · Portfolio ↗</a>
+        </header>
+
+        <main>
+            <section class="hero" id="about">
+                <div>
+                    <p class="eyebrow">Portfolio build / Knowledge operations</p>
+                    <h1>Turn what you find<br>into what you <em>know.</em></h1>
+                    <p class="hero-copy">A working pipeline for the ideas, evidence, and decisions worth keeping—designed and built by Steve Hill.</p>
+                </div>
+                <button class="capture-button" id="open-capture"><b>＋</b> Capture knowledge <kbd>N</kbd></button>
+            </section>
+
+            <section class="context-band" aria-label="About this portfolio demo">
+                <div class="context-intro">
+                    <strong>Public portfolio demo</strong>
+                    Data stays in this browser. Paste a Notion page URL or any web source when you capture an item.
+                </div>
+                <div class="metric"><span class="metric-number" id="metric-captured">00</span><span class="metric-label"><strong>Captured</strong> this week</span></div>
+                <div class="metric"><span class="metric-number" id="metric-active">00</span><span class="metric-label"><strong>In motion</strong> across the pipeline</span></div>
+                <div class="metric"><span class="metric-number" id="metric-published">00</span><span class="metric-label"><strong>Published</strong> and reusable</span></div>
+            </section>
+
+            <section class="workspace" id="pipeline">
+                <div class="workspace-toolbar">
+                    <label class="search-wrap">
+                        <span aria-hidden="true">⌕</span>
+                        <input id="pipeline-search" type="search" placeholder="Search knowledge" aria-label="Search knowledge">
+                        <kbd>/</kbd>
+                    </label>
+                    <label class="topic-filter">Topic
+                        <select id="topic-filter" aria-label="Filter by topic"><option>All</option></select>
+                    </label>
+                    <button class="reset-button" id="reset-demo">Reset demo</button>
+                </div>
+                <button class="notice" id="notice" aria-label="Dismiss notification"><span id="notice-text"></span><span>×</span></button>
+                <div class="board" id="board" aria-live="polite"></div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <span>COMMONPLACE / KNOWLEDGE IN MOTION</span>
+            <span>Designed and built by <a href="../index.html">Steve Hill</a> · Browser-local portfolio demo</span>
+        </footer>
+    </div>
+
+    <div class="modal-backdrop" id="capture-modal" role="dialog" aria-modal="true" aria-labelledby="capture-title">
+        <section class="panel">
+            <div class="panel-heading">
+                <div><p class="eyebrow">Quick capture</p><h2 id="capture-title">Save it before it slips away.</h2></div>
+                <button class="close-button" data-close="capture-modal" aria-label="Close capture form">×</button>
+            </div>
+            <form class="capture-form" id="capture-form">
+                <label>Title<input name="title" required maxlength="180" placeholder="What did you find?"></label>
+                <div class="form-row">
+                    <label>Source type
+                        <select name="sourceType">
+                            <option>Article</option><option>Research</option><option>Podcast</option>
+                            <option>Video</option><option>Book</option><option>Notion</option><option>Conversation</option>
+                        </select>
+                    </label>
+                    <label>Priority
+                        <select name="priority"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select>
+                    </label>
+                </div>
+                <label>Source URL<input name="sourceUrl" type="url" placeholder="https://notion.so/…"></label>
+                <p class="form-note">Private Notion links still follow your Notion workspace permissions.</p>
+                <label>One-line takeaway<textarea name="summary" required maxlength="1000" rows="3" placeholder="Why is this worth keeping?"></textarea></label>
+                <label>Notes<textarea name="notes" maxlength="4000" rows="3" placeholder="Questions, connections, next steps…"></textarea></label>
+                <label>Topics<input name="tags" maxlength="180" placeholder="Research, AI, Operations"></label>
+                <div class="form-actions"><span>Everything starts in Inbox.</span><button type="submit">Capture to Inbox →</button></div>
+            </form>
+        </section>
+    </div>
+
+    <div class="modal-backdrop" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+        <section class="panel detail-panel">
+            <button class="close-button" data-close="detail-modal" aria-label="Close detail">×</button>
+            <p class="eyebrow" id="detail-eyebrow"></p>
+            <h2 id="detail-title"></h2>
+            <p class="detail-summary" id="detail-summary"></p>
+            <div class="detail-section"><span>WORKING NOTES</span><p id="detail-notes"></p></div>
+            <div class="tag-row" id="detail-tags"></div>
+            <div class="detail-actions">
+                <a id="detail-source" target="_blank" rel="noopener noreferrer">Open source ↗</a>
+                <button id="detail-advance">Advance one stage →</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (() => {
+            "use strict";
+            const STORAGE_KEY = "commonplace-portfolio-items-v1";
+            const stages = [
+                { id: "inbox", label: "Inbox", hint: "Captured, not triaged" },
+                { id: "review", label: "Review", hint: "Reading & annotating" },
+                { id: "synthesis", label: "Synthesis", hint: "Connecting the dots" },
+                { id: "published", label: "Published", hint: "Ready to reuse" }
+            ];
+            const seedItems = [
+                { id: "demo-1", title: "Why small teams outperform at knowledge transfer", sourceUrl: "https://example.com/small-teams", sourceType: "Article", summary: "Shared context compounds when the distance between capture and conversation stays short.", notes: "Connect this to onboarding and weekly operating reviews.", stage: "review", priority: "high", tags: ["Teams","Operations"], capturedAt: Date.now() - 86400000, updatedAt: Date.now() - 7200000 },
+                { id: "demo-2", title: "The progressive summarization method", sourceUrl: "https://example.com/progressive-summarization", sourceType: "Research", summary: "A layered approach turns raw notes into increasingly useful, retrievable knowledge.", notes: "Use as the foundation for the review checklist.", stage: "synthesis", priority: "normal", tags: ["Methods","Notes"], capturedAt: Date.now() - 259200000, updatedAt: Date.now() - 93600000 },
+                { id: "demo-3", title: "Decision logs reduce repeated debates", sourceUrl: "https://example.com/decision-logs", sourceType: "Article", summary: "Recording the context and tradeoffs behind a choice makes future decisions faster.", notes: "Add a decision-note template to the operating system.", stage: "published", priority: "normal", tags: ["Decisions","Leadership"], capturedAt: Date.now() - 604800000, updatedAt: Date.now() - 172800000 },
+                { id: "demo-4", title: "Learning organization interview notes", sourceUrl: "https://www.notion.so/", sourceType: "Notion", summary: "Three habits that help insight travel from an individual to the whole organization.", notes: "Private page example—Notion permissions still apply.", stage: "inbox", priority: "normal", tags: ["Culture","Learning"], capturedAt: Date.now() - 10800000, updatedAt: Date.now() - 10800000 },
+                { id: "demo-5", title: "AI-assisted research without losing judgment", sourceUrl: "https://example.com/ai-research", sourceType: "Video", summary: "Use AI to widen discovery while keeping source verification and synthesis human-led.", notes: "Compare this with the source-verification rubric.", stage: "inbox", priority: "high", tags: ["AI","Research"], capturedAt: Date.now() - 18000000, updatedAt: Date.now() - 18000000 }
+            ];
+
+            let items = loadItems();
+            let selectedId = null;
+            const board = document.getElementById("board");
+            const search = document.getElementById("pipeline-search");
+            const topicFilter = document.getElementById("topic-filter");
+            const notice = document.getElementById("notice");
+            const noticeText = document.getElementById("notice-text");
+
+            function loadItems() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                    return Array.isArray(saved) && saved.length ? saved : structuredClone(seedItems);
+                } catch (_) {
+                    return structuredClone(seedItems);
+                }
+            }
+            function saveItems() {
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch (_) {}
+            }
+            function escapeHtml(value) {
+                return String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+            }
+            function safeUrl(value) {
+                try {
+                    const url = new URL(value);
+                    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+                } catch (_) { return ""; }
+            }
+            function relativeDate(timestamp) {
+                const hours = Math.max(0, Math.floor((Date.now() - Number(timestamp)) / 3600000));
+                if (hours < 1) return "Just now";
+                if (hours < 24) return `${hours}h ago`;
+                const days = Math.floor(hours / 24);
+                return days === 1 ? "Yesterday" : `${days}d ago`;
+            }
+            function showNotice(message) {
+                noticeText.textContent = message;
+                notice.classList.add("visible");
+                window.clearTimeout(showNotice.timer);
+                showNotice.timer = window.setTimeout(() => notice.classList.remove("visible"), 3600);
+            }
+            function updateFilters() {
+                const current = topicFilter.value;
+                const topics = [...new Set(items.flatMap(item => item.tags || []))].sort();
+                topicFilter.innerHTML = `<option>All</option>${topics.map(topic => `<option>${escapeHtml(topic)}</option>`).join("")}`;
+                topicFilter.value = topics.includes(current) ? current : "All";
+            }
+            function updateMetrics() {
+                document.getElementById("metric-captured").textContent = String(items.filter(item => Date.now() - item.capturedAt < 604800000).length).padStart(2,"0");
+                document.getElementById("metric-active").textContent = String(items.filter(item => item.stage !== "published").length).padStart(2,"0");
+                document.getElementById("metric-published").textContent = String(items.filter(item => item.stage === "published").length).padStart(2,"0");
+            }
+            function filteredItems() {
+                const query = search.value.trim().toLowerCase();
+                const topic = topicFilter.value;
+                return items.filter(item => {
+                    const matchesTopic = topic === "All" || (item.tags || []).includes(topic);
+                    const haystack = [item.title,item.summary,item.notes,item.sourceType,...(item.tags || [])].join(" ").toLowerCase();
+                    return matchesTopic && (!query || haystack.includes(query));
+                });
+            }
+            function cardHtml(item) {
+                const index = stages.findIndex(stage => stage.id === item.stage);
+                const next = stages[index + 1];
+                const tags = (item.tags || []).slice(0,3).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+                return `
+                    <article class="knowledge-card" data-open="${escapeHtml(item.id)}" tabindex="0">
+                        <div class="card-topline">
+                            <span class="source-icon source-${escapeHtml(item.sourceType.toLowerCase())}">${escapeHtml(item.sourceType.slice(0,1))}</span>
+                            <span class="source-label">${escapeHtml(item.sourceType)}</span>
+                            ${item.priority === "high" ? '<span class="priority-dot" title="High priority"></span>' : ""}
+                            <span class="card-age">${relativeDate(item.updatedAt)}</span>
+                        </div>
+                        <h3>${escapeHtml(item.title)}</h3>
+                        <p>${escapeHtml(item.summary)}</p>
+                        <div class="tag-row">${tags}</div>
+                        <div class="card-footer">
+                            <span class="notes-count">${item.notes ? "● Note added" : "○ No notes yet"}</span>
+                            ${next ? `<button class="advance-button" data-advance="${escapeHtml(item.id)}" aria-label="Move ${escapeHtml(item.title)} to ${next.label}">Move to ${next.label} <span>→</span></button>` : '<span class="published-mark">Ready to reuse</span>'}
+                        </div>
+                    </article>`;
+            }
+            function render() {
+                const visible = filteredItems();
+                board.innerHTML = stages.map((stage,index) => {
+                    const stageItems = visible.filter(item => item.stage === stage.id);
+                    return `
+                        <section class="board-column">
+                            <header class="column-header">
+                                <div><span class="stage-index stage-${stage.id}">0${index+1}</span><h2>${stage.label}</h2></div>
+                                <span class="column-count">${stageItems.length}</span>
+                                <p>${stage.hint}</p>
+                            </header>
+                            <div class="column-items">
+                                ${stageItems.length ? stageItems.map(cardHtml).join("") : `<div class="empty-state"><b>${stage.id === "published" ? "◎" : "＋"}</b><p>No matching knowledge</p></div>`}
+                            </div>
+                        </section>`;
+                }).join("");
+                updateFilters();
+                updateMetrics();
+            }
+            function advance(id) {
+                const item = items.find(entry => entry.id === id);
+                if (!item) return;
+                const index = stages.findIndex(stage => stage.id === item.stage);
+                if (!stages[index + 1]) return;
+                item.stage = stages[index + 1].id;
+                item.updatedAt = Date.now();
+                saveItems();
+                showNotice(`Moved to ${stages[index + 1].label}.`);
+                render();
+            }
+            function openModal(id) {
+                document.getElementById(id).classList.add("open");
+                document.body.style.overflow = "hidden";
+                window.setTimeout(() => document.querySelector(`#${id} input, #${id} button`)?.focus(), 20);
+            }
+            function closeModal(id) {
+                document.getElementById(id).classList.remove("open");
+                document.body.style.overflow = "";
+            }
+            function openDetail(id) {
+                const item = items.find(entry => entry.id === id);
+                if (!item) return;
+                selectedId = id;
+                const stage = stages.find(entry => entry.id === item.stage);
+                document.getElementById("detail-eyebrow").textContent = `${item.sourceType} / ${stage.label}`;
+                document.getElementById("detail-title").textContent = item.title;
+                document.getElementById("detail-summary").textContent = item.summary;
+                document.getElementById("detail-notes").textContent = item.notes || "No notes yet. Add context during review so this source becomes easier to reuse.";
+                document.getElementById("detail-tags").innerHTML = (item.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+                const source = document.getElementById("detail-source");
+                const sourceUrl = safeUrl(item.sourceUrl);
+                source.hidden = !sourceUrl;
+                if (sourceUrl) source.href = sourceUrl;
+                document.getElementById("detail-advance").hidden = item.stage === "published";
+                openModal("detail-modal");
+            }
+
+            document.getElementById("open-capture").addEventListener("click", () => openModal("capture-modal"));
+            document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => closeModal(button.dataset.close)));
+            document.querySelectorAll(".modal-backdrop").forEach(backdrop => backdrop.addEventListener("mousedown", event => {
+                if (event.target === backdrop) closeModal(backdrop.id);
+            }));
+            notice.addEventListener("click", () => notice.classList.remove("visible"));
+            search.addEventListener("input", render);
+            topicFilter.addEventListener("change", render);
+            board.addEventListener("click", event => {
+                const advanceButton = event.target.closest("[data-advance]");
+                if (advanceButton) { event.stopPropagation(); advance(advanceButton.dataset.advance); return; }
+                const card = event.target.closest("[data-open]");
+                if (card) openDetail(card.dataset.open);
+            });
+            board.addEventListener("keydown", event => {
+                if ((event.key === "Enter" || event.key === " ") && event.target.matches("[data-open]")) {
+                    event.preventDefault(); openDetail(event.target.dataset.open);
+                }
+            });
+            document.getElementById("detail-advance").addEventListener("click", () => {
+                if (selectedId) advance(selectedId);
+                closeModal("detail-modal");
+            });
+            document.getElementById("capture-form").addEventListener("submit", event => {
+                event.preventDefault();
+                const data = new FormData(event.currentTarget);
+                const item = {
+                    id: crypto.randomUUID ? crypto.randomUUID() : `item-${Date.now()}`,
+                    title: String(data.get("title")).trim(),
+                    sourceUrl: String(data.get("sourceUrl")).trim(),
+                    sourceType: String(data.get("sourceType")),
+                    summary: String(data.get("summary")).trim(),
+                    notes: String(data.get("notes")).trim(),
+                    stage: "inbox",
+                    priority: String(data.get("priority")),
+                    tags: String(data.get("tags")).split(",").map(tag => tag.trim()).filter(Boolean).slice(0,8),
+                    capturedAt: Date.now(),
+                    updatedAt: Date.now()
+                };
+                items.unshift(item);
+                saveItems();
+                event.currentTarget.reset();
+                closeModal("capture-modal");
+                showNotice("Captured to Inbox.");
+                render();
+            });
+            document.getElementById("reset-demo").addEventListener("click", () => {
+                if (!window.confirm("Reset this browser to the original demonstration items?")) return;
+                items = structuredClone(seedItems);
+                saveItems();
+                search.value = "";
+                topicFilter.value = "All";
+                showNotice("Demo reset.");
+                render();
+            });
+            document.addEventListener("keydown", event => {
+                const typing = ["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName);
+                if (event.key === "Escape") {
+                    closeModal("capture-modal"); closeModal("detail-modal");
+                } else if (event.key.toLowerCase() === "n" && !typing) {
+                    openModal("capture-modal");
+                } else if (event.key === "/" && !typing) {
+                    event.preventDefault(); search.focus();
+                }
+            });
+            render();
+        })();
+    </script>
+</body>
+</html>
